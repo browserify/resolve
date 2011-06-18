@@ -1,7 +1,7 @@
 var assert = require('assert');
 var resolve = require('../');
 
-exports.resolve = function () {
+exports.foo = function () {
     var dir = __dirname + '/resolver';
     
     assert.equal(
@@ -17,4 +17,13 @@ exports.resolve = function () {
     assert.throws(function () {
         resolve.sync('foo', { path : dir });
     });
+};
+
+exports.bar = function () {
+    var dir = __dirname + '/resolver';
+    
+    assert.equal(
+        resolve.sync('foo', { path : dir + '/bar' }),
+        dir + '/node_modules/foo/index.js'
+    );
 };
