@@ -5,17 +5,17 @@ exports.foo = function () {
     var dir = __dirname + '/resolver';
     
     assert.equal(
-        resolve.sync('./foo', { path : dir }),
+        resolve.sync('./foo', { basedir : dir }),
         dir + '/foo.js'
     );
     
     assert.equal(
-        resolve.sync('./foo.js', { path : dir }),
+        resolve.sync('./foo.js', { basedir : dir }),
         dir + '/foo.js'
     );
     
     assert.throws(function () {
-        resolve.sync('foo', { path : dir });
+        resolve.sync('foo', { basedir : dir });
     });
 };
 
@@ -23,7 +23,7 @@ exports.bar = function () {
     var dir = __dirname + '/resolver';
     
     assert.equal(
-        resolve.sync('foo', { path : dir + '/bar' }),
+        resolve.sync('foo', { basedir : dir + '/bar' }),
         dir + '/node_modules/foo/index.js'
     );
 };

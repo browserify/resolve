@@ -12,7 +12,9 @@ exports.sync = function (x, opts) {
     if (core[x]) return x;
     
     if (!opts) opts = {};
-    var y = opts.path || require.cache[__filename].parent.filename;
+    var y = opts.basedir
+        || path.dirname(require.cache[__filename].parent.filename)
+    ;
     
     if (x.match(/^(?:\.\.?\/|\/)/)) {
         var m = loadAsFileSync(path.resolve(y, x))

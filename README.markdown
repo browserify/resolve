@@ -12,12 +12,12 @@ methods
 
 var resolve = require('resolve');
 
-resolve.sync(pkg, opts={paths:[],path:__filename})
---------------------------------------------------
+resolve.sync(pkg, opts={paths:[],basedir:__dirname})
+----------------------------------------------------
 
 Synchronously search for the package/filename string `pkg`
 according to the [`require.resolve()`
 algorithm](http://nodejs.org/docs/v0.4.8/api/all.html#all_Together...)
-for `X=pkg` and `Y=opts.path`.
+for `X=pkg` and `Y=opts.basedir`.
 
-If nothing is found, all of the directories in `opts.path` are searched.
+If nothing is found, all of the directories in `opts.paths` are searched.
