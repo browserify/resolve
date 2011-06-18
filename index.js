@@ -3,10 +3,13 @@ var path = require('path');
 
 // http://nodejs.org/docs/v0.4.8/api/all.html#all_Together...
 
-var core = [ 'assert', 'buffer', 'child_process', 'crypto', 'dgram', 'dns',
-    'events', 'fs', 'http', 'https', 'net', 'os', 'path', 'querystring', 'repl',
-    'stream', 'sys', 'tls', 'tty', 'url', 'util', 'vm'
+var core = exports.core = [
+    'assert', 'buffer', 'child_process', 'crypto', 'dgram', 'dns', 'events',
+    'fs', 'http', 'https', 'net', 'os', 'path', 'querystring', 'repl', 'stream',
+    'sys', 'tls', 'tty', 'url', 'util', 'vm'
 ].reduce(function (acc, x) { acc[x] = true; return acc }, {});
+
+exports.isCore = function (x) { return core[x] };
 
 exports.sync = function (x, opts) {
     if (core[x]) return x;

@@ -21,3 +21,8 @@ algorithm](http://nodejs.org/docs/v0.4.8/api/all.html#all_Together...)
 for `X=pkg` and `Y=opts.basedir`.
 
 If nothing is found, all of the directories in `opts.paths` are searched.
+
+resolve.isCore(pkg)
+-------------------
+
+Return whether a package is in core.
