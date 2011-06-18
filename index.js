@@ -22,7 +22,7 @@ exports.sync = function (x, opts) {
         if (m) return m;
     }
     
-    var n = loadNodeModulesSync(x, path.dirname(y));
+    var n = loadNodeModulesSync(x, y);
     if (n) return n;
     
     throw new Error("Cannot find module '" + x + "'");

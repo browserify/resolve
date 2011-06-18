@@ -24,6 +24,6 @@ exports.bar = function () {
     
     assert.equal(
         resolve.sync('foo', { basedir : dir + '/bar' }),
-        dir + '/node_modules/foo/index.js'
+        dir + '/bar/node_modules/foo/index.js'
     );
 };
