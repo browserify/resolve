@@ -27,3 +27,12 @@ exports.bar = function () {
         dir + '/bar/node_modules/foo/index.js'
     );
 };
+
+exports.baz = function () {
+    var dir = __dirname + '/resolver';
+    
+    assert.equal(
+        resolve.sync('./baz', { basedir : dir }),
+        dir + '/baz/quux.js'
+    );
+};
