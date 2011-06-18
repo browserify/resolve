@@ -1,0 +1,37 @@
+{
+    "name" : "resolve",
+    "description" : "A more hookable require.resolve() implementation",
+    "version" : "0.0.0",
+    "repository" : {
+        "type" : "git",
+        "url" : "git://github.com/substack/node-resolve.git"
+    },
+    "main" : "index.js",
+    "keywords" : [
+        "resolve",
+        "require",
+        "node",
+        "module",
+    ],
+    "directories" : {
+        "lib" : ".",
+        "example" : "example",
+        "test" : "test"
+    },
+    "scripts" : {
+        "test" : "expresso"
+    },
+    "dependencies" : {},
+    "devDependencies" : {
+        "expresso" : "=0.7.x"
+    },
+    "engines" : {
+        "node" : ">=0.4.0"
+    },
+    "license" : "MIT",
+    "author" : {
+        "name" : "James Halliday",
+        "email" : "mail@substack.net",
+        "url" : "http://substack.net"
+    }
+}
