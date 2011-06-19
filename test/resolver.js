@@ -36,3 +36,21 @@ exports.baz = function () {
         dir + '/baz/quux.js'
     );
 };
+
+exports.biz = function () {
+    var dir = __dirname + '/resolver/biz/node_modules';
+    assert.equal(
+        resolve.sync('./grux', { basedir : dir }),
+        dir + '/grux/index.js'
+    );
+    
+    assert.equal(
+        resolve.sync('tiv', { basedir : dir + '/grux' }),
+        dir + '/tiv/index.js'
+    );
+    
+    assert.equal(
+        resolve.sync('grux', { basedir : dir + '/tiv' }),
+        dir + '/grux/index.js'
+    );
+};
