@@ -70,11 +70,9 @@ function loadNodeModulesSync (x, start) {
 
 function nodeModulesPathsSync (start) {
     var parts = start.split(/\/+/);
-    var root = parts.indexOf('node_modules');
-    if (root < 0) root = 0;
     
     var dirs = [];
-    for (var i = parts.length - 1; i >= root; i--) {
+    for (var i = parts.length - 1; i >= 0; i--) {
         if (parts[i] === 'node_modules') continue;
         var dir = parts.slice(0, i + 1).join('/') + '/node_modules';
         dirs.push(dir);
