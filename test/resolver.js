@@ -54,3 +54,11 @@ exports.biz = function () {
         dir + '/grux/index.js'
     );
 };
+
+exports.normalize = function () {
+    var dir = __dirname + '/resolver/biz/node_modules/grux';
+    assert.equal(
+        resolve.sync('../grux', { basedir : dir }),
+        dir + '/index.js'
+    );
+};
