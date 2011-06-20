@@ -15,6 +15,8 @@ exports.sync = function (x, opts) {
     if (core[x]) return x;
     
     if (!opts) opts = {};
+    
+    var extensions = opts.extensions || [ '.js' ];
     var y = opts.basedir
         || path.dirname(require.cache[__filename].parent.filename)
     ;
@@ -29,53 +31,57 @@ exports.sync = function (x, opts) {
     if (n) return n;
     
     throw new Error("Cannot find module '" + x + "'");
-}
-
-function loadAsFileSync (x) {
-    if (path.existsSync(x) && fs.statSync(x).isFile()) {
-        return x;
-    }
-    else if (path.existsSync(x + '.js') && fs.statSync(x + '.js').isFile()) {
-        return x + '.js';
-    }
-}
-
-function loadAsDirectorySync (x) {
-    var pkgfile = x + '/package.json';
-    if (path.existsSync(pkgfile) && fs.statSync(pkgfile).isFile()) {
-        var body = fs.readFileSync(pkgfile, 'utf8');
-        try {
-            var pkg = JSON.parse(body);
-            if (pkg.main) {
-                var m = loadAsFileSync(path.resolve(x, pkg.main));
-                if (m) return m;
+    
+    function loadAsFileSync (x) {
+        if (path.existsSync(x) && fs.statSync(x).isFile()) {
+            return x;
+        }
+        
+        for (var i = 0; i < extensions.length; i++) {
+            var file = x + extensions[i];
+            if (path.existsSync(file) && fs.statSync(file).isFile()) {
+                return file;
             }
         }
-        catch (err) {}
     }
     
-    return loadAsFileSync(x + '/index');
-}
-
-function loadNodeModulesSync (x, start) {
-    var dirs = nodeModulesPathsSync(start);
-    for (var i = 0; i < dirs.length; i++) {
-        var dir = dirs[i];
-        var m = loadAsFileSync(dir + '/' + x);
-        if (m) return m;
-        var n = loadAsDirectorySync(dir + '/' + x);
-        if (n) return n;
+    function loadAsDirectorySync (x) {
+        var pkgfile = x + '/package.json';
+        if (path.existsSync(pkgfile) && fs.statSync(pkgfile).isFile()) {
+            var body = fs.readFileSync(pkgfile, 'utf8');
+            try {
+                var pkg = JSON.parse(body);
+                if (pkg.main) {
+                    var m = loadAsFileSync(path.resolve(x, pkg.main));
+                    if (m) return m;
+                }
+            }
+            catch (err) {}
+        }
+        
+        return loadAsFileSync(x + '/index');
     }
-}
-
-function nodeModulesPathsSync (start) {
-    var parts = start.split(/\/+/);
     
-    var dirs = [];
-    for (var i = parts.length - 1; i >= 0; i--) {
-        if (parts[i] === 'node_modules') continue;
-        var dir = parts.slice(0, i + 1).join('/') + '/node_modules';
-        dirs.push(dir);
+    function loadNodeModulesSync (x, start) {
+        var dirs = nodeModulesPathsSync(start);
+        for (var i = 0; i < dirs.length; i++) {
+            var dir = dirs[i];
+            var m = loadAsFileSync(dir + '/' + x);
+            if (m) return m;
+            var n = loadAsDirectorySync(dir + '/' + x);
+            if (n) return n;
+        }
     }
-    return dirs;
-}
+    
+    function nodeModulesPathsSync (start) {
+        var parts = start.split(/\/+/);
+        
+        var dirs = [];
+        for (var i = parts.length - 1; i >= 0; i--) {
+            if (parts[i] === 'node_modules') continue;
+            var dir = parts.slice(0, i + 1).join('/') + '/node_modules';
+            dirs.push(dir);
+        }
+        return dirs;
+    }
+};
