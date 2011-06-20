@@ -62,3 +62,55 @@ exports.normalize = function () {
         dir + '/index.js'
     );
 };
+
+exports.cup = function () {
+    var dir = __dirname + '/resolver';
+    assert.equal(
+        resolve.sync('./cup', {
+            basedir : dir,
+            extensions : [ '.js', '.coffee' ]
+        }),
+        dir + '/cup.coffee'
+    );
+    
+    assert.equal(
+        resolve.sync('./cup.coffee', {
+            basedir : dir
+        }),
+        dir + '/cup.coffee'
+    );
+    
+    assert.throws(function () {
+        assert.equal(
+            resolve.sync('./cup', {
+                basedir : dir,
+                extensions : [ '.js' ]
+            }),
+            dir + '/cup.coffee'
+        );
+    });
+};
+
+exports.mug = function () {
+    var dir = __dirname + '/resolver';
+    assert.equal(
+        resolve.sync('./mug', { basedir : dir }),
+        dir + '/mug.js'
+    );
+    
+    assert.equal(
+        resolve.sync('./mug', {
+            basedir : dir,
+            extensions : [ '.coffee', '.js' ]
+        }),
+        dir + '/mug.coffee'
+    );
+    
+    assert.equal(
+        resolve.sync('./mug', {
+            basedir : dir,
+            extensions : [ '.js', '.coffee' ]
+        }),
+        dir + '/mug.js'
+    );
+};
