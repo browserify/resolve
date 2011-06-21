@@ -51,6 +51,10 @@ exports.sync = function (x, opts) {
             var body = fs.readFileSync(pkgfile, 'utf8');
             try {
                 var pkg = JSON.parse(body);
+                if (opts.packageFilter) {
+                    pkg = opts.packageFilter(pkg);
+                }
+                
                 if (pkg.main) {
                     var m = loadAsFileSync(path.resolve(x, pkg.main));
                     if (m) return m;
