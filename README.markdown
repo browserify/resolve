@@ -23,8 +23,15 @@ for `X=pkg` and `Y=opts.basedir`.
 Default values for `opts`:
 
 ````javascript
-{ paths : [], basedir : __dirname, extensions : [ '.js' ] }
+{
+    paths : [],
+    basedir : __dirname,
+    extensions : [ '.js' ],
+}
 ````
+
+Optionally you can specify a `opts.packageFilter` function to map the contents
+of `JSON.parse()`'d package.json files.
 
 If nothing is found, all of the directories in `opts.paths` are searched.
 
