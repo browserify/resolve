@@ -15,6 +15,10 @@ exports.sync = function (x, opts) {
     if (core[x]) return x;
     
     if (!opts) opts = {};
+    var isFile = opts.isFile || function (file) {
+        return path.existsSync(file) && fs.statSync(file).isFile()
+    };
+    var readFileSync = opts.readFileSync || fs.readFileSync;
     
     var extensions = opts.extensions || [ '.js' ];
     var y = opts.basedir
@@ -33,13 +37,13 @@ exports.sync = function (x, opts) {
     throw new Error("Cannot find module '" + x + "'");
     
     function loadAsFileSync (x) {
-        if (path.existsSync(x) && fs.statSync(x).isFile()) {
+        if (isFile(x)) {
             return x;
         }
         
         for (var i = 0; i < extensions.length; i++) {
             var file = x + extensions[i];
-            if (path.existsSync(file) && fs.statSync(file).isFile()) {
+            if (isFile(file)) {
                 return file;
             }
         }
@@ -47,8 +51,8 @@ exports.sync = function (x, opts) {
     
     function loadAsDirectorySync (x) {
         var pkgfile = x + '/package.json';
-        if (path.existsSync(pkgfile) && fs.statSync(pkgfile).isFile()) {
-            var body = fs.readFileSync(pkgfile, 'utf8');
+        if (isFile(pkgfile)) {
+            var body = readFileSync(pkgfile, 'utf8');
             try {
                 var pkg = JSON.parse(body);
                 if (opts.packageFilter) {
