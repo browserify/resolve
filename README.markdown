@@ -27,6 +27,10 @@ Default values for `opts`:
     paths : [],
     basedir : __dirname,
     extensions : [ '.js' ],
+    readFileSync : fs.readFileSync,
+    isFile : function (file) {
+        return path.existSync(file) && fs.statSync(file).isFile()
+    }
 }
 ````
 
