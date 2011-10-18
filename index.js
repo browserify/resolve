@@ -25,7 +25,7 @@ exports.sync = function (x, opts) {
         || path.dirname(require.cache[__filename].parent.filename)
     ;
     
-    if (x.match(/^(?:\.\.?\/|\/)/)) {
+    if (x.match(/^(?:\.\.?\/|\/|([A-Za-z]:)?\\)/)) {
         var m = loadAsFileSync(path.resolve(y, x))
             || loadAsDirectorySync(path.resolve(y, x));
         if (m) return m;
