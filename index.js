@@ -24,7 +24,9 @@ exports.sync = function (x, opts) {
     var y = opts.basedir
         || path.dirname(require.cache[__filename].parent.filename)
     ;
-    
+
+    opts.paths = opts.paths || [];
+
     if (x.match(/^(?:\.\.?\/|\/|([A-Za-z]:)?\\)/)) {
         var m = loadAsFileSync(path.resolve(y, x))
             || loadAsDirectorySync(path.resolve(y, x));
@@ -90,6 +92,6 @@ exports.sync = function (x, opts) {
             var dir = parts.slice(0, i + 1).join('/') + '/node_modules';
             dirs.push(dir);
         }
-        return dirs;
+        return opts.paths.concat(dirs);
     }
 };
