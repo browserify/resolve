@@ -114,3 +114,35 @@ exports.mug = function () {
         dir + '/mug.js'
     );
 };
+
+exports.other_path = function () {
+    var resolverDir = __dirname + '/resolver';
+    var dir = resolverDir + '/bar';
+    var otherDir = resolverDir + '/other_path';
+
+    var path = require('path');
+    
+    assert.equal(
+        resolve.sync('root', {
+            basedir : dir,
+            paths: [otherDir] }),
+        resolverDir + '/other_path/root.js'
+    );
+    
+    assert.equal(
+        resolve.sync('lib/other-lib', {
+            basedir : dir,
+            paths: [otherDir] }),
+        resolverDir + '/other_path/lib/other-lib.js'
+    );
+
+    assert.throws(function () {
+        resolve.sync('root', { basedir : dir, });
+    });
+    
+    assert.throws(function () {
+        resolve.sync('zzz', {
+            basedir : dir,
+            paths: [otherDir] });
+    });
+};
