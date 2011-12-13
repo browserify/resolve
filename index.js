@@ -5,7 +5,7 @@ var path = require('path');
 
 var core = exports.core = [
     'assert', 'buffer', 'child_process', 'crypto', 'dgram', 'dns', 'events',
-    'fs', 'http', 'https', 'net', 'os', 'path', 'querystring', 'repl', 'stream',
+    'fs', 'http', 'https', 'net', 'os', 'path', 'querystring', 'readline', 'repl', 'stream',
     'sys', 'tls', 'tty', 'url', 'util', 'vm'
 ].reduce(function (acc, x) { acc[x] = true; return acc }, {});
 
