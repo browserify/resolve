@@ -85,7 +85,8 @@ exports.sync = function (x, opts) {
     }
     
     function nodeModulesPathsSync (start) {
-        var parts = start.split(/\/+/);
+        var splitRe = process.platform === 'win32' ? /[\/\\]/ : /\//;
+        var parts = start.split(splitRe);
         
         var dirs = [];
         for (var i = parts.length - 1; i >= 0; i--) {
