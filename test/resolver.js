@@ -1,71 +1,77 @@
-var assert = require('assert');
+var test = require('tap').test;
 var resolve = require('../');
 
-exports.foo = function () {
+test('foo', function (t) {
     var dir = __dirname + '/resolver';
     
-    assert.equal(
+    t.equal(
         resolve.sync('./foo', { basedir : dir }),
         dir + '/foo.js'
     );
     
-    assert.equal(
+    t.equal(
         resolve.sync('./foo.js', { basedir : dir }),
         dir + '/foo.js'
     );
     
-    assert.throws(function () {
+    t.throws(function () {
         resolve.sync('foo', { basedir : dir });
     });
-};
+    
+    t.end();
+});
 
-exports.bar = function () {
+test('bar', function (t) {
     var dir = __dirname + '/resolver';
     
-    assert.equal(
+    t.equal(
         resolve.sync('foo', { basedir : dir + '/bar' }),
         dir + '/bar/node_modules/foo/index.js'
     );
-};
+    t.end();
+});
 
-exports.baz = function () {
+test('baz', function (t) {
     var dir = __dirname + '/resolver';
     
-    assert.equal(
+    t.equal(
         resolve.sync('./baz', { basedir : dir }),
         dir + '/baz/quux.js'
     );
-};
+    t.end();
+});
 
-exports.biz = function () {
+test('biz', function (t) {
     var dir = __dirname + '/resolver/biz/node_modules';
-    assert.equal(
+    t.equal(
         resolve.sync('./grux', { basedir : dir }),
         dir + '/grux/index.js'
     );
     
-    assert.equal(
+    t.equal(
         resolve.sync('tiv', { basedir : dir + '/grux' }),
         dir + '/tiv/index.js'
     );
     
-    assert.equal(
+    t.equal(
         resolve.sync('grux', { basedir : dir + '/tiv' }),
         dir + '/grux/index.js'
     );
-};
+    t.end();
+});
 
-exports.normalize = function () {
+test('normalize', function (t) {
     var dir = __dirname + '/resolver/biz/node_modules/grux';
-    assert.equal(
+    t.equal(
         resolve.sync('../grux', { basedir : dir }),
         dir + '/index.js'
     );
-};
+    t.end();
+});
 
-exports.cup = function () {
+test('cup', function (t) {
     var dir = __dirname + '/resolver';
-    assert.equal(
+    t.equal(
         resolve.sync('./cup', {
             basedir : dir,
             extensions : [ '.js', '.coffee' ]
@@ -73,32 +79,31 @@ exports.cup = function () {
         dir + '/cup.coffee'
     );
     
-    assert.equal(
+    t.equal(
         resolve.sync('./cup.coffee', {
             basedir : dir
         }),
         dir + '/cup.coffee'
     );
     
-    assert.throws(function () {
-        assert.equal(
-            resolve.sync('./cup', {
-                basedir : dir,
-                extensions : [ '.js' ]
-            }),
-            dir + '/cup.coffee'
-        );
+    t.throws(function () {
+        resolve.sync('./cup', {
+            basedir : dir,
+            extensions : [ '.js' ]
+        })
     });
-};
+    
+    t.end();
+});
 
-exports.mug = function () {
+test('mug', function (t) {
     var dir = __dirname + '/resolver';
-    assert.equal(
+    t.equal(
         resolve.sync('./mug', { basedir : dir }),
         dir + '/mug.js'
     );
     
-    assert.equal(
+    t.equal(
         resolve.sync('./mug', {
             basedir : dir,
             extensions : [ '.coffee', '.js' ]
@@ -106,43 +111,47 @@ exports.mug = function () {
         dir + '/mug.coffee'
     );
     
-    assert.equal(
+    t.equal(
         resolve.sync('./mug', {
             basedir : dir,
             extensions : [ '.js', '.coffee' ]
         }),
         dir + '/mug.js'
     );
-};
+    
+    t.end();
+});
 
-exports.other_path = function () {
+test('other path', function (t) {
     var resolverDir = __dirname + '/resolver';
     var dir = resolverDir + '/bar';
     var otherDir = resolverDir + '/other_path';
 
     var path = require('path');
     
-    assert.equal(
+    t.equal(
         resolve.sync('root', {
             basedir : dir,
             paths: [otherDir] }),
         resolverDir + '/other_path/root.js'
     );
     
-    assert.equal(
+    t.equal(
         resolve.sync('lib/other-lib', {
             basedir : dir,
             paths: [otherDir] }),
         resolverDir + '/other_path/lib/other-lib.js'
     );
 
-    assert.throws(function () {
+    t.throws(function () {
         resolve.sync('root', { basedir : dir, });
     });
     
-    assert.throws(function () {
+    t.throws(function () {
         resolve.sync('zzz', {
             basedir : dir,
             paths: [otherDir] });
     });
-};
+    
+    t.end();
+});

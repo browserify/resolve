@@ -19,11 +19,11 @@
         "test" : "test"
     },
     "scripts" : {
-        "test" : "expresso"
+        "test" : "tap test/*.js"
     },
     "dependencies" : {},
     "devDependencies" : {
-        "expresso" : "0.7.x"
+        "tap" : "~0.2.4"
     },
     "engines" : {
         "node" : ">=0.4.0"

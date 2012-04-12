@@ -1,7 +1,9 @@
-var assert = require('assert');
+var test = require('tap').test;
 var resolve = require('../');
 
-exports.mock = function () {
+test('mock', function (t) {
+    t.plan(3);
+    
     var files = {
         '/foo/bar/baz.js' : 'beep'
     };
@@ -18,22 +20,24 @@ exports.mock = function () {
         }
     }
     
-    assert.equal(
+    t.equal(
         resolve.sync('./baz', opts('/foo/bar')),
         '/foo/bar/baz.js'
     );
     
-    assert.equal(
+    t.equal(
         resolve.sync('./baz.js', opts('/foo/bar')),
         '/foo/bar/baz.js'
     );
     
-    assert.throws(function () {
+    t.throws(function () {
         resolve.sync('baz', opts('/foo/bar'));
     });
-};
+});
 
-exports.mockPackage = function () {
+test('mock package', function (t) {
+    t.plan(1);
+    
     var files = {
         '/foo/node_modules/bar/baz.js' : 'beep',
         '/foo/node_modules/bar/package.json' : JSON.stringify({
@@ -53,8 +57,8 @@ exports.mockPackage = function () {
         }
     }
     
-    assert.equal(
+    t.equal(
         resolve.sync('bar', opts('/foo')),
         '/foo/node_modules/bar/baz.js'
     );
-};
+});

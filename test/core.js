@@ -1,11 +1,12 @@
-var assert = require('assert');
+var test = require('tap').test;
 var resolve = require('../');
 
-exports.core = function () {
-    assert.ok(resolve.isCore('fs'));
-    assert.ok(resolve.isCore('net'));
-    assert.ok(resolve.isCore('http'));
+test('core modules', function (t) {
+    t.ok(resolve.isCore('fs'));
+    t.ok(resolve.isCore('net'));
+    t.ok(resolve.isCore('http'));
     
-    assert.ok(!resolve.isCore('seq'));
-    assert.ok(!resolve.isCore('../'));
-};
+    t.ok(!resolve.isCore('seq'));
+    t.ok(!resolve.isCore('../'));
+    t.end();
+});
