@@ -7,6 +7,8 @@ except you can pass in the file to compute paths relatively to along with your
 own `require.paths` without updating the global copy (which doesn't even work in
 node `>=0.5`).
 
+[![build status](https://secure.travis-ci.org/substack/node-resolve.png)](http://travis-ci.org/substack/node-resolve)
+
 methods
 =======
 
