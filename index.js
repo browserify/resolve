@@ -53,7 +53,7 @@ exports.sync = function (x, opts) {
     }
     
     function loadAsDirectorySync (x) {
-        var pkgfile = x + '/package.json';
+        var pkgfile = path.join( x, '/package.json' );
         if (isFile(pkgfile)) {
             var body = readFileSync(pkgfile, 'utf8');
             try {
@@ -70,16 +70,16 @@ exports.sync = function (x, opts) {
             catch (err) {}
         }
         
-        return loadAsFileSync(x + '/index');
+        return loadAsFileSync( path.join( x, '/index' ) );
     }
     
     function loadNodeModulesSync (x, start) {
         var dirs = nodeModulesPathsSync(start);
         for (var i = 0; i < dirs.length; i++) {
             var dir = dirs[i];
-            var m = loadAsFileSync(dir + '/' + x);
+            var m = loadAsFileSync( path.join( dir, '/', x) );
             if (m) return m;
-            var n = loadAsDirectorySync(dir + '/' + x);
+            var n = loadAsDirectorySync( path.join( dir, '/', x ) );
             if (n) return n;
         }
     }
@@ -91,7 +91,10 @@ exports.sync = function (x, opts) {
         var dirs = [];
         for (var i = parts.length - 1; i >= 0; i--) {
             if (parts[i] === 'node_modules') continue;
-            var dir = parts.slice(0, i + 1).join('/') + '/node_modules';
+	    var dir = path.join(path.join.apply(path, parts.slice(0, i + 1)), 'node_modules');
+	    if( !parts[0].match(/([A-Za-z]:)/) ) {
+		dir = '/' + dir;    
+	    }
             dirs.push(dir);
         }
         return opts.paths.concat(dirs);
