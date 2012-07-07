@@ -17,7 +17,7 @@ exports.sync = function (x, opts) {
     
     if (!opts) opts = {};
     var isFile = opts.isFile || function (file) {
-        return path.existsSync(file) && fs.statSync(file).isFile()
+        return fs.existsSync(file) && fs.statSync(file).isFile()
     };
     var readFileSync = opts.readFileSync || fs.readFileSync;
     
