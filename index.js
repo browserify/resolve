@@ -1,5 +1,6 @@
 var fs = require('fs');
 var path = require('path');
+var existsSync = fs.existsSync || path.existsSync;
 
 // taken from `ls -1 lib` in node 0.6.11
 var core = exports.core = [
@@ -17,7 +18,7 @@ exports.sync = function (x, opts) {
     
     if (!opts) opts = {};
     var isFile = opts.isFile || function (file) {
-        return path.existsSync(file) && fs.statSync(file).isFile()
+        return existsSync(file) && fs.statSync(file).isFile()
     };
     var readFileSync = opts.readFileSync || fs.readFileSync;
     
