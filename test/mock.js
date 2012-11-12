@@ -2,7 +2,7 @@ var test = require('tap').test;
 var resolve = require('../');
 
 test('mock', function (t) {
-    t.plan(3);
+    t.plan(4);
     
     var files = {
         '/foo/bar/baz.js' : 'beep'
@@ -32,6 +32,10 @@ test('mock', function (t) {
     
     t.throws(function () {
         resolve.sync('baz', opts('/foo/bar'));
+    });
+
+    t.throws(function () {
+        resolve.sync('../baz', opts('/foo/bar'));
     });
 });
 

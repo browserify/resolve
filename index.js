@@ -33,10 +33,10 @@ exports.sync = function (x, opts) {
         var m = loadAsFileSync(path.resolve(y, x))
             || loadAsDirectorySync(path.resolve(y, x));
         if (m) return m;
+    } else {
+        var n = loadNodeModulesSync(x, y);
+        if (n) return n;
     }
-    
-    var n = loadNodeModulesSync(x, y);
-    if (n) return n;
     
     throw new Error("Cannot find module '" + x + "'");
     
