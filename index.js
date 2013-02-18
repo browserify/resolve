@@ -1,17 +1,12 @@
 var fs = require('fs');
 var path = require('path');
 var existsSync = fs.existsSync || path.existsSync;
+var core = require('./lib/core');
 
-// taken from `ls -1 lib` in node 0.6.11
-var core = exports.core = [
-    'assert', 'buffer_ieee754', 'buffer', 'child_process', 'cluster', 'console',
-    'constants', 'crypto', '_debugger', 'dgram', 'dns', 'domain', 'events',
-    'freelist', 'fs', 'http', 'https', '_linklist', 'module', 'net', 'os',
-    'path', 'punycode', 'querystring', 'readline', 'repl', 'stream',
-    'string_decoder', 'sys', 'timers', 'tls', 'tty', 'url', 'util', 'vm',
-    'zlib'
-].reduce(function (acc, x) { acc[x] = true; return acc }, {});
+exports = module.exports = function () {
+};
 
+exports.core = core;
 exports.isCore = function (x) { return core[x] };
 
 exports.sync = function (x, opts) {
