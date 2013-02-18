@@ -5,10 +5,11 @@ var existsSync = fs.existsSync || path.existsSync;
 // taken from `ls -1 lib` in node 0.6.11
 var core = exports.core = [
     'assert', 'buffer_ieee754', 'buffer', 'child_process', 'cluster', 'console',
-    'constants', 'crypto', '_debugger', 'dgram', 'dns', 'events', 'freelist',
-    'fs', 'http', 'https', '_linklist', 'module', 'net', 'os', 'path',
-    'punycode', 'querystring', 'readline', 'repl', 'stream', 'string_decoder',
-    'sys', 'timers', 'tls', 'tty', 'url', 'util', 'vm', 'zlib'
+    'constants', 'crypto', '_debugger', 'dgram', 'dns', 'domain', 'events',
+    'freelist', 'fs', 'http', 'https', '_linklist', 'module', 'net', 'os',
+    'path', 'punycode', 'querystring', 'readline', 'repl', 'stream',
+    'string_decoder', 'sys', 'timers', 'tls', 'tty', 'url', 'util', 'vm',
+    'zlib'
 ].reduce(function (acc, x) { acc[x] = true; return acc }, {});
 
 exports.isCore = function (x) { return core[x] };
