@@ -60,7 +60,7 @@ exports.sync = function (x, opts) {
             try {
                 var pkg = JSON.parse(body);
                 if (opts.packageFilter) {
-                    pkg = opts.packageFilter(pkg);
+                    pkg = opts.packageFilter(pkg, x);
                 }
                 
                 if (pkg.main) {
