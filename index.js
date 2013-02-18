@@ -66,6 +66,8 @@ exports.sync = function (x, opts) {
                 if (pkg.main) {
                     var m = loadAsFileSync(path.resolve(x, pkg.main));
                     if (m) return m;
+                    var n = loadAsDirectorySync(path.resolve(x, pkg.main));
+                    if (n) return n;
                 }
             }
             catch (err) {}
