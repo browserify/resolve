@@ -101,6 +101,6 @@ exports.sync = function (x, opts) {
             }
             dirs.push(dir);
         }
-        return opts.paths.concat(dirs);
+        return dirs.concat(opts.paths);
     }
 };
