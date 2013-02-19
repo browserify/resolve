@@ -7,6 +7,16 @@ synchronously
 
 [![build status](https://secure.travis-ci.org/substack/node-resolve.png)](http://travis-ci.org/substack/node-resolve)
 
+# example
+
+``` js
+var resolve = require('resolve');
+resolve('tap', { basedir: __dirname }, function (err, res) {
+    if (err) console.error(err)
+    else console.log(res)
+});
+```
+
 # methods
 
 ``` js
