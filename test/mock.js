@@ -11,31 +11,31 @@ test('mock', function (t) {
     function opts (basedir) {
         return {
             basedir : basedir,
-            isFile : function (file) {
-                return files.hasOwnProperty(file)
+            isFile : function (file, cb) {
+                cb(null, files.hasOwnProperty(file));
             },
-            readFileSync : function (file) {
-                return files[file]
+            readFile : function (file, cb) {
+                cb(null, files[file]);
             }
         }
     }
     
-    t.equal(
-        resolve.sync('./baz', opts('/foo/bar')),
-        '/foo/bar/baz.js'
-    );
-    
-    t.equal(
-        resolve.sync('./baz.js', opts('/foo/bar')),
-        '/foo/bar/baz.js'
-    );
-    
-    t.throws(function () {
-        resolve.sync('baz', opts('/foo/bar'));
+    resolve('./baz', opts('/foo/bar'), function (err, res) {
+        if (err) t.fail(err);
+        t.equal(res, '/foo/bar/baz.js');
     });
-
-    t.throws(function () {
-        resolve.sync('../baz', opts('/foo/bar'));
+    
+    resolve('./baz.js', opts('/foo/bar'), function (err, res) {
+        if (err) t.fail(err);
+        t.equal(res, '/foo/bar/baz.js');
+    });
+    
+    resolve('baz', opts('/foo/bar'), function (err, res) {
+        t.equal(err.message, "Cannot find module 'baz'");
+    });
+    
+    resolve('../baz', opts('/foo/bar'), function (err, res) {
+        t.equal(err.message, "Cannot find module '../baz'");
     });
 });
 
@@ -52,17 +52,17 @@ test('mock package', function (t) {
     function opts (basedir) {
         return {
             basedir : basedir,
-            isFile : function (file) {
-                return files.hasOwnProperty(file)
+            isFile : function (file, cb) {
+                cb(null, files.hasOwnProperty(file));
             },
-            readFileSync : function (file) {
-                return files[file]
+            readFile : function (file, cb) {
+                cb(null, files[file]);
             }
         }
     }
     
-    t.equal(
-        resolve.sync('bar', opts('/foo')),
-        '/foo/node_modules/bar/baz.js'
-    );
+    resolve('bar', opts('/foo'), function (err, res) {
+        if (err) t.fail(err);
+        t.equal(res, '/foo/node_modules/bar/baz.js');
+    });
 });

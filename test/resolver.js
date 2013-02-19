@@ -1,157 +1,144 @@
 var test = require('tap').test;
 var resolve = require('../');
 
-test('foo', function (t) {
+test('async foo', function (t) {
+    t.plan(3);
     var dir = __dirname + '/resolver';
     
-    t.equal(
-        resolve.sync('./foo', { basedir : dir }),
-        dir + '/foo.js'
-    );
-    
-    t.equal(
-        resolve.sync('./foo.js', { basedir : dir }),
-        dir + '/foo.js'
-    );
-    
-    t.throws(function () {
-        resolve.sync('foo', { basedir : dir });
+    resolve('./foo', { basedir : dir }, function (err, res) {
+        if (err) t.fail(err);
+        t.equal(res, dir + '/foo.js');
     });
     
-    t.end();
+    resolve('./foo.js', { basedir : dir }, function (err, res) {
+        if (err) t.fail(err);
+        t.equal(res, dir + '/foo.js');
+    });
+    
+    resolve('foo', { basedir : dir }, function (err) {
+        t.equal(err.message, "Cannot find module 'foo'");
+    });
 });
 
 test('bar', function (t) {
+    t.plan(2);
     var dir = __dirname + '/resolver';
     
-    t.equal(
-        resolve.sync('foo', { basedir : dir + '/bar' }),
-        dir + '/bar/node_modules/foo/index.js'
-    );
-    t.end();
+    resolve('foo', { basedir : dir + '/bar' }, function (err, res) {
+        if (err) t.fail(err);
+        t.equal(res, dir + '/bar/node_modules/foo/index.js');
+    });
+    
+    resolve('foo', { basedir : dir + '/bar' }, function (err, res) {
+        if (err) t.fail(err);
+        t.equal(res, dir + '/bar/node_modules/foo/index.js');
+    });
 });
 
 test('baz', function (t) {
+    t.plan(1);
     var dir = __dirname + '/resolver';
     
-    t.equal(
-        resolve.sync('./baz', { basedir : dir }),
-        dir + '/baz/quux.js'
-    );
-    t.end();
+    resolve('./baz', { basedir : dir }, function (err, res) {
+        if (err) t.fail(err);
+        t.equal(res, dir + '/baz/quux.js');
+    });
 });
 
 test('biz', function (t) {
+    t.plan(3);
     var dir = __dirname + '/resolver/biz/node_modules';
-    t.equal(
-        resolve.sync('./grux', { basedir : dir }),
-        dir + '/grux/index.js'
-    );
     
-    t.equal(
-        resolve.sync('tiv', { basedir : dir + '/grux' }),
-        dir + '/tiv/index.js'
-    );
+    resolve('./grux', { basedir : dir }, function (err, res) {
+        if (err) t.fail(err);
+        t.equal(res, dir + '/grux/index.js');
+    });
     
-    t.equal(
-        resolve.sync('grux', { basedir : dir + '/tiv' }),
-        dir + '/grux/index.js'
-    );
-    t.end();
+    resolve('tiv', { basedir : dir + '/grux' }, function (err, res) {
+        if (err) t.fail(err);
+        t.equal(res, dir + '/tiv/index.js');
+    });
+    
+    resolve('grux', { basedir : dir + '/tiv' }, function (err, res) {
+        if (err) t.fail(err);
+        t.equal(res, dir + '/grux/index.js');
+    });
 });
 
 test('normalize', function (t) {
+    t.plan(1);
     var dir = __dirname + '/resolver/biz/node_modules/grux';
-    t.equal(
-        resolve.sync('../grux', { basedir : dir }),
-        dir + '/index.js'
-    );
-    t.end();
+    
+    resolve('../grux', { basedir : dir }, function (err, res) {
+        if (err) t.fail(err);
+        t.equal(res, dir + '/index.js');
+    });
 });
 
 test('cup', function (t) {
+    t.plan(3);
     var dir = __dirname + '/resolver';
-    t.equal(
-        resolve.sync('./cup', {
-            basedir : dir,
-            extensions : [ '.js', '.coffee' ]
-        }),
-        dir + '/cup.coffee'
-    );
     
-    t.equal(
-        resolve.sync('./cup.coffee', {
-            basedir : dir
-        }),
-        dir + '/cup.coffee'
-    );
-    
-    t.throws(function () {
-        resolve.sync('./cup', {
-            basedir : dir,
-            extensions : [ '.js' ]
-        })
+    resolve('./cup', { basedir : dir, extensions : [ '.js', '.coffee' ] },
+    function (err, res) {
+        if (err) t.fail(err);
+        t.equal(res, dir + '/cup.coffee');
     });
     
-    t.end();
+    resolve('./cup.coffee', { basedir : dir }, function (err, res) {
+        if (err) t.fail(err);
+        t.equal(res, dir + '/cup.coffee');
+    });
+    
+    resolve('./cup', { basedir : dir, extensions : [ '.js' ] },
+    function (err, res) {
+        t.equal(err.message, "Cannot find module './cup'");
+    });
 });
 
 test('mug', function (t) {
+    t.plan(3);
     var dir = __dirname + '/resolver';
-    t.equal(
-        resolve.sync('./mug', { basedir : dir }),
-        dir + '/mug.js'
-    );
     
-    t.equal(
-        resolve.sync('./mug', {
-            basedir : dir,
-            extensions : [ '.coffee', '.js' ]
-        }),
-        dir + '/mug.coffee'
-    );
+    resolve('./mug', { basedir : dir }, function (err, res) {
+        if (err) t.fail(err);
+        t.equal(res, dir + '/mug.js');
+    });
     
-    t.equal(
-        resolve.sync('./mug', {
-            basedir : dir,
-            extensions : [ '.js', '.coffee' ]
-        }),
-        dir + '/mug.js'
-    );
+    resolve('./mug', { basedir : dir, extensions : [ '.coffee', '.js' ] },
+    function (err, res) {
+        if (err) t.fail(err);
+        t.equal(res, dir + '/mug.coffee');
+    });
     
-    t.end();
+    resolve('./mug', { basedir : dir, extensions : [ '.js', '.coffee' ] },
+    function (err, res) {
+        t.equal(res, dir + '/mug.js');
+    });
 });
 
 test('other path', function (t) {
+    t.plan(4);
     var resolverDir = __dirname + '/resolver';
     var dir = resolverDir + '/bar';
     var otherDir = resolverDir + '/other_path';
-
-    var path = require('path');
     
-    t.equal(
-        resolve.sync('root', {
-            basedir : dir,
-            paths: [otherDir] }),
-        resolverDir + '/other_path/root.js'
-    );
-    
-    t.equal(
-        resolve.sync('lib/other-lib', {
-            basedir : dir,
-            paths: [otherDir] }),
-        resolverDir + '/other_path/lib/other-lib.js'
-    );
-
-    t.throws(function () {
-        resolve.sync('root', { basedir : dir, });
+    resolve('root', { basedir : dir, paths: [otherDir] }, function (err, res) {
+        if (err) t.fail(err);
+        t.equal(res, resolverDir + '/other_path/root.js');
     });
     
-    t.throws(function () {
-        resolve.sync('zzz', {
-            basedir : dir,
-            paths: [otherDir] });
+    resolve('lib/other-lib', { basedir : dir, paths: [otherDir] },
+    function (err, res) {
+        if (err) t.fail(err);
+        t.equal(res, resolverDir + '/other_path/lib/other-lib.js');
     });
     
-    t.end();
+    resolve('root', { basedir : dir, }, function (err, res) {
+        t.equal(err.message, "Cannot find module 'root'");
+    });
+    
+    resolve('zzz', { basedir : dir, paths: [otherDir] }, function (err, res) {
+        t.equal(err.message, "Cannot find module 'zzz'");
+    });
 });
