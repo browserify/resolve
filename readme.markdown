@@ -51,6 +51,8 @@ options are:
 
 * opts.basedir - directory to begin resolving from
 
+* opts.package - package from which module is being loaded
+
 * opts.extensions - array of file extensions to search in order
 
 * opts.readFile - how to read files asynchronously
