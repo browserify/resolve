@@ -2,7 +2,7 @@ var test = require('tap').test;
 var resolve = require('../');
 
 test('filter', function (t) {
-    t.plan(1);
+    t.plan(2);
     var dir = __dirname + '/resolver';
     resolve('./baz', {
         basedir : dir,
@@ -10,8 +10,9 @@ test('filter', function (t) {
             pkg.main = 'doom';
             return pkg;
         }
-    }, function (err, res) {
+    }, function (err, res, pkg) {
         if (err) t.fail(err);
         t.equal(res, dir + '/baz/doom.js');
+        t.equal(pkg.main, 'doom');
     });
 });
