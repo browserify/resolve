@@ -2,17 +2,31 @@ var test = require('tap').test;
 var resolve = require('../');
 
 test('async foo', function (t) {
-    t.plan(3);
+    t.plan(9);
     var dir = __dirname + '/resolver';
     
-    resolve('./foo', { basedir : dir }, function (err, res) {
+    resolve('./foo', { basedir : dir }, function (err, res, pkg) {
         if (err) t.fail(err);
         t.equal(res, dir + '/foo.js');
+        t.equal(pkg, undefined);
     });
     
-    resolve('./foo.js', { basedir : dir }, function (err, res) {
+    resolve('./foo.js', { basedir : dir }, function (err, res, pkg) {
         if (err) t.fail(err);
         t.equal(res, dir + '/foo.js');
+        t.equal(pkg, undefined);
+    });
+    
+    resolve('./foo', { basedir : dir, package: { main: 'resolver' } }, function (err, res, pkg) {
+        if (err) t.fail(err);
+        t.equal(res, dir + '/foo.js');
+        t.equal(pkg.main, 'resolver');
+    });
+    
+    resolve('./foo.js', { basedir : dir, package: { main: 'resolver' } }, function (err, res, pkg) {
+        if (err) t.fail(err);
+        t.equal(res, dir + '/foo.js');
+        t.equal(pkg.main, 'resolver');
     });
     
     resolve('foo', { basedir : dir }, function (err) {
@@ -21,57 +35,105 @@ test('async foo', function (t) {
 });
 
 test('bar', function (t) {
-    t.plan(2);
+    t.plan(6);
     var dir = __dirname + '/resolver';
     
-    resolve('foo', { basedir : dir + '/bar' }, function (err, res) {
+    resolve('foo', { basedir : dir + '/bar' }, function (err, res, pkg) {
         if (err) t.fail(err);
         t.equal(res, dir + '/bar/node_modules/foo/index.js');
+        t.equal(pkg, undefined);
     });
     
-    resolve('foo', { basedir : dir + '/bar' }, function (err, res) {
+    resolve('foo', { basedir : dir + '/bar' }, function (err, res, pkg) {
         if (err) t.fail(err);
         t.equal(res, dir + '/bar/node_modules/foo/index.js');
+        t.equal(pkg, undefined);
+    });
+    
+    resolve('foo', { basedir : dir + '/bar', package: { main: 'bar' } }, function (err, res, pkg) {
+        if (err) t.fail(err);
+        t.equal(res, dir + '/bar/node_modules/foo/index.js');
+        t.equal(pkg, undefined);
     });
 });
 
 test('baz', function (t) {
-    t.plan(1);
+    t.plan(4);
     var dir = __dirname + '/resolver';
     
-    resolve('./baz', { basedir : dir }, function (err, res) {
+    resolve('./baz', { basedir : dir }, function (err, res, pkg) {
         if (err) t.fail(err);
         t.equal(res, dir + '/baz/quux.js');
+        t.equal(pkg.main, 'quux.js');
+    });
+    
+    resolve('./baz', { basedir : dir, package: { main: 'resolver' } }, function (err, res, pkg) {
+        if (err) t.fail(err);
+        t.equal(res, dir + '/baz/quux.js');
+        t.equal(pkg.main, 'quux.js');
     });
 });
 
 test('biz', function (t) {
-    t.plan(3);
+    t.plan(12);
     var dir = __dirname + '/resolver/biz/node_modules';
     
-    resolve('./grux', { basedir : dir }, function (err, res) {
+    resolve('./grux', { basedir : dir }, function (err, res, pkg) {
         if (err) t.fail(err);
         t.equal(res, dir + '/grux/index.js');
+        t.equal(pkg, undefined);
     });
     
-    resolve('tiv', { basedir : dir + '/grux' }, function (err, res) {
+    resolve('./grux', { basedir : dir, package: { main: 'biz' } }, function (err, res, pkg) {
+        if (err) t.fail(err);
+        t.equal(res, dir + '/grux/index.js');
+        t.equal(pkg.main, 'biz');
+    });
+    
+    resolve('tiv', { basedir : dir + '/grux' }, function (err, res, pkg) {
         if (err) t.fail(err);
         t.equal(res, dir + '/tiv/index.js');
+        t.equal(pkg, undefined);
     });
     
-    resolve('grux', { basedir : dir + '/tiv' }, function (err, res) {
+    resolve('tiv', { basedir : dir + '/grux', package: { main: 'grux' } }, function (err, res, pkg) {
+        if (err) t.fail(err);
+        t.equal(res, dir + '/tiv/index.js');
+        t.equal(pkg, undefined);
+    });
+    
+    resolve('grux', { basedir : dir + '/tiv' }, function (err, res, pkg) {
         if (err) t.fail(err);
         t.equal(res, dir + '/grux/index.js');
+        t.equal(pkg, undefined);
+    });
+    
+    resolve('grux', { basedir : dir + '/tiv', package: { main: 'tiv' }  }, function (err, res, pkg) {
+        if (err) t.fail(err);
+        t.equal(res, dir + '/grux/index.js');
+        t.equal(pkg, undefined);
+    });
+});
+
+test('quux', function (t) {
+    t.plan(2);
+    var dir = __dirname + '/resolver/quux';
+    
+    resolve('./foo', { basedir : dir, package: { main: 'quux' } }, function (err, res, pkg) {
+        if (err) t.fail(err);
+        t.equal(res, dir + '/foo/index.js');
+        t.equal(pkg.main, 'quux');
     });
 });
 
 test('normalize', function (t) {
-    t.plan(1);
+    t.plan(2);
     var dir = __dirname + '/resolver/biz/node_modules/grux';
     
-    resolve('../grux', { basedir : dir }, function (err, res) {
+    resolve('../grux', { basedir : dir }, function (err, res, pkg) {
         if (err) t.fail(err);
         t.equal(res, dir + '/index.js');
+        t.equal(pkg, undefined);
     });
 });
 
