@@ -21,6 +21,26 @@ test('foo', function (t) {
     t.end();
 });
 
+test('JSON', function (t) {
+    var dir = __dirname + '/resolver';
+    
+    t.equal(
+        resolve.sync('./box', { basedir: dir }),
+        dir + '/box.json'
+    );
+    
+    t.equal(
+        resolve.sync('./box.json', { basedir: dir }),
+        dir + '/box.json'
+    );
+    
+    t.throws(function () {
+        resolve.sync('box', { basedir : dir });
+    });
+    
+    t.end();
+});
+
 test('bar', function (t) {
     var dir = __dirname + '/resolver';
     

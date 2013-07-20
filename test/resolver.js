@@ -34,6 +34,25 @@ test('async foo', function (t) {
     });
 });
 
+test('async JSON', function (t) {
+    t.plan(3);
+    var dir = __dirname + '/resolver';
+    
+    resolve('./box', { basedir : dir }, function (err, res) {
+        if (err) t.fail(err);
+        t.equal(res, dir + '/box.json');
+    });
+    
+    resolve('./box.json', { basedir : dir }, function (err, res) {
+        if (err) t.fail(err);
+        t.equal(res, dir + '/box.json');
+    });
+    
+    resolve('box', { basedir : dir }, function (err) {
+        t.equal(err.message, "Cannot find module 'box'");
+    });
+});
+
 test('bar', function (t) {
     t.plan(6);
     var dir = __dirname + '/resolver';
