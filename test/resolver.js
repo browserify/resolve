@@ -75,7 +75,7 @@ test('baz', function (t) {
 });
 
 test('biz', function (t) {
-    t.plan(12);
+    t.plan(24);
     var dir = __dirname + '/resolver/biz/node_modules';
     
     resolve('./grux', { basedir : dir }, function (err, res, pkg) {
@@ -90,6 +90,18 @@ test('biz', function (t) {
         t.equal(pkg.main, 'biz');
     });
     
+    resolve('./garply', { basedir : dir }, function (err, res, pkg) {
+        if (err) t.fail(err);
+        t.equal(res, dir + '/garply/lib/index.js');
+        t.equal(pkg.main, './lib');
+    });
+    
+    resolve('./garply', { basedir : dir, package: { main: 'biz' } }, function (err, res, pkg) {
+        if (err) t.fail(err);
+        t.equal(res, dir + '/garply/lib/index.js');
+        t.equal(pkg.main, './lib');
+    });
+    
     resolve('tiv', { basedir : dir + '/grux' }, function (err, res, pkg) {
         if (err) t.fail(err);
         t.equal(res, dir + '/tiv/index.js');
@@ -97,6 +109,18 @@ test('biz', function (t) {
     });
     
     resolve('tiv', { basedir : dir + '/grux', package: { main: 'grux' } }, function (err, res, pkg) {
+        if (err) t.fail(err);
+        t.equal(res, dir + '/tiv/index.js');
+        t.equal(pkg, undefined);
+    });
+    
+    resolve('tiv', { basedir : dir + '/garply' }, function (err, res, pkg) {
+        if (err) t.fail(err);
+        t.equal(res, dir + '/tiv/index.js');
+        t.equal(pkg, undefined);
+    });
+    
+    resolve('tiv', { basedir : dir + '/garply', package: { main: './lib' } }, function (err, res, pkg) {
         if (err) t.fail(err);
         t.equal(res, dir + '/tiv/index.js');
         t.equal(pkg, undefined);
@@ -112,6 +136,18 @@ test('biz', function (t) {
         if (err) t.fail(err);
         t.equal(res, dir + '/grux/index.js');
         t.equal(pkg, undefined);
+    });
+    
+    resolve('garply', { basedir : dir + '/tiv' }, function (err, res, pkg) {
+        if (err) t.fail(err);
+        t.equal(res, dir + '/garply/lib/index.js');
+        t.equal(pkg.main, './lib');
+    });
+    
+    resolve('garply', { basedir : dir + '/tiv', package: { main: 'tiv' } }, function (err, res, pkg) {
+        if (err) t.fail(err);
+        t.equal(res, dir + '/garply/lib/index.js');
+        t.equal(pkg.main, './lib');
     });
 });
 
