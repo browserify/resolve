@@ -204,3 +204,15 @@ test('other path', function (t) {
         t.equal(err.message, "Cannot find module 'zzz'");
     });
 });
+
+test('incorrect main', function (t) {
+    t.plan(1)
+
+    var resolverDir = __dirname + '/resolver';
+    var dir = resolverDir + '/incorrect_main';
+
+    resolve('./incorrect_main', { basedir : resolverDir }, function (err, res, pkg) {
+        if (err) t.fail(err);
+        t.equal(res, dir + '/index.js');
+    });
+});
