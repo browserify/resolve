@@ -155,3 +155,16 @@ test('other path', function (t) {
     
     t.end();
 });
+
+
+test('incorrect main', function (t) {
+    var resolverDir = __dirname + '/resolver';
+    var dir = resolverDir + '/incorrect_main';
+
+    t.equal(
+        resolve.sync('./incorrect_main', { basedir : resolverDir }),
+        dir + '/index.js'
+    )
+
+    t.end()
+});
