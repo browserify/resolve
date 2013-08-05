@@ -156,7 +156,6 @@ test('other path', function (t) {
     t.end();
 });
 
-
 test('incorrect main', function (t) {
     var resolverDir = __dirname + '/resolver';
     var dir = resolverDir + '/incorrect_main';
@@ -164,6 +163,17 @@ test('incorrect main', function (t) {
     t.equal(
         resolve.sync('./incorrect_main', { basedir : resolverDir }),
         dir + '/index.js'
+    )
+
+    t.end()
+});
+
+test('#25: node modules with the same name as node stdlib modules', function (t) {
+    var resolverDir = __dirname + '/resolver/punycode';
+
+    t.equal(
+        resolve.sync('punycode', { basedir : resolverDir }),
+        resolverDir + '/node_modules/punycode/index.js'
     )
 
     t.end()
