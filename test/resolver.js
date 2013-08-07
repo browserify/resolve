@@ -252,3 +252,19 @@ test('incorrect main', function (t) {
         t.equal(res, dir + '/index.js');
     });
 });
+
+test('without basedir', function (t) {
+    t.plan(1);
+
+    var dir = __dirname + '/resolver/without_basedir';
+    var tester = require(dir + '/main.js');
+
+    tester(t, function (err, res, pkg){
+        if (err) {
+	  t.fail(err);
+	} else {
+          t.equal(res, dir + '/node_modules/mymodule.js');
+	}
+    });
+});
+
