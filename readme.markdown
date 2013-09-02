@@ -65,6 +65,9 @@ at the "main" field
 * opts.paths - require.paths array to use if nothing is found on the normal
 node_modules recursive walk (probably don't use this)
 
+* opts.moduleDirectory - directory to recursively look for modules in. default:
+`"node_modules"`
+
 default `opts` values:
 
 ``` javascript
@@ -79,7 +82,8 @@ default `opts` values:
             else if (err) cb(err)
             else cb(null, stat.isFile())
         });
-    }
+    },
+    moduleDirectory: 'node_modules'
 }
 ```
 
@@ -104,6 +108,9 @@ at the "main" field
 * opts.paths - require.paths array to use if nothing is found on the normal
 node_modules recursive walk (probably don't use this)
 
+* opts.moduleDirectory - directory to recursively look for modules in. default:
+`"node_modules"`
+
 default `opts` values:
 
 ``` javascript
@@ -115,7 +122,8 @@ default `opts` values:
     isFile: function (file) {
         try { return fs.statSync(file).isFile() }
         catch (e) { return false }
-    }
+    },
+    moduleDirectory: 'node_modules'
 }
 ````
 
