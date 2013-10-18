@@ -33,11 +33,11 @@ test('mock', function (t) {
     });
     
     resolve('baz', opts('/foo/bar'), function (err, res) {
-        t.equal(err.message, "Cannot find module 'baz'");
+        t.equal(err.message, "Cannot find module 'baz' from '/foo/bar'");
     });
     
     resolve('../baz', opts('/foo/bar'), function (err, res) {
-        t.equal(err.message, "Cannot find module '../baz'");
+        t.equal(err.message, "Cannot find module '../baz' from '/foo/bar'");
     });
 });
 
@@ -74,11 +74,11 @@ test('mock from package', function (t) {
     });
     
     resolve('baz', opts('/foo/bar'), function (err, res) {
-        t.equal(err.message, "Cannot find module 'baz'");
+        t.equal(err.message, "Cannot find module 'baz' from '/foo/bar'");
     });
     
     resolve('../baz', opts('/foo/bar'), function (err, res) {
-        t.equal(err.message, "Cannot find module '../baz'");
+        t.equal(err.message, "Cannot find module '../baz' from '/foo/bar'");
     });
 });
 
