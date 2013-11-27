@@ -1,3 +1,4 @@
+var path = require('path');
 var test = require('tap').test;
 var resolve = require('../');
 
@@ -30,7 +31,7 @@ test('async foo', function (t) {
     });
     
     resolve('foo', { basedir : dir }, function (err) {
-        t.equal(err.message, "Cannot find module 'foo'");
+        t.equal(err.message, "Cannot find module 'foo' from '" + path.resolve(dir) + "'");
     });
 });
 
@@ -190,7 +191,7 @@ test('cup', function (t) {
     
     resolve('./cup', { basedir : dir, extensions : [ '.js' ] },
     function (err, res) {
-        t.equal(err.message, "Cannot find module './cup'");
+        t.equal(err.message, "Cannot find module './cup' from '" + path.resolve(dir) + "'");
     });
 });
 
@@ -233,11 +234,11 @@ test('other path', function (t) {
     });
     
     resolve('root', { basedir : dir, }, function (err, res) {
-        t.equal(err.message, "Cannot find module 'root'");
+        t.equal(err.message, "Cannot find module 'root' from '" + path.resolve(dir) + "'");
     });
     
     resolve('zzz', { basedir : dir, paths: [otherDir] }, function (err, res) {
-        t.equal(err.message, "Cannot find module 'zzz'");
+        t.equal(err.message, "Cannot find module 'zzz' from '" + path.resolve(dir) + "'");
     });
 });
 
