@@ -31,7 +31,7 @@ test('async foo', function (t) {
     });
 
     resolve('foo', { basedir: dir }, function (err) {
-        t.equal(err.message, "Cannot find module 'foo' from '" + path.resolve(dir) + "'");
+        t.equal(err.message, "Cannot find module 'foo' from '" + path.resolve(dir) + "' with extension in [\".js\"]");
         t.equal(err.code, 'MODULE_NOT_FOUND');
     });
 });
@@ -190,7 +190,7 @@ test('cup', function (t) {
     });
 
     resolve('./cup', { basedir: dir, extensions: ['.js'] }, function (err, res) {
-        t.equal(err.message, "Cannot find module './cup' from '" + path.resolve(dir) + "'");
+        t.equal(err.message, "Cannot find module './cup' from '" + path.resolve(dir) + "' with extension in [\".js\"]");
         t.equal(err.code, 'MODULE_NOT_FOUND');
     });
 });
@@ -231,12 +231,12 @@ test('other path', function (t) {
     });
 
     resolve('root', { basedir: dir }, function (err, res) {
-        t.equal(err.message, "Cannot find module 'root' from '" + path.resolve(dir) + "'");
+        t.equal(err.message, "Cannot find module 'root' from '" + path.resolve(dir) + "' with extension in [\".js\"]");
         t.equal(err.code, 'MODULE_NOT_FOUND');
     });
 
     resolve('zzz', { basedir: dir, paths: [otherDir] }, function (err, res) {
-        t.equal(err.message, "Cannot find module 'zzz' from '" + path.resolve(dir) + "'");
+        t.equal(err.message, "Cannot find module 'zzz' from '" + path.resolve(dir) + "' with extension in [\".js\"]");
         t.equal(err.code, 'MODULE_NOT_FOUND');
     });
 });
