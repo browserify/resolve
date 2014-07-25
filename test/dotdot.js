@@ -16,3 +16,14 @@ test('dotdot', function (t) {
         t.equal(res, dir + '/index.js');
     });
 });
+
+test('dotdot sync', function (t) {
+    t.plan(2);
+    var dir = __dirname + '/dotdot/abc';
+    
+    var a = resolve.sync('..', { basedir : dir });
+    t.equal(a, __dirname + '/dotdot/index.js');
+    
+    var b = resolve.sync('.', { basedir : dir });
+    t.equal(b, dir + '/index.js');
+});
