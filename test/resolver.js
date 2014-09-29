@@ -1,5 +1,5 @@
 var path = require('path');
-var test = require('tap').test;
+var test = require('../lib/test-utils');
 var resolve = require('../');
 
 test('async foo', function (t) {
@@ -8,30 +8,30 @@ test('async foo', function (t) {
     
     resolve('./foo', { basedir : dir }, function (err, res, pkg) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/foo.js');
+        t.equalPaths(res, dir + '/foo.js');
         t.equal(pkg, undefined);
     });
     
     resolve('./foo.js', { basedir : dir }, function (err, res, pkg) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/foo.js');
+        t.equalPaths(res, dir + '/foo.js');
         t.equal(pkg, undefined);
     });
     
     resolve('./foo', { basedir : dir, package: { main: 'resolver' } }, function (err, res, pkg) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/foo.js');
+        t.equalPaths(res, dir + '/foo.js');
         t.equal(pkg.main, 'resolver');
     });
     
     resolve('./foo.js', { basedir : dir, package: { main: 'resolver' } }, function (err, res, pkg) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/foo.js');
+        t.equalPaths(res, dir + '/foo.js');
         t.equal(pkg.main, 'resolver');
     });
     
     resolve('foo', { basedir : dir }, function (err) {
-        t.equal(err.message, "Cannot find module 'foo' from '" + path.resolve(dir) + "'");
+        t.equalAlmost(err.message, "Cannot find module 'foo' from '" + path.resolve(dir) + "'");
     });
 });
 
@@ -41,19 +41,19 @@ test('bar', function (t) {
     
     resolve('foo', { basedir : dir + '/bar' }, function (err, res, pkg) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/bar/node_modules/foo/index.js');
+        t.equalPaths(res, dir + '/bar/node_modules/foo/index.js');
         t.equal(pkg, undefined);
     });
     
     resolve('foo', { basedir : dir + '/bar' }, function (err, res, pkg) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/bar/node_modules/foo/index.js');
+        t.equalPaths(res, dir + '/bar/node_modules/foo/index.js');
         t.equal(pkg, undefined);
     });
     
     resolve('foo', { basedir : dir + '/bar', package: { main: 'bar' } }, function (err, res, pkg) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/bar/node_modules/foo/index.js');
+        t.equalPaths(res, dir + '/bar/node_modules/foo/index.js');
         t.equal(pkg, undefined);
     });
 });
@@ -64,13 +64,13 @@ test('baz', function (t) {
     
     resolve('./baz', { basedir : dir }, function (err, res, pkg) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/baz/quux.js');
+        t.equalPaths(res, dir + '/baz/quux.js');
         t.equal(pkg.main, 'quux.js');
     });
     
     resolve('./baz', { basedir : dir, package: { main: 'resolver' } }, function (err, res, pkg) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/baz/quux.js');
+        t.equalPaths(res, dir + '/baz/quux.js');
         t.equal(pkg.main, 'quux.js');
     });
 });
@@ -81,73 +81,73 @@ test('biz', function (t) {
     
     resolve('./grux', { basedir : dir }, function (err, res, pkg) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/grux/index.js');
+        t.equalPaths(res, dir + '/grux/index.js');
         t.equal(pkg, undefined);
     });
     
     resolve('./grux', { basedir : dir, package: { main: 'biz' } }, function (err, res, pkg) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/grux/index.js');
+        t.equalPaths(res, dir + '/grux/index.js');
         t.equal(pkg.main, 'biz');
     });
     
     resolve('./garply', { basedir : dir }, function (err, res, pkg) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/garply/lib/index.js');
+        t.equalPaths(res, dir + '/garply/lib/index.js');
         t.equal(pkg.main, './lib');
     });
     
     resolve('./garply', { basedir : dir, package: { main: 'biz' } }, function (err, res, pkg) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/garply/lib/index.js');
+        t.equalPaths(res, dir + '/garply/lib/index.js');
         t.equal(pkg.main, './lib');
     });
     
     resolve('tiv', { basedir : dir + '/grux' }, function (err, res, pkg) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/tiv/index.js');
+        t.equalPaths(res, dir + '/tiv/index.js');
         t.equal(pkg, undefined);
     });
     
     resolve('tiv', { basedir : dir + '/grux', package: { main: 'grux' } }, function (err, res, pkg) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/tiv/index.js');
+        t.equalPaths(res, dir + '/tiv/index.js');
         t.equal(pkg, undefined);
     });
     
     resolve('tiv', { basedir : dir + '/garply' }, function (err, res, pkg) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/tiv/index.js');
+        t.equalPaths(res, dir + '/tiv/index.js');
         t.equal(pkg, undefined);
     });
     
     resolve('tiv', { basedir : dir + '/garply', package: { main: './lib' } }, function (err, res, pkg) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/tiv/index.js');
+        t.equalPaths(res, dir + '/tiv/index.js');
         t.equal(pkg, undefined);
     });
     
     resolve('grux', { basedir : dir + '/tiv' }, function (err, res, pkg) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/grux/index.js');
+        t.equalPaths(res, dir + '/grux/index.js');
         t.equal(pkg, undefined);
     });
     
     resolve('grux', { basedir : dir + '/tiv', package: { main: 'tiv' }  }, function (err, res, pkg) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/grux/index.js');
+        t.equalPaths(res, dir + '/grux/index.js');
         t.equal(pkg, undefined);
     });
     
     resolve('garply', { basedir : dir + '/tiv' }, function (err, res, pkg) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/garply/lib/index.js');
+        t.equalPaths(res, dir + '/garply/lib/index.js');
         t.equal(pkg.main, './lib');
     });
     
     resolve('garply', { basedir : dir + '/tiv', package: { main: 'tiv' } }, function (err, res, pkg) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/garply/lib/index.js');
+        t.equalPaths(res, dir + '/garply/lib/index.js');
         t.equal(pkg.main, './lib');
     });
 });
@@ -158,7 +158,7 @@ test('quux', function (t) {
     
     resolve('./foo', { basedir : dir, package: { main: 'quux' } }, function (err, res, pkg) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/foo/index.js');
+        t.equalPaths(res, dir + '/foo/index.js');
         t.equal(pkg.main, 'quux');
     });
 });
@@ -169,7 +169,7 @@ test('normalize', function (t) {
     
     resolve('../grux', { basedir : dir }, function (err, res, pkg) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/index.js');
+        t.equalPaths(res, dir + '/index.js');
         t.equal(pkg, undefined);
     });
 });
@@ -181,17 +181,17 @@ test('cup', function (t) {
     resolve('./cup', { basedir : dir, extensions : [ '.js', '.coffee' ] },
     function (err, res) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/cup.coffee');
+        t.equalPaths(res, dir + '/cup.coffee');
     });
     
     resolve('./cup.coffee', { basedir : dir }, function (err, res) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/cup.coffee');
+        t.equalPaths(res, dir + '/cup.coffee');
     });
     
     resolve('./cup', { basedir : dir, extensions : [ '.js' ] },
     function (err, res) {
-        t.equal(err.message, "Cannot find module './cup' from '" + path.resolve(dir) + "'");
+        t.equalAlmost(err.message, "Cannot find module './cup' from '" + path.resolve(dir) + "'");
     });
 });
 
@@ -201,18 +201,18 @@ test('mug', function (t) {
     
     resolve('./mug', { basedir : dir }, function (err, res) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/mug.js');
+        t.equalPaths(res, dir + '/mug.js');
     });
     
     resolve('./mug', { basedir : dir, extensions : [ '.coffee', '.js' ] },
     function (err, res) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/mug.coffee');
+        t.equalPaths(res, dir + '/mug.coffee');
     });
     
     resolve('./mug', { basedir : dir, extensions : [ '.js', '.coffee' ] },
     function (err, res) {
-        t.equal(res, dir + '/mug.js');
+        t.equalPaths(res, dir + '/mug.js');
     });
 });
 
@@ -224,21 +224,21 @@ test('other path', function (t) {
     
     resolve('root', { basedir : dir, paths: [otherDir] }, function (err, res) {
         if (err) t.fail(err);
-        t.equal(res, resolverDir + '/other_path/root.js');
+        t.equalPaths(res, resolverDir + '/other_path/root.js');
     });
     
     resolve('lib/other-lib', { basedir : dir, paths: [otherDir] },
     function (err, res) {
         if (err) t.fail(err);
-        t.equal(res, resolverDir + '/other_path/lib/other-lib.js');
+        t.equalPaths(res, resolverDir + '/other_path/lib/other-lib.js');
     });
     
     resolve('root', { basedir : dir, }, function (err, res) {
-        t.equal(err.message, "Cannot find module 'root' from '" + path.resolve(dir) + "'");
+        t.equalAlmost(err.message, "Cannot find module 'root' from '" + path.resolve(dir) + "'");
     });
     
     resolve('zzz', { basedir : dir, paths: [otherDir] }, function (err, res) {
-        t.equal(err.message, "Cannot find module 'zzz' from '" + path.resolve(dir) + "'");
+        t.equalAlmost(err.message, "Cannot find module 'zzz' from '" + path.resolve(dir) + "'");
     });
 });
 
@@ -250,7 +250,7 @@ test('incorrect main', function (t) {
 
     resolve('./incorrect_main', { basedir : resolverDir }, function (err, res, pkg) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/index.js');
+        t.equalPaths(res, dir + '/index.js');
     });
 });
 
@@ -264,7 +264,7 @@ test('without basedir', function (t) {
         if (err) {
 	  t.fail(err);
 	} else {
-          t.equal(res, dir + '/node_modules/mymodule.js');
+          t.equalPaths(res, dir + '/node_modules/mymodule.js');
 	}
     });
 });
@@ -276,6 +276,6 @@ test('#25: node modules with the same name as node stdlib modules', function (t)
 
     resolve('punycode', { basedir : resolverDir }, function (err, res, pkg) {
         if (err) t.fail(err);
-        t.equal(res, resolverDir + '/node_modules/punycode/index.js');
+        t.equalPaths(res, resolverDir + '/node_modules/punycode/index.js');
     });
 });

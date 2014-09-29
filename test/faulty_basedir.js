@@ -1,5 +1,5 @@
 var path = require('path');
-var test = require('tap').test;
+var test = require('../lib/test-utils');
 var resolve = require('../');
 
 test('faulty basedir must produce error in windows', function (t) {

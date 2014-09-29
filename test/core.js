@@ -1,4 +1,4 @@
-var test = require('tap').test;
+var test = require('../lib/test-utils');
 var resolve = require('../');
 
 test('core modules', function (t) {

@@ -1,9 +1,9 @@
 var path = require('path');
-var test = require('tap').test;
+var test = require('../lib/test-utils');
 var resolve = require('../');
 
 test('$NODE_PATH', function (t) {
-    t.plan(3);
+    t.plan(4);
     
     resolve('aaa', {
         paths: [
@@ -12,7 +12,7 @@ test('$NODE_PATH', function (t) {
         ],
         basedir: __dirname,
     }, function (err, res) {
-        t.equal(res, __dirname + '/node_path/x/aaa/index.js');
+        t.equalPaths(res, __dirname + '/node_path/x/aaa/index.js');
     });
     
     resolve('bbb', {
@@ -22,7 +22,7 @@ test('$NODE_PATH', function (t) {
         ],
         basedir: __dirname,
     }, function (err, res) {
-        t.equal(res, __dirname + '/node_path/y/bbb/index.js');
+        t.equalPaths(res, __dirname + '/node_path/y/bbb/index.js');
     });
     
     resolve('ccc', {
@@ -32,17 +32,17 @@ test('$NODE_PATH', function (t) {
         ],
         basedir: __dirname,
     }, function (err, res) {
-        t.equal(res, __dirname + '/node_path/x/ccc/index.js');
+        t.equalPaths(res, __dirname + '/node_path/x/ccc/index.js');
     });
 
     // ensure that relative paths still resolve against the
     // regular `node_modules` correctly
-    resolve('tap', {
+    resolve('tape', {
         paths: [
-            'node_path',
+            __dirname + '/node_path',
         ],
-        basedir: 'node_path/x',
+        basedir: __dirname + '/node_path/x',
     }, function (err, res) {
-        t.equal(res, path.resolve(__dirname, '..', 'node_modules/tap/lib/main.js'));
+        t.equalPaths(res, path.resolve(__dirname, '..', 'node_modules/tape/index.js'));
     });
 });
