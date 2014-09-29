@@ -18,8 +18,8 @@
   },
   "devDependencies": {
     "defined": "0.0.0",
-    "levenshtein": "^1.0.5",
-    "tape": "^3.0.0"
+    "levenshtein": "~1.0.5",
+    "tape": "~3.0.0"
   },
   "license": "MIT",
   "author": {
