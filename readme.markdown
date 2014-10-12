@@ -65,8 +65,7 @@ at the "main" field
 * opts.paths - require.paths array to use if nothing is found on the normal
 node_modules recursive walk (probably don't use this)
 
-* opts.moduleDirectory - directory (or directories) to recursively look for modules in. default:
-`"node_modules"`
+* opts.moduleDirectory - directory (or directories) in which to recursively look for modules. default: `"node_modules"`
 
 default `opts` values:
 
@@ -108,8 +107,7 @@ at the "main" field
 * opts.paths - require.paths array to use if nothing is found on the normal
 node_modules recursive walk (probably don't use this)
 
-* opts.moduleDirectory - directory (or directories) to recursively look for modules in. default:
-`"node_modules"`
+* opts.moduleDirectory - directory (or directories) in which to recursively look for modules. default: `"node_modules"`
 
 default `opts` values:
 
