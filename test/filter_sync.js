@@ -1,4 +1,4 @@
-var test = require('tap').test;
+var test = require('../lib/test-utils');
 var resolve = require('../');
 
 test('filter', function (t) {
@@ -10,6 +10,6 @@ test('filter', function (t) {
             return pkg;
         }
     });
-    t.equal(res, dir + '/baz/doom.js');
+    t.equalPaths(res, dir + '/baz/doom.js');
     t.end();
 });

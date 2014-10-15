@@ -1,15 +1,15 @@
-var test = require('tap').test;
+var test = require('../lib/test-utils');
 var resolve = require('../');
 
 test('foo', function (t) {
     var dir = __dirname + '/resolver';
     
-    t.equal(
+    t.equalPaths(
         resolve.sync('./foo', { basedir : dir }),
         dir + '/foo.js'
     );
     
-    t.equal(
+    t.equalPaths(
         resolve.sync('./foo.js', { basedir : dir }),
         dir + '/foo.js'
     );
@@ -24,7 +24,7 @@ test('foo', function (t) {
 test('bar', function (t) {
     var dir = __dirname + '/resolver';
     
-    t.equal(
+    t.equalPaths(
         resolve.sync('foo', { basedir : dir + '/bar' }),
         dir + '/bar/node_modules/foo/index.js'
     );
@@ -34,7 +34,7 @@ test('bar', function (t) {
 test('baz', function (t) {
     var dir = __dirname + '/resolver';
     
-    t.equal(
+    t.equalPaths(
         resolve.sync('./baz', { basedir : dir }),
         dir + '/baz/quux.js'
     );
@@ -43,17 +43,17 @@ test('baz', function (t) {
 
 test('biz', function (t) {
     var dir = __dirname + '/resolver/biz/node_modules';
-    t.equal(
+    t.equalPaths(
         resolve.sync('./grux', { basedir : dir }),
         dir + '/grux/index.js'
     );
     
-    t.equal(
+    t.equalPaths(
         resolve.sync('tiv', { basedir : dir + '/grux' }),
         dir + '/tiv/index.js'
     );
     
-    t.equal(
+    t.equalPaths(
         resolve.sync('grux', { basedir : dir + '/tiv' }),
         dir + '/grux/index.js'
     );
@@ -62,7 +62,7 @@ test('biz', function (t) {
 
 test('normalize', function (t) {
     var dir = __dirname + '/resolver/biz/node_modules/grux';
-    t.equal(
+    t.equalPaths(
         resolve.sync('../grux', { basedir : dir }),
         dir + '/index.js'
     );
@@ -71,7 +71,7 @@ test('normalize', function (t) {
 
 test('cup', function (t) {
     var dir = __dirname + '/resolver';
-    t.equal(
+    t.equalPaths(
         resolve.sync('./cup', {
             basedir : dir,
             extensions : [ '.js', '.coffee' ]
@@ -79,7 +79,7 @@ test('cup', function (t) {
         dir + '/cup.coffee'
     );
     
-    t.equal(
+    t.equalPaths(
         resolve.sync('./cup.coffee', {
             basedir : dir
         }),
@@ -98,12 +98,12 @@ test('cup', function (t) {
 
 test('mug', function (t) {
     var dir = __dirname + '/resolver';
-    t.equal(
+    t.equalPaths(
         resolve.sync('./mug', { basedir : dir }),
         dir + '/mug.js'
     );
     
-    t.equal(
+    t.equalPaths(
         resolve.sync('./mug', {
             basedir : dir,
             extensions : [ '.coffee', '.js' ]
@@ -111,7 +111,7 @@ test('mug', function (t) {
         dir + '/mug.coffee'
     );
     
-    t.equal(
+    t.equalPaths(
         resolve.sync('./mug', {
             basedir : dir,
             extensions : [ '.js', '.coffee' ]
@@ -129,14 +129,14 @@ test('other path', function (t) {
 
     var path = require('path');
     
-    t.equal(
+    t.equalPaths(
         resolve.sync('root', {
             basedir : dir,
             paths: [otherDir] }),
         resolverDir + '/other_path/root.js'
     );
     
-    t.equal(
+    t.equalPaths(
         resolve.sync('lib/other-lib', {
             basedir : dir,
             paths: [otherDir] }),
@@ -160,7 +160,7 @@ test('incorrect main', function (t) {
     var resolverDir = __dirname + '/resolver';
     var dir = resolverDir + '/incorrect_main';
 
-    t.equal(
+    t.equalPaths(
         resolve.sync('./incorrect_main', { basedir : resolverDir }),
         dir + '/index.js'
     )
@@ -171,7 +171,7 @@ test('incorrect main', function (t) {
 test('#25: node modules with the same name as node stdlib modules', function (t) {
     var resolverDir = __dirname + '/resolver/punycode';
 
-    t.equal(
+    t.equalPaths(
         resolve.sync('punycode', { basedir : resolverDir }),
         resolverDir + '/node_modules/punycode/index.js'
     )

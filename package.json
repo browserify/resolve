@@ -1,28 +1,30 @@
 {
-  "name" : "resolve",
-  "description" : "resolve like require.resolve() on behalf of files asynchronously and synchronously",
-  "version" : "1.0.0",
-  "repository" : {
-    "type" : "git",
-    "url" : "git://github.com/substack/node-resolve.git"
+  "name": "resolve",
+  "description": "resolve like require.resolve() on behalf of files asynchronously and synchronously",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/substack/node-resolve.git"
   },
-  "main" : "index.js",
-  "keywords" : [
+  "main": "index.js",
+  "keywords": [
     "resolve",
     "require",
     "node",
     "module"
   ],
-  "scripts" : {
-    "test" : "tap test/*.js"
+  "scripts": {
+    "test": "tape test/*.js"
   },
-  "devDependencies" : {
-    "tap" : "~0.4.0"
+  "devDependencies": {
+    "defined": "0.0.0",
+    "levenshtein": "~1.0.5",
+    "tape": "~3.0.0"
   },
-  "license" : "MIT",
-  "author" : {
-    "name" : "James Halliday",
-    "email" : "mail@substack.net",
-    "url" : "http://substack.net"
+  "license": "MIT",
+  "author": {
+    "name": "James Halliday",
+    "email": "mail@substack.net",
+    "url": "http://substack.net"
   }
 }
