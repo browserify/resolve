@@ -279,3 +279,29 @@ test('#25: node modules with the same name as node stdlib modules', function (t)
         t.equal(res, resolverDir + '/node_modules/punycode/index.js');
     });
 });
+
+test('#62: deep module references and the pathFilter', function(t){
+	t.plan(6);
+	
+	var resolverDir = __dirname + '/resolver/deep_ref';
+	var pathFilter = function(pkg, x, remainder){
+		t.equal(pkg.version, "1.2.3");
+		t.equal(x, resolverDir + '/node_modules/deep/ref');
+		t.equal(remainder, "ref");
+		return "alt";
+	};
+	
+	
+	resolve('deep/ref', { basedir : resolverDir }, function (err, res, pkg) {
+        if (err) t.fail(err);
+        t.equal(pkg.version, "1.2.3");
+        t.equal(res, resolverDir + '/node_modules/deep/ref.js');
+    });
+    
+    resolve('deep/ref', { basedir : resolverDir, pathFilter : pathFilter }, function (err, res, pkg) {
+        if (err) t.fail(err);
+        t.equal(res, resolverDir + '/node_modules/deep/alt.js');
+    });
+	
+	
+});
