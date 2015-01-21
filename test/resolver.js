@@ -3,7 +3,7 @@ var test = require('tap').test;
 var resolve = require('../');
 
 test('async foo', function (t) {
-    t.plan(9);
+    t.plan(10);
     var dir = __dirname + '/resolver';
     
     resolve('./foo', { basedir : dir }, function (err, res, pkg) {
@@ -32,6 +32,11 @@ test('async foo', function (t) {
     
     resolve('foo', { basedir : dir }, function (err) {
         t.equal(err.message, "Cannot find module 'foo' from '" + path.resolve(dir) + "'");
+    });
+
+    // Test that filename is reported as the "from" value when passed.
+    resolve('foo', { basedir : dir, filename : path.join(dir, 'baz.js') }, function (err) {
+        t.equal(err.message, "Cannot find module 'foo' from '" + path.join(dir, 'baz.js') + "'");
     });
 });
 
