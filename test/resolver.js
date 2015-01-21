@@ -34,6 +34,11 @@ test('async foo', function (t) {
         t.equal(err.message, "Cannot find module 'foo' from '" + path.resolve(dir) + "'");
         t.equal(err.code, 'MODULE_NOT_FOUND');
     });
+
+    // Test that filename is reported as the "from" value when passed.
+    resolve('foo', { basedir: dir, filename: path.join(dir, 'baz.js') }, function (err) {
+        t.equal(err.message, "Cannot find module 'foo' from '" + path.join(dir, 'baz.js') + "'");
+    });
 });
 
 test('bar', function (t) {
@@ -192,6 +197,12 @@ test('cup', function (t) {
     resolve('./cup', { basedir: dir, extensions: ['.js'] }, function (err, res) {
         t.equal(err.message, "Cannot find module './cup' from '" + path.resolve(dir) + "'");
         t.equal(err.code, 'MODULE_NOT_FOUND');
+    });
+
+    // Test that filename is reported as the "from" value when passed.
+    resolve('./cup', { basedir: dir, extensions: [ '.js' ], filename: path.join(dir, 'cupboard.js') },
+    function (err, res) {
+        t.equal(err.message, "Cannot find module './cup' from '" + path.join(dir, 'cupboard.js') + "'");
     });
 });
 
