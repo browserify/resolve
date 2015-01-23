@@ -43,15 +43,15 @@ $ node example/sync.js
 var resolve = require('resolve')
 ```
 
-## resolve(pkg, opts={}, cb)
+## resolve(id, opts={}, cb)
 
-Asynchronously resolve the module path string `pkg` into `cb(err, res)`.
+Asynchronously resolve the module path string `id` into `cb(err, res [, pkg])`, where `pkg` (if defined) is the data from `package.json`.
 
 options are:
 
 * opts.basedir - directory to begin resolving from
 
-* opts.package - package from which module is being loaded
+* opts.package - `package.json` data applicable to the module being loaded
 
 * opts.extensions - array of file extensions to search in order
 
@@ -86,10 +86,10 @@ default `opts` values:
 }
 ```
 
-## resolve.sync(pkg, opts)
+## resolve.sync(id, opts)
 
-Synchronously resolve the module path string `pkg`, returning the result and
-throwing an error when `pkg` can't be resolved.
+Synchronously resolve the module path string `id`, returning the result and
+throwing an error when `id` can't be resolved.
 
 options are:
 
