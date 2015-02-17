@@ -107,8 +107,8 @@ options are:
 
 * opts.isFile - function to synchronously test whether a file exists
 
-* opts.packageFilter - transform the parsed package.json contents before looking
-at the "main" field
+* `opts.packageFilter(pkg, pkgfile)` - transform the parsed package.json
+* contents before looking at the "main" field
 
 * opts.paths - require.paths array to use if nothing is found on the normal
 node_modules recursive walk (probably don't use this)
