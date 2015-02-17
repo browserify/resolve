@@ -3,7 +3,7 @@ var test = require('tape');
 var resolve = require('../');
 
 test('$NODE_PATH', function (t) {
-    t.plan(3);
+    t.plan(4);
     
     resolve('aaa', {
         paths: [
