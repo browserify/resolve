@@ -1,5 +1,5 @@
 var path = require('path');
-var test = require('tap').test;
+var test = require('tape');
 var resolve = require('../');
 
 test('precedence', function (t) {
@@ -10,5 +10,14 @@ test('precedence', function (t) {
         t.ifError(err);
         t.equal(res, path.join(dir, 'index.js'));
         t.equal(pkg, undefined);
+    });
+});
+
+test('./ should not load ${dir}.js', function (t) {
+    t.plan(1);
+    var dir = path.join(__dirname, 'precedence/bbb');
+    
+    resolve('./', { basedir : dir }, function (err, res, pkg) {
+        t.ok(err);
     });
 });
