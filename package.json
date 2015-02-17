@@ -14,10 +14,9 @@
     "module"
   ],
   "scripts": {
-    "test": "tap test/*.js"
+    "test": "tape test/*.js"
   },
   "devDependencies": {
-    "tap": "~0.4.0",
     "tape": "^3.5.0"
   },
   "license": "MIT",
