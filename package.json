@@ -17,7 +17,7 @@
     "test": "tape test/*.js"
   },
   "devDependencies": {
-    "tape": "^3.5.0",
+    "tape": "3.x",
     "tap": "0.4.13"
   },
   "license": "MIT",
