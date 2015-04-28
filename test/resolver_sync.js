@@ -178,3 +178,29 @@ test('#25: node modules with the same name as node stdlib modules', function (t)
 
     t.end()
 });
+
+function stubStatSync(fn) {
+    var fs = require('fs')
+    var statSync = fs.statSync;
+    try {
+        fs.statSync = function () {
+          throw new EvalError('Unknown Error');
+        };
+        return fn();
+    } finally {
+       fs.statSync = statSync;
+    }
+}
+
+test('#79 - re-throw non ENOENT errors from stat', function (t) {
+    var dir = __dirname + '/resolver';
+
+    stubStatSync(function () {
+      t.throws(function () {
+        resolve.sync('foo', { basedir : dir });
+      }, /Unknown Error/);
+    })
+
+    t.end()
+});
+
