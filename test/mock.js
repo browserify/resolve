@@ -3,7 +3,7 @@ var test = require('tape');
 var resolve = require('../');
 
 test('mock', function (t) {
-    t.plan(6);
+    t.plan(8);
 
     var files = {};
     files[path.resolve('/foo/bar/baz.js')] = 'beep';
@@ -34,15 +34,17 @@ test('mock', function (t) {
 
     resolve('baz', opts('/foo/bar'), function (err, res) {
         t.equal(err.message, "Cannot find module 'baz' from '" + path.resolve('/foo/bar') + "'");
+        t.equal(err.code, 'MODULE_NOT_FOUND');
     });
 
     resolve('../baz', opts('/foo/bar'), function (err, res) {
         t.equal(err.message, "Cannot find module '../baz' from '" + path.resolve('/foo/bar') + "'");
+        t.equal(err.code, 'MODULE_NOT_FOUND');
     });
 });
 
 test('mock from package', function (t) {
-    t.plan(6);
+    t.plan(8);
 
     var files = {};
     files[path.resolve('/foo/bar/baz.js')] = 'beep';
@@ -74,10 +76,12 @@ test('mock from package', function (t) {
 
     resolve('baz', opts('/foo/bar'), function (err, res) {
         t.equal(err.message, "Cannot find module 'baz' from '" + path.resolve('/foo/bar') + "'");
+        t.equal(err.code, 'MODULE_NOT_FOUND');
     });
 
     resolve('../baz', opts('/foo/bar'), function (err, res) {
         t.equal(err.message, "Cannot find module '../baz' from '" + path.resolve('/foo/bar') + "'");
+        t.equal(err.code, 'MODULE_NOT_FOUND');
     });
 });
 

@@ -3,7 +3,7 @@ var test = require('tape');
 var resolve = require('../');
 
 test('async foo', function (t) {
-    t.plan(9);
+    t.plan(10);
     var dir = path.join(__dirname, 'resolver');
 
     resolve('./foo', { basedir: dir }, function (err, res, pkg) {
@@ -32,6 +32,7 @@ test('async foo', function (t) {
 
     resolve('foo', { basedir: dir }, function (err) {
         t.equal(err.message, "Cannot find module 'foo' from '" + path.resolve(dir) + "'");
+        t.equal(err.code, 'MODULE_NOT_FOUND');
     });
 });
 
@@ -175,7 +176,7 @@ test('normalize', function (t) {
 });
 
 test('cup', function (t) {
-    t.plan(3);
+    t.plan(4);
     var dir = path.join(__dirname, 'resolver');
 
     resolve('./cup', { basedir: dir, extensions: ['.js', '.coffee'] }, function (err, res) {
@@ -190,6 +191,7 @@ test('cup', function (t) {
 
     resolve('./cup', { basedir: dir, extensions: ['.js'] }, function (err, res) {
         t.equal(err.message, "Cannot find module './cup' from '" + path.resolve(dir) + "'");
+        t.equal(err.code, 'MODULE_NOT_FOUND');
     });
 });
 
@@ -213,7 +215,7 @@ test('mug', function (t) {
 });
 
 test('other path', function (t) {
-    t.plan(4);
+    t.plan(6);
     var resolverDir = path.join(__dirname, 'resolver');
     var dir = path.join(resolverDir, 'bar');
     var otherDir = path.join(resolverDir, 'other_path');
@@ -230,10 +232,12 @@ test('other path', function (t) {
 
     resolve('root', { basedir: dir }, function (err, res) {
         t.equal(err.message, "Cannot find module 'root' from '" + path.resolve(dir) + "'");
+        t.equal(err.code, 'MODULE_NOT_FOUND');
     });
 
     resolve('zzz', { basedir: dir, paths: [otherDir] }, function (err, res) {
         t.equal(err.message, "Cannot find module 'zzz' from '" + path.resolve(dir) + "'");
+        t.equal(err.code, 'MODULE_NOT_FOUND');
     });
 });
 
