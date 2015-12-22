@@ -1,4 +1,5 @@
 var test = require('tape');
+var path = require('path');
 var resolve = require('../');
 
 test('#62: deep module references and the pathFilter', function(t){
@@ -7,7 +8,7 @@ test('#62: deep module references and the pathFilter', function(t){
 	var resolverDir = __dirname + '/pathfilter/deep_ref';
 	var pathFilter = function(pkg, x, remainder){
 		t.equal(pkg.version, "1.2.3");
-		t.equal(x, resolverDir + '/node_modules/deep/ref');
+		t.equal(x, path.join(resolverDir, 'node_modules/deep/ref'));
 		t.equal(remainder, "ref");
 		return "alt";
 	};
@@ -16,7 +17,7 @@ test('#62: deep module references and the pathFilter', function(t){
         if (err) t.fail(err);
 
         t.equal(pkg.version, "1.2.3");
-        t.equal(res, resolverDir + '/node_modules/deep/ref.js');
+        t.equal(res, path.join(resolverDir, 'node_modules/deep/ref.js'));
     });
 
     resolve('deep/deeper/ref', { basedir: resolverDir },
@@ -24,12 +25,12 @@ test('#62: deep module references and the pathFilter', function(t){
       if(err) t.fail(err);
       t.notEqual(pkg, undefined);
       t.equal(pkg.version, "1.2.3");
-      t.equal(res, resolverDir + '/node_modules/deep/deeper/ref.js');
+      t.equal(res, path.join(resolverDir, 'node_modules/deep/deeper/ref.js'));
     });
     
     resolve('deep/ref', { basedir : resolverDir, pathFilter : pathFilter },
     function (err, res, pkg) {
         if (err) t.fail(err);
-        t.equal(res, resolverDir + '/node_modules/deep/alt.js');
+        t.equal(res, path.join(resolverDir, 'node_modules/deep/alt.js'));
     });
 });

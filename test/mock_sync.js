@@ -1,12 +1,12 @@
 var test = require('tape');
+var path = require('path');
 var resolve = require('../');
 
 test('mock', function (t) {
     t.plan(4);
     
-    var files = {
-        '/foo/bar/baz.js' : 'beep'
-    };
+    var files = {};
+    files[path.resolve('/foo/bar/baz.js')] = 'beep';
     
     function opts (basedir) {
         return {
@@ -22,12 +22,12 @@ test('mock', function (t) {
     
     t.equal(
         resolve.sync('./baz', opts('/foo/bar')),
-        '/foo/bar/baz.js'
+        path.resolve('/foo/bar/baz.js')
     );
     
     t.equal(
         resolve.sync('./baz.js', opts('/foo/bar')),
-        '/foo/bar/baz.js'
+        path.resolve('/foo/bar/baz.js')
     );
     
     t.throws(function () {
@@ -42,12 +42,11 @@ test('mock', function (t) {
 test('mock package', function (t) {
     t.plan(1);
     
-    var files = {
-        '/foo/node_modules/bar/baz.js' : 'beep',
-        '/foo/node_modules/bar/package.json' : JSON.stringify({
-            main : './baz.js'
-        })
-    };
+    var files = {};
+    files[path.resolve('/foo/node_modules/bar/baz.js')] = 'beep';
+    files[path.resolve('/foo/node_modules/bar/package.json')] = JSON.stringify({
+        main : './baz.js'
+    });
     
     function opts (basedir) {
         return {
@@ -63,6 +62,6 @@ test('mock package', function (t) {
     
     t.equal(
         resolve.sync('bar', opts('/foo')),
-        '/foo/node_modules/bar/baz.js'
+        path.resolve('/foo/node_modules/bar/baz.js')
     );
 });
