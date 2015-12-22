@@ -1,4 +1,5 @@
 var test = require('tape');
+var path = require('path');
 var resolve = require('../');
 
 test('filter', function (t) {
@@ -12,7 +13,7 @@ test('filter', function (t) {
         }
     }, function (err, res, pkg) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/baz/doom.js');
+        t.equal(res, path.join(dir, 'baz/doom.js'));
         t.equal(pkg.main, 'doom');
     });
 });

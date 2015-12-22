@@ -12,7 +12,7 @@ test('$NODE_PATH', function (t) {
         ],
         basedir: __dirname,
     }, function (err, res) {
-        t.equal(res, __dirname + '/node_path/x/aaa/index.js');
+        t.equal(res, path.resolve(__dirname, 'node_path/x/aaa/index.js'));
     });
     
     resolve('bbb', {
@@ -22,7 +22,7 @@ test('$NODE_PATH', function (t) {
         ],
         basedir: __dirname,
     }, function (err, res) {
-        t.equal(res, __dirname + '/node_path/y/bbb/index.js');
+        t.equal(res, path.resolve(__dirname, 'node_path/y/bbb/index.js'));
     });
     
     resolve('ccc', {
@@ -32,7 +32,7 @@ test('$NODE_PATH', function (t) {
         ],
         basedir: __dirname,
     }, function (err, res) {
-        t.equal(res, __dirname + '/node_path/x/ccc/index.js');
+        t.equal(res, path.resolve(__dirname, 'node_path/x/ccc/index.js'));
     });
 
     // ensure that relative paths still resolve against the
@@ -43,6 +43,6 @@ test('$NODE_PATH', function (t) {
         ],
         basedir: 'node_path/x',
     }, function (err, res) {
-        t.equal(res, path.resolve(__dirname, '..', 'node_modules/tap/lib/main.js'));
+        t.equal(res, path.resolve(__dirname, '../node_modules/tap/lib/main.js'));
     });
 });
