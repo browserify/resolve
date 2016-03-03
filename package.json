@@ -6,6 +6,9 @@
 		"type": "git",
 		"url": "git://github.com/browserify/resolve.git"
 	},
+	"bin": {
+		"resolve": "./bin/resolve"
+	},
 	"main": "index.js",
 	"exports": {
 		".": [
@@ -38,7 +41,7 @@
 		"prepublishOnly": "safe-publish-latest",
 		"prepublish": "not-in-publish || npm run prepublishOnly",
 		"prelint": "eclint check $(git ls-files | xargs find 2> /dev/null | grep -vE 'node_modules|\\.git')",
-		"lint": "eslint --ext=js,mjs --no-eslintrc -c .eslintrc .",
+		"lint": "eslint --ext=js,mjs --no-eslintrc -c .eslintrc . 'bin/**'",
 		"pretests-only": "cd ./test/resolver/nested_symlinks && node mylib/sync && node mylib/async",
 		"tests-only": "tape test/*.js",
 		"pretest": "npm run lint",
@@ -69,6 +72,7 @@
 	},
 	"dependencies": {
 		"is-core-module": "^2.8.0",
-		"path-parse": "^1.0.7"
+		"path-parse": "^1.0.7",
+		"supports-preserve-symlinks-flag": "^1.0.0"
 	}
 }

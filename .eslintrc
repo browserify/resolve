@@ -26,6 +26,12 @@
     },
     "overrides": [
         {
+            "files": "bin/**",
+            "rules": {
+                "no-process-exit": "off",
+            },
+        },
+        {
             "files": "example/**",
             "rules": {
                 "no-console": 0,
