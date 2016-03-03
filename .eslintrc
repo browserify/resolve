@@ -31,6 +31,18 @@
     },
     "overrides": [
         {
+            "files": "bin/**",
+            "rules": {
+                "no-process-exit": "off",
+            },
+        },
+        {
+            "files": "example/**",
+            "rules": {
+                "no-console": 0,
+            },
+        },
+        {
             "files": "test/resolver/nested_symlinks/mylib/*.js",
             "rules": {
                 "no-throw-literal": 0,
