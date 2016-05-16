@@ -21,6 +21,7 @@
     "net",
     "os",
     "path",
+    "process",
     "punycode",
     "querystring",
     "readline",
