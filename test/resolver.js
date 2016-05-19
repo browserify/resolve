@@ -262,10 +262,10 @@ test('without basedir', function (t) {
 
     tester(t, function (err, res, pkg){
         if (err) {
-	  t.fail(err);
-	} else {
-          t.equal(res, dir + '/node_modules/mymodule.js');
-	}
+            t.fail(err);
+        } else {
+            t.equal(res, dir + '/node_modules/mymodule.js');
+        }
     });
 });
 
