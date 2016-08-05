@@ -16,6 +16,10 @@
   "scripts": {
     "test": "tape test/*.js"
   },
+  "files": [
+    "lib",
+    "index.js"
+  ],
   "devDependencies": {
     "tape": "^3.5.0",
     "tap": "0.4.13"
