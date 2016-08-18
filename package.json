@@ -18,7 +18,9 @@
   },
   "devDependencies": {
     "tape": "^3.5.0",
-    "tap": "0.4.13"
+    "tap": "0.4.13",
+    "defined": "0.0.0",
+    "levenshtein": "~1.0.5"
   },
   "license": "MIT",
   "author": {

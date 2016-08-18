@@ -1,5 +1,5 @@
 var path = require('path');
-var test = require('tape');
+var test = require('../lib/test-utils');
 var resolve = require('../');
 
 // not sure what's up with this test anymore
