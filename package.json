@@ -14,7 +14,8 @@
     "module"
   ],
   "scripts": {
-    "test": "tape test/*.js"
+    "tests-only": "tape test/*.js",
+    "test": "npm run --silent tests-only"
   },
   "devDependencies": {
     "tape": "^4.6.3",
