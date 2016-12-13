@@ -16,6 +16,7 @@
     "fs",
     "http",
     "https",
+    "_http_server",
     "_linklist",
     "module",
     "net",
