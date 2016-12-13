@@ -14,12 +14,14 @@
     "module"
   ],
   "scripts": {
+    "prepublish": "! type safe-publish-latest >/dev/null 2>&1 || safe-publish-latest",
     "tests-only": "tape test/*.js",
     "test": "npm run --silent tests-only"
   },
   "devDependencies": {
     "tape": "^4.6.3",
-    "tap": "0.4.13"
+    "tap": "0.4.13",
+    "safe-publish-latest": "^1.1.1"
   },
   "license": "MIT",
   "author": {
