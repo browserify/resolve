@@ -33,11 +33,11 @@ test('mock', function (t) {
     });
     
     resolve('baz', opts('/foo/bar'), function (err, res) {
-        t.equal(err.message, "Cannot find module 'baz' from '/foo/bar'");
+        t.equal(err.message, "Cannot find module 'baz' from '/foo/bar' with extension in [\".js\"]");
     });
     
     resolve('../baz', opts('/foo/bar'), function (err, res) {
-        t.equal(err.message, "Cannot find module '../baz' from '/foo/bar'");
+        t.equal(err.message, "Cannot find module '../baz' from '/foo/bar' with extension in [\".js\"]");
     });
 });
 
@@ -74,11 +74,11 @@ test('mock from package', function (t) {
     });
     
     resolve('baz', opts('/foo/bar'), function (err, res) {
-        t.equal(err.message, "Cannot find module 'baz' from '/foo/bar'");
+        t.equal(err.message, "Cannot find module 'baz' from '/foo/bar' with extension in [\".js\"]");
     });
     
     resolve('../baz', opts('/foo/bar'), function (err, res) {
-        t.equal(err.message, "Cannot find module '../baz' from '/foo/bar'");
+        t.equal(err.message, "Cannot find module '../baz' from '/foo/bar' with extension in [\".js\"]");
     });
 });
 
