@@ -5,8 +5,8 @@ test('filter', function (t) {
     t.plan(2);
     var dir = __dirname + '/resolver';
     resolve('./baz', {
-        basedir : dir,
-        packageFilter : function (pkg) {
+        basedir: dir,
+        packageFilter: function (pkg) {
             pkg.main = 'doom';
             return pkg;
         }

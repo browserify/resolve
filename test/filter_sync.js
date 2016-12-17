@@ -4,9 +4,9 @@ var resolve = require('../');
 test('filter', function (t) {
     var dir = __dirname + '/resolver';
     var res = resolve.sync('./baz', {
-        basedir : dir,
-        packageFilter : function (pkg) {
-            pkg.main = 'doom'
+        basedir: dir,
+        packageFilter: function (pkg) {
+            pkg.main = 'doom';
             return pkg;
         }
     });

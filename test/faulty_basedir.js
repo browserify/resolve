@@ -1,4 +1,3 @@
-var path = require('path');
 var test = require('tape');
 var resolve = require('../');
 
@@ -10,7 +9,7 @@ test('faulty basedir must produce error in windows', function (t) {
 
     var resolverDir = 'C:\\a\\b\\c\\d';
 
-    resolve('tape/lib/test.js', { basedir : resolverDir }, function (err, res, pkg) {
+    resolve('tape/lib/test.js', { basedir: resolverDir }, function (err, res, pkg) {
         t.equal(true, !!err);
     });
 
