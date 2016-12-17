@@ -1,16 +1,17 @@
+var path = require('path');
 var test = require('tape');
 var resolve = require('../');
 
 test('moduleDirectory strings', function (t) {
     t.plan(4);
-    var dir = __dirname + '/module_dir';
+    var dir = path.join(__dirname, 'module_dir');
     var xopts = {
         basedir: dir,
         moduleDirectory: 'xmodules'
     };
     resolve('aaa', xopts, function (err, res, pkg) {
         t.ifError(err);
-        t.equal(res, dir + '/xmodules/aaa/index.js');
+        t.equal(res, path.join(dir, '/xmodules/aaa/index.js'));
     });
 
     var yopts = {
@@ -19,20 +20,20 @@ test('moduleDirectory strings', function (t) {
     };
     resolve('aaa', yopts, function (err, res, pkg) {
         t.ifError(err);
-        t.equal(res, dir + '/ymodules/aaa/index.js');
+        t.equal(res, path.join(dir, '/ymodules/aaa/index.js'));
     });
 });
 
 test('moduleDirectory array', function (t) {
     t.plan(6);
-    var dir = __dirname + '/module_dir';
+    var dir = path.join(__dirname, 'module_dir');
     var aopts = {
         basedir: dir,
         moduleDirectory: ['xmodules', 'ymodules', 'zmodules']
     };
     resolve('aaa', aopts, function (err, res, pkg) {
         t.ifError(err);
-        t.equal(res, dir + '/xmodules/aaa/index.js');
+        t.equal(res, path.join(dir, '/xmodules/aaa/index.js'));
     });
 
     var bopts = {
@@ -41,7 +42,7 @@ test('moduleDirectory array', function (t) {
     };
     resolve('aaa', bopts, function (err, res, pkg) {
         t.ifError(err);
-        t.equal(res, dir + '/ymodules/aaa/index.js');
+        t.equal(res, path.join(dir, '/ymodules/aaa/index.js'));
     });
 
     var copts = {
@@ -50,6 +51,6 @@ test('moduleDirectory array', function (t) {
     };
     resolve('bbb', copts, function (err, res, pkg) {
         t.ifError(err);
-        t.equal(res, dir + '/zmodules/bbb/main.js');
+        t.equal(res, path.join(dir, '/zmodules/bbb/main.js'));
     });
 });

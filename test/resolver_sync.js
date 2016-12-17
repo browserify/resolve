@@ -1,17 +1,18 @@
+var path = require('path');
 var test = require('tape');
 var resolve = require('../');
 
 test('foo', function (t) {
-    var dir = __dirname + '/resolver';
+    var dir = path.join(__dirname, 'resolver');
 
     t.equal(
         resolve.sync('./foo', { basedir: dir }),
-        dir + '/foo.js'
+        path.join(dir, 'foo.js')
     );
 
     t.equal(
         resolve.sync('./foo.js', { basedir: dir }),
-        dir + '/foo.js'
+        path.join(dir, 'foo.js')
     );
 
     t.throws(function () {
@@ -22,66 +23,66 @@ test('foo', function (t) {
 });
 
 test('bar', function (t) {
-    var dir = __dirname + '/resolver';
+    var dir = path.join(__dirname, 'resolver');
 
     t.equal(
-        resolve.sync('foo', { basedir: dir + '/bar' }),
-        dir + '/bar/node_modules/foo/index.js'
+        resolve.sync('foo', { basedir: path.join(dir, 'bar') }),
+        path.join(dir, 'bar/node_modules/foo/index.js')
     );
     t.end();
 });
 
 test('baz', function (t) {
-    var dir = __dirname + '/resolver';
+    var dir = path.join(__dirname, 'resolver');
 
     t.equal(
         resolve.sync('./baz', { basedir: dir }),
-        dir + '/baz/quux.js'
+        path.join(dir, 'baz/quux.js')
     );
     t.end();
 });
 
 test('biz', function (t) {
-    var dir = __dirname + '/resolver/biz/node_modules';
+    var dir = path.join(__dirname, 'resolver/biz/node_modules');
     t.equal(
         resolve.sync('./grux', { basedir: dir }),
-        dir + '/grux/index.js'
+        path.join(dir, 'grux/index.js')
     );
 
     t.equal(
-        resolve.sync('tiv', { basedir: dir + '/grux' }),
-        dir + '/tiv/index.js'
+        resolve.sync('tiv', { basedir: path.join(dir, 'grux') }),
+        path.join(dir, 'tiv/index.js')
     );
 
     t.equal(
-        resolve.sync('grux', { basedir: dir + '/tiv' }),
-        dir + '/grux/index.js'
+        resolve.sync('grux', { basedir: path.join(dir, 'tiv') }),
+        path.join(dir, 'grux/index.js')
     );
     t.end();
 });
 
 test('normalize', function (t) {
-    var dir = __dirname + '/resolver/biz/node_modules/grux';
+    var dir = path.join(__dirname, 'resolver/biz/node_modules/grux');
     t.equal(
         resolve.sync('../grux', { basedir: dir }),
-        dir + '/index.js'
+        path.join(dir, 'index.js')
     );
     t.end();
 });
 
 test('cup', function (t) {
-    var dir = __dirname + '/resolver';
+    var dir = path.join(__dirname, 'resolver');
     t.equal(
         resolve.sync('./cup', {
             basedir: dir,
             extensions: ['.js', '.coffee']
         }),
-        dir + '/cup.coffee'
+        path.join(dir, 'cup.coffee')
     );
 
     t.equal(
         resolve.sync('./cup.coffee', { basedir: dir }),
-        dir + '/cup.coffee'
+        path.join(dir, 'cup.coffee')
     );
 
     t.throws(function () {
@@ -95,10 +96,10 @@ test('cup', function (t) {
 });
 
 test('mug', function (t) {
-    var dir = __dirname + '/resolver';
+    var dir = path.join(__dirname, 'resolver');
     t.equal(
         resolve.sync('./mug', { basedir: dir }),
-        dir + '/mug.js'
+        path.join(dir, 'mug.js')
     );
 
     t.equal(
@@ -106,7 +107,7 @@ test('mug', function (t) {
             basedir: dir,
             extensions: ['.coffee', '.js']
         }),
-        dir + '/mug.coffee'
+        path.join(dir, 'mug.coffee')
     );
 
     t.equal(
@@ -114,23 +115,23 @@ test('mug', function (t) {
             basedir: dir,
             extensions: ['.js', '.coffee']
         }),
-        dir + '/mug.js'
+        path.join(dir, 'mug.js')
     );
 
     t.end();
 });
 
 test('other path', function (t) {
-    var resolverDir = __dirname + '/resolver';
-    var dir = resolverDir + '/bar';
-    var otherDir = resolverDir + '/other_path';
+    var resolverDir = path.join(__dirname, 'resolver');
+    var dir = path.join(resolverDir, 'bar');
+    var otherDir = path.join(resolverDir, 'other_path');
 
     t.equal(
         resolve.sync('root', {
             basedir: dir,
             paths: [otherDir]
         }),
-        resolverDir + '/other_path/root.js'
+        path.join(resolverDir, 'other_path/root.js')
     );
 
     t.equal(
@@ -138,7 +139,7 @@ test('other path', function (t) {
             basedir: dir,
             paths: [otherDir]
         }),
-        resolverDir + '/other_path/lib/other-lib.js'
+        path.join(resolverDir, 'other_path/lib/other-lib.js')
     );
 
     t.throws(function () {
@@ -156,23 +157,23 @@ test('other path', function (t) {
 });
 
 test('incorrect main', function (t) {
-    var resolverDir = __dirname + '/resolver';
-    var dir = resolverDir + '/incorrect_main';
+    var resolverDir = path.join(__dirname, 'resolver');
+    var dir = path.join(resolverDir, 'incorrect_main');
 
     t.equal(
         resolve.sync('./incorrect_main', { basedir: resolverDir }),
-        dir + '/index.js'
+        path.join(dir, 'index.js')
     );
 
     t.end();
 });
 
 test('#25: node modules with the same name as node stdlib modules', function (t) {
-    var resolverDir = __dirname + '/resolver/punycode';
+    var resolverDir = path.join(__dirname, 'resolver/punycode');
 
     t.equal(
         resolve.sync('punycode', { basedir: resolverDir }),
-        resolverDir + '/node_modules/punycode/index.js'
+        path.join(resolverDir, 'node_modules/punycode/index.js')
     );
 
     t.end();
@@ -192,7 +193,7 @@ var stubStatSync = function stubStatSync(fn) {
 };
 
 test('#79 - re-throw non ENOENT errors from stat', function (t) {
-    var dir = __dirname + '/resolver';
+    var dir = path.join(__dirname, 'resolver');
 
     stubStatSync(function () {
         t.throws(function () {
