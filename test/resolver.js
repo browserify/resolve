@@ -176,16 +176,16 @@ test('normalize', function (t) {
 
 test('cup', function (t) {
     t.plan(3);
-    var dir = __dirname + '/resolver';
+    var dir = path.join(__dirname, 'resolver');
 
     resolve('./cup', { basedir: dir, extensions: ['.js', '.coffee'] }, function (err, res) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/cup.coffee');
+        t.equal(res, path.join(dir, 'cup.coffee'));
     });
 
     resolve('./cup.coffee', { basedir: dir }, function (err, res) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/cup.coffee');
+        t.equal(res, path.join(dir, 'cup.coffee'));
     });
 
     resolve('./cup', { basedir: dir, extensions: ['.js'] }, function (err, res) {
@@ -195,37 +195,37 @@ test('cup', function (t) {
 
 test('mug', function (t) {
     t.plan(3);
-    var dir = __dirname + '/resolver';
+    var dir = path.join(__dirname, 'resolver');
 
     resolve('./mug', { basedir: dir }, function (err, res) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/mug.js');
+        t.equal(res, path.join(dir, 'mug.js'));
     });
 
     resolve('./mug', { basedir: dir, extensions: ['.coffee', '.js'] }, function (err, res) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/mug.coffee');
+        t.equal(res, path.join(dir, '/mug.coffee'));
     });
 
     resolve('./mug', { basedir: dir, extensions: ['.js', '.coffee'] }, function (err, res) {
-        t.equal(res, dir + '/mug.js');
+        t.equal(res, path.join(dir, '/mug.js'));
     });
 });
 
 test('other path', function (t) {
     t.plan(4);
-    var resolverDir = __dirname + '/resolver';
-    var dir = resolverDir + '/bar';
-    var otherDir = resolverDir + '/other_path';
+    var resolverDir = path.join(__dirname, 'resolver');
+    var dir = path.join(resolverDir, 'bar');
+    var otherDir = path.join(resolverDir, 'other_path');
 
     resolve('root', { basedir: dir, paths: [otherDir] }, function (err, res) {
         if (err) t.fail(err);
-        t.equal(res, resolverDir + '/other_path/root.js');
+        t.equal(res, path.join(resolverDir, 'other_path/root.js'));
     });
 
     resolve('lib/other-lib', { basedir: dir, paths: [otherDir] }, function (err, res) {
         if (err) t.fail(err);
-        t.equal(res, resolverDir + '/other_path/lib/other-lib.js');
+        t.equal(res, path.join(resolverDir, 'other_path/lib/other-lib.js'));
     });
 
     resolve('root', { basedir: dir }, function (err, res) {
@@ -240,26 +240,26 @@ test('other path', function (t) {
 test('incorrect main', function (t) {
     t.plan(1);
 
-    var resolverDir = __dirname + '/resolver';
-    var dir = resolverDir + '/incorrect_main';
+    var resolverDir = path.join(__dirname, 'resolver');
+    var dir = path.join(resolverDir, 'incorrect_main');
 
     resolve('./incorrect_main', { basedir: resolverDir }, function (err, res, pkg) {
         if (err) t.fail(err);
-        t.equal(res, dir + '/index.js');
+        t.equal(res, path.join(dir, 'index.js'));
     });
 });
 
 test('without basedir', function (t) {
     t.plan(1);
 
-    var dir = __dirname + '/resolver/without_basedir';
-    var tester = require(dir + '/main.js');
+    var dir = path.join(__dirname, 'resolver/without_basedir');
+    var tester = require(path.join(dir, 'main.js'));
 
     tester(t, function (err, res, pkg) {
         if (err) {
             t.fail(err);
         } else {
-            t.equal(res, dir + '/node_modules/mymodule.js');
+            t.equal(res, path.join(dir, 'node_modules/mymodule.js'));
         }
     });
 });
@@ -267,10 +267,10 @@ test('without basedir', function (t) {
 test('#25: node modules with the same name as node stdlib modules', function (t) {
     t.plan(1);
 
-    var resolverDir = __dirname + '/resolver/punycode';
+    var resolverDir = path.join(__dirname, 'resolver/punycode');
 
     resolve('punycode', { basedir: resolverDir }, function (err, res, pkg) {
         if (err) t.fail(err);
-        t.equal(res, resolverDir + '/node_modules/punycode/index.js');
+        t.equal(res, path.join(resolverDir, 'node_modules/punycode/index.js'));
     });
 });
