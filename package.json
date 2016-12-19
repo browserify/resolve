@@ -19,14 +19,18 @@
     "test": "npm run --silent tests-only"
   },
   "devDependencies": {
-    "tape": "^4.6.3",
+    "object-keys": "^1.0.11",
+    "safe-publish-latest": "^1.1.1",
     "tap": "0.4.13",
-    "safe-publish-latest": "^1.1.1"
+    "tape": "^4.6.3"
   },
   "license": "MIT",
   "author": {
     "name": "James Halliday",
     "email": "mail@substack.net",
     "url": "http://substack.net"
+  },
+  "dependencies": {
+    "path-parse": "^1.0.5"
   }
 }
