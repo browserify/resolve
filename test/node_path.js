@@ -43,6 +43,7 @@ test('$NODE_PATH', function (t) {
         ],
         basedir: 'node_path/x'
     }, function (err, res) {
-        t.equal(res, path.resolve(__dirname, '..', 'node_modules/tap/lib/main.js'));
+		var root = require('tap/package.json').main;
+        t.equal(res, path.resolve(__dirname, '..', 'node_modules/tap', root));
     });
 });
