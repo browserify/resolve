@@ -1,7 +1,7 @@
 # resolve
 
 implements the [node `require.resolve()`
-algorithm](http://nodejs.org/docs/v0.4.8/api/all.html#all_Together...)
+algorithm](https://nodejs.org/api/modules.html#modules_all_together)
 such that you can `require.resolve()` on behalf of a file asynchronously and
 synchronously
 
@@ -43,15 +43,15 @@ $ node example/sync.js
 var resolve = require('resolve')
 ```
 
-## resolve(pkg, opts={}, cb)
+## resolve(id, opts={}, cb)
 
-Asynchronously resolve the module path string `pkg` into `cb(err, res)`.
+Asynchronously resolve the module path string `id` into `cb(err, res [, pkg])`, where `pkg` (if defined) is the data from `package.json`.
 
 options are:
 
 * opts.basedir - directory to begin resolving from
 
-* opts.package - package from which module is being loaded
+* opts.package - `package.json` data applicable to the module being loaded
 
 * opts.extensions - array of file extensions to search in order
 
@@ -61,6 +61,12 @@ options are:
 
 * opts.packageFilter - transform the parsed package.json contents before looking
 at the "main" field
+
+* opts.pathFilter(pkg, path, relativePath) - transform a path within a package
+  * pkg - package data
+  * path - the path being resolved
+  * relativePath - the path relative from the package.json location
+  * returns - a relative path that will be joined from the package.json location
 
 * opts.paths - require.paths array to use if nothing is found on the normal
 node_modules recursive walk (probably don't use this)
@@ -86,10 +92,10 @@ default `opts` values:
 }
 ```
 
-## resolve.sync(pkg, opts)
+## resolve.sync(id, opts)
 
-Synchronously resolve the module path string `pkg`, returning the result and
-throwing an error when `pkg` can't be resolved.
+Synchronously resolve the module path string `id`, returning the result and
+throwing an error when `id` can't be resolved.
 
 options are:
 
@@ -101,8 +107,8 @@ options are:
 
 * opts.isFile - function to synchronously test whether a file exists
 
-* opts.packageFilter - transform the parsed package.json contents before looking
-at the "main" field
+* `opts.packageFilter(pkg, pkgfile)` - transform the parsed package.json
+* contents before looking at the "main" field
 
 * opts.paths - require.paths array to use if nothing is found on the normal
 node_modules recursive walk (probably don't use this)
