@@ -15,10 +15,14 @@
   ],
   "scripts": {
     "prepublish": "safe-publish-latest",
+    "lint": "eslint .",
     "tests-only": "tape test/*.js",
+    "pretest": "npm run lint",
     "test": "npm run --silent tests-only"
   },
   "devDependencies": {
+    "@ljharb/eslint-config": "^11.0.0",
+    "eslint": "^3.17.1",
     "object-keys": "^1.0.11",
     "safe-publish-latest": "^1.1.1",
     "tap": "0.4.13",
