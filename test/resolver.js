@@ -294,3 +294,34 @@ test('#52 - incorrectly resolves module-paths like "./someFolder/" when there is
         t.equal(res, path.join(dir, 'same_names/foo/index.js'));
     });
 });
+
+test('async: #121 - treating an existing file as a dir when no basedir', function (t) {
+    var testFile = path.basename(__filename);
+
+    t.test('sanity check', function (st) {
+        st.plan(1);
+        resolve('./' + testFile, function (err, res, pkg) {
+            if (err) t.fail(err);
+            st.equal(res, __filename, 'sanity check');
+        });
+    });
+
+    t.test('with a fake directory', function (st) {
+        st.plan(4);
+
+        resolve('./' + testFile + '/blah', function (err, res, pkg) {
+            st.ok(err, 'there is an error');
+            st.notOk(res, 'no result');
+
+            st.equal(err && err.code, 'MODULE_NOT_FOUND', 'error code matches require.resolve');
+            st.equal(
+                err && err.message,
+                'Cannot find module \'./' + testFile + '/blah\' from \'' + __dirname + '\'',
+                'can not find nonexistent module'
+            );
+            st.end();
+        });
+    });
+
+    t.end();
+});
