@@ -310,6 +310,23 @@ test('async: #121 - treating an existing file as a dir when no basedir', functio
         });
     });
 
+    t.test('with a trailing slash', function (st) {
+        st.plan(4);
+
+        resolve('./' + testFile + '/', function (err, res, pkg) {
+            st.ok(err, 'there is an error');
+            st.notOk(res, 'no result');
+
+            st.equal(err && err.code, 'MODULE_NOT_FOUND', 'error code matches require.resolve');
+            st.equal(
+                err && err.message,
+                'Cannot find module \'./' + testFile + '/\' from \'' + __dirname + '\'',
+                'can not find nonexistent module'
+            );
+            st.end();
+        });
+    });
+
     t.test('with a fake directory', function (st) {
         st.plan(4);
 
