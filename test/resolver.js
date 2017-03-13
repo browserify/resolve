@@ -9,19 +9,19 @@ test('async foo', function (t) {
     resolve('./foo', { basedir: dir }, function (err, res, pkg) {
         if (err) t.fail(err);
         t.equal(res, path.join(dir, 'foo.js'));
-        t.equal(pkg.name, 'resolve');
+        t.equal(pkg && pkg.name, 'resolve');
     });
 
     resolve('./foo.js', { basedir: dir }, function (err, res, pkg) {
         if (err) t.fail(err);
         t.equal(res, path.join(dir, 'foo.js'));
-        t.equal(pkg.name, 'resolve');
+        t.equal(pkg && pkg.name, 'resolve');
     });
 
     resolve('./foo', { basedir: dir, 'package': { main: 'resolver' } }, function (err, res, pkg) {
         if (err) t.fail(err);
         t.equal(res, path.join(dir, 'foo.js'));
-        t.equal(pkg.main, 'resolver');
+        t.equal(pkg && pkg.main, 'resolver');
     });
 
     resolve('./foo.js', { basedir: dir, 'package': { main: 'resolver' } }, function (err, res, pkg) {
