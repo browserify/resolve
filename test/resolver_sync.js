@@ -204,3 +204,16 @@ test('#79 - re-throw non ENOENT errors from stat', function (t) {
     t.end();
 });
 
+test('#52 - incorrectly resolves module-paths like "./someFolder/" when there is a file of the same name', function (t) {
+    var dir = path.join(__dirname, 'resolver');
+
+    t.equal(
+        resolve.sync('./foo', { basedir: path.join(dir, 'same_names') }),
+        path.join(dir, 'same_names/foo.js')
+    );
+    t.equal(
+        resolve.sync('./foo/', { basedir: path.join(dir, 'same_names') }),
+        path.join(dir, 'same_names/foo/index.js')
+    );
+    t.end();
+});

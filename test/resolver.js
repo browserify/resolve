@@ -278,3 +278,19 @@ test('#25: node modules with the same name as node stdlib modules', function (t)
         t.equal(res, path.join(resolverDir, 'node_modules/punycode/index.js'));
     });
 });
+
+test('#52 - incorrectly resolves module-paths like "./someFolder/" when there is a file of the same name', function (t) {
+    t.plan(2);
+
+    var dir = path.join(__dirname, 'resolver');
+
+    resolve('./foo', { basedir: path.join(dir, 'same_names') }, function (err, res, pkg) {
+        if (err) t.fail(err);
+        t.equal(res, path.join(dir, 'same_names/foo.js'));
+    });
+
+    resolve('./foo/', { basedir: path.join(dir, 'same_names') }, function (err, res, pkg) {
+        if (err) t.fail(err);
+        t.equal(res, path.join(dir, 'same_names/foo/index.js'));
+    });
+});
