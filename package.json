@@ -20,6 +20,10 @@
     "pretest": "npm run lint",
     "test": "npm run --silent tests-only"
   },
+  "files": [
+    "lib",
+    "index.js"
+  ],
   "devDependencies": {
     "@ljharb/eslint-config": "^11.0.0",
     "eslint": "^3.19.0",
