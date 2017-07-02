@@ -36,5 +36,9 @@
   },
   "dependencies": {
     "path-parse": "^1.0.5"
-  }
+  },
+  "files": [
+    "lib",
+    "index.js"
+  ]
 }
