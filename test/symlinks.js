@@ -17,7 +17,7 @@ try {
 test('symlink', function (t) {
     t.plan(1);
 
-    resolve('foo', { basedir: symlinkDir, preserveSymlinks: false }, function (err, res, pkg) {
+    resolve('foo', { basedir: symlinkDir }, function (err, res, pkg) {
         if (err) t.fail(err);
         t.equal(res, path.join(__dirname, 'resolver', 'symlinked', '_', 'node_modules', 'foo.js'));
     });
@@ -26,7 +26,7 @@ test('symlink', function (t) {
 test('sync symlink when preserveSymlinks = true', function (t) {
     t.plan(4);
 
-    resolve('foo', { basedir: symlinkDir }, function (err, res, pkg) {
+    resolve('foo', { basedir: symlinkDir, preserveSymlinks: true }, function (err, res, pkg) {
         t.ok(err, 'there is an error');
         t.notOk(res, 'no result');
 
@@ -48,7 +48,7 @@ test('sync symlink', function (t) {
 
 test('sync symlink when preserveSymlinks = true', function (t) {
     t.throws(function () {
-        resolve.sync('foo', { basedir: symlinkDir });
+        resolve.sync('foo', { basedir: symlinkDir, preserveSymlinks: true });
     }, /Cannot find module 'foo'/);
     t.end();
 });
