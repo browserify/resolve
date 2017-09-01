@@ -4,7 +4,7 @@
   "version": "1.4.0",
   "repository": {
     "type": "git",
-    "url": "git://github.com/substack/node-resolve.git"
+    "url": "git://github.com/browserify/node-resolve.git"
   },
   "main": "index.js",
   "keywords": [
