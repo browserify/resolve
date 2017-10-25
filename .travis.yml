@@ -13,6 +13,7 @@ node_js:
   - "0.12"
   - "0.10"
   - "0.8"
+  - "0.6"
 before_install:
   - 'nvm install-latest-npm'
 install:
@@ -163,8 +164,6 @@ matrix:
     - node_js: "0.11"
       env: TEST=true ALLOW_FAILURE=true
     - node_js: "0.9"
-      env: TEST=true ALLOW_FAILURE=true
-    - node_js: "0.6"
       env: TEST=true ALLOW_FAILURE=true
     - node_js: "0.4"
       env: TEST=true ALLOW_FAILURE=true
