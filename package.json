@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@ljharb/eslint-config": "^12.2.1",
-    "eslint": "^4.9.0",
+    "eslint": "^4.14.0",
     "object-keys": "^1.0.11",
     "safe-publish-latest": "^1.1.1",
     "tap": "0.4.13",
