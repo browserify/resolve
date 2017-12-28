@@ -1,5 +1,6 @@
 {
     "assert": true,
+    "async_hooks": ">= 8",
     "buffer_ieee754": "< 0.9.7",
     "buffer": true,
     "child_process": true,
