@@ -2,7 +2,7 @@ var test = require('tape');
 var resolve = require('../');
 var path = require('path');
 
-test('shadowed core module names agree with require.resolve()', function (t) {
+test('shadowed core modules still return core module', function (t) {
     t.plan(2);
 
     resolve('util', { basedir: path.join(__dirname, 'shadowed_core') }, function (err, res) {
@@ -11,7 +11,7 @@ test('shadowed core module names agree with require.resolve()', function (t) {
     });
 });
 
-test('shadowed core module names can be accessed with `name/`', function (t) {
+test('shadowed core modules return shadow when appending `/`', function (t) {
     t.plan(2);
 
     resolve('util/', { basedir: path.join(__dirname, 'shadowed_core') }, function (err, res) {
