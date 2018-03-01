@@ -55,7 +55,7 @@ test('bar', function (t) {
     resolve('foo', { basedir: dir + '/bar', 'package': { main: 'bar' } }, function (err, res, pkg) {
         if (err) t.fail(err);
         t.equal(res, path.join(dir, 'bar/node_modules/foo/index.js'));
-        t.equal(pkg, undefined);
+        t.equal(pkg.main, 'bar');
     });
 });
 
@@ -113,7 +113,7 @@ test('biz', function (t) {
     resolve('tiv', { basedir: dir + '/grux', 'package': { main: 'grux' } }, function (err, res, pkg) {
         if (err) t.fail(err);
         t.equal(res, path.join(dir, 'tiv/index.js'));
-        t.equal(pkg, undefined);
+        t.equal(pkg.main, 'grux');
     });
 
     resolve('tiv', { basedir: dir + '/garply' }, function (err, res, pkg) {
@@ -125,7 +125,7 @@ test('biz', function (t) {
     resolve('tiv', { basedir: dir + '/garply', 'package': { main: './lib' } }, function (err, res, pkg) {
         if (err) t.fail(err);
         t.equal(res, path.join(dir, 'tiv/index.js'));
-        t.equal(pkg, undefined);
+        t.equal(pkg.main, './lib');
     });
 
     resolve('grux', { basedir: dir + '/tiv' }, function (err, res, pkg) {
@@ -137,7 +137,7 @@ test('biz', function (t) {
     resolve('grux', { basedir: dir + '/tiv', 'package': { main: 'tiv' } }, function (err, res, pkg) {
         if (err) t.fail(err);
         t.equal(res, path.join(dir, 'grux/index.js'));
-        t.equal(pkg, undefined);
+        t.equal(pkg.main, 'tiv');
     });
 
     resolve('garply', { basedir: dir + '/tiv' }, function (err, res, pkg) {
