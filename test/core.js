@@ -52,13 +52,14 @@ test('core modules', function (t) {
         st.end();
     });
 
-    t.test('core via buildinModules list', { skip: !resolve.core.module }, function (st) {
+    t.test('core via builtinModules list', { skip: !resolve.core.module }, function (st) {
         var libs = require('module').builtinModules;
         if (!libs) {
             st.skip('module.builtinModules does not exist');
             return st.end();
         }
         var blacklist = [
+            '_debug_agent',
             'v8/tools/tickprocessor-driver',
             'v8/tools/SourceMap',
             'v8/tools/tickprocessor',
