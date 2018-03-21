@@ -137,6 +137,17 @@ test('mug', function (t) {
     t.end();
 });
 
+test('index package extension', function (t) {
+    var dir = path.join(__dirname, 'resolver/bir');
+
+    t.equal(resolve.sync('bar', {
+        basedir: dir,
+        extensions: ['.coffee', '.js']
+    }), path.join(dir, 'node_modules/bar/index.coffee'));
+
+    t.end();
+});
+
 test('other path', function (t) {
     var resolverDir = path.join(__dirname, 'resolver');
     var dir = path.join(resolverDir, 'bar');
