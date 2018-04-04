@@ -86,11 +86,13 @@ default `opts` values:
     basedir: __dirname,
     extensions: [ '.js' ],
     readFile: fs.readFile,
-    isFile: function (file, cb) {
+    isFile: function isFile(file, cb) {
         fs.stat(file, function (err, stat) {
-            if (err && err.code === 'ENOENT') cb(null, false)
-            else if (err) cb(err)
-            else cb(null, stat.isFile())
+            if (!err) {
+                return cb(null, stat.isFile() || stat.isFIFO());
+            }
+            if (err.code === 'ENOENT' || err.code === 'ENOTDIR') return cb(null, false);
+            return cb(err);
         });
     },
     moduleDirectory: 'node_modules',
@@ -134,9 +136,14 @@ default `opts` values:
     basedir: __dirname,
     extensions: [ '.js' ],
     readFileSync: fs.readFileSync,
-    isFile: function (file) {
-        try { return fs.statSync(file).isFile() }
-        catch (e) { return false }
+    isFile: function isFile(file) {
+        try {
+            var stat = fs.statSync(file);
+        } catch (e) {
+            if (e && (e.code === 'ENOENT' || e.code === 'ENOTDIR')) return false;
+            throw e;
+        }
+        return stat.isFile() || stat.isFIFO();
     },
     moduleDirectory: 'node_modules',
     preserveSymlinks: true
