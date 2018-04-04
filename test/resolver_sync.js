@@ -265,3 +265,15 @@ test('sync dot slash main', function (t) {
     t.ok(new Date() - start < 50, 'resolve.sync timedout');
     t.end();
 });
+
+test('not a directory', function (t) {
+    var path = './foo';
+    try {
+        resolve.sync(path, { basedir: __filename });
+        t.fail();
+    } catch (err) {
+        t.ok(err, 'a non-directory errors');
+        t.equal(err && err.message, 'Cannot find module \'' + path + "' from '" + __filename + "'");
+    }
+    t.end();
+});

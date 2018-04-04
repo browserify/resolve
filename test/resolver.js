@@ -347,3 +347,16 @@ test('async dot slash main', function (t) {
         t.end();
     });
 });
+
+test('not a directory', function (t) {
+    t.plan(5);
+    var path = './foo';
+    resolve(path, { basedir: __filename }, function (err, res, pkg) {
+        t.ok(err, 'a non-directory errors');
+        t.equal(arguments.length, 1);
+        t.equal(res, undefined);
+        t.equal(pkg, undefined);
+
+        t.equal(err && err.message, 'Cannot find module \'' + path + "' from '" + __filename + "'");
+    });
+});
