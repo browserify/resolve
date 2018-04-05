@@ -50,9 +50,15 @@ test('#62: deep module references and the pathFilter', function (t) {
     });
 
     t.test('deep/ref alt', function (st) {
-        st.plan(4);
+        st.plan(8);
 
         var pathFilter = pathFilterFactory(st);
+
+        var res = resolve.sync(
+            'deep/ref',
+            { basedir: resolverDir, pathFilter: pathFilter }
+        );
+        st.equal(res, path.join(resolverDir, 'node_modules/deep/alt.js'));
 
         resolve(
             'deep/ref',
@@ -60,6 +66,7 @@ test('#62: deep module references and the pathFilter', function (t) {
             function (err, res, pkg) {
                 if (err) st.fail(err);
                 st.equal(res, path.join(resolverDir, 'node_modules/deep/alt.js'));
+                st.end();
             }
         );
     });
