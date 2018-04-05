@@ -115,6 +115,12 @@ options are:
 
 * `opts.packageFilter(pkg, pkgfile)` - transform the parsed package.json contents before looking at the "main" field
 
+* `opts.pathFilter(pkg, path, relativePath)` - transform a path within a package
+  * pkg - package data
+  * path - the path being resolved
+  * relativePath - the path relative from the package.json location
+  * returns - a relative path that will be joined from the package.json location
+
 * opts.paths - require.paths array to use if nothing is found on the normal `node_modules` recursive walk (probably don't use this)
 
 * opts.moduleDirectory - directory (or directories) in which to recursively look for modules. default: `"node_modules"`
