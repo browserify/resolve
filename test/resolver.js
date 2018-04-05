@@ -360,3 +360,28 @@ test('not a directory', function (t) {
         t.equal(err && err.message, 'Cannot find module \'' + path + "' from '" + __filename + "'");
     });
 });
+
+test('browser field in package.json', function (t) {
+    t.plan(3);
+
+    var dir = path.join(__dirname, 'resolver');
+    resolve(
+        './browser_field',
+        {
+            basedir: dir,
+            packageFilter: function packageFilter(pkg) {
+                if (pkg.browser) {
+                    pkg.main = pkg.browser;
+                    delete pkg.browser;
+                }
+                return pkg;
+            }
+        },
+        function (err, res, pkg) {
+            if (err) t.fail(err);
+            t.equal(res, path.join(dir, 'browser_field', 'b.js'));
+            t.equal(pkg && pkg.main, 'b');
+            t.equal(pkg && pkg.browser, undefined);
+        }
+    );
+});

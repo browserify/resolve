@@ -277,3 +277,19 @@ test('not a directory', function (t) {
     }
     t.end();
 });
+
+test('browser field in package.json', function (t) {
+    var dir = path.join(__dirname, 'resolver');
+    var res = resolve.sync('./browser_field', {
+        basedir: dir,
+        packageFilter: function packageFilter(pkg) {
+            if (pkg.browser) {
+                pkg.main = pkg.browser;
+                delete pkg.browser;
+            }
+            return pkg;
+        }
+    });
+    t.equal(res, path.join(dir, 'browser_field', 'b.js'));
+    t.end();
+});
