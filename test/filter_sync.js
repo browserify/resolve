@@ -7,9 +7,9 @@ test('filter', function (t) {
     var packageFilterArgs;
     var res = resolve.sync('./baz', {
         basedir: dir,
-        packageFilter: function (pkg, dir) {
+        packageFilter: function (pkg, pkgfile, dir) {
             pkg.main = 'doom';
-            packageFilterArgs = [pkg, dir];
+            packageFilterArgs = [pkg, pkgfile, dir];
             return pkg;
         }
     });
@@ -20,7 +20,14 @@ test('filter', function (t) {
     t.equal(packageData.main, 'doom', 'package "main" was altered');
 
     var packageFile = packageFilterArgs[1];
-    t.equal(packageFile, path.join(dir, 'baz'), 'second packageFilter argument is "dir"');
+    t.equal(
+        packageFile,
+        path.join(dir, 'baz/package.json'),
+        'second packageFilter argument is "pkgfile"'
+    );
+
+    var packageFileDir = packageFilterArgs[2];
+    t.equal(packageFileDir, path.join(dir, 'baz'), 'third packageFilter argument is "dir"');
 
     t.end();
 });
