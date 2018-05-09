@@ -52,7 +52,7 @@
     "sys": true,
     "timers": true,
     "_tls_common": ">= 0.11.13",
-    "_tls_legacy": ">= 0.11.3",
+    "_tls_legacy": ">= 0.11.3 && < 10",
     "_tls_wrap": ">= 0.11.3",
     "tls": true,
     "tty": true,
