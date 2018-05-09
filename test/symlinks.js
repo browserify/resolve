@@ -10,15 +10,17 @@ try {
 try {
     fs.symlinkSync('./_/symlink_target', symlinkDir, 'dir');
 } catch (err) {
-    // if fails then it is probably on Windows and lets try to create a junction
-    fs.symlinkSync(path.join(__dirname, 'resolver', 'symlinked', '_', 'symlink_target') + '\\', symlinkDir, 'junction');
+    if (err.code !== 'EEXIST') {
+        // if fails then it is probably on Windows and lets try to create a junction
+        fs.symlinkSync(path.join(__dirname, 'resolver', 'symlinked', '_', 'symlink_target') + '\\', symlinkDir, 'junction');
+    }
 }
 
 test('symlink', function (t) {
-    t.plan(1);
+    t.plan(2);
 
     resolve('foo', { basedir: symlinkDir }, function (err, res, pkg) {
-        if (err) t.fail(err);
+        t.error(err);
         t.equal(res, path.join(__dirname, 'resolver', 'symlinked', '_', 'node_modules', 'foo.js'));
     });
 });
