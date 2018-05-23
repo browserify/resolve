@@ -3,7 +3,7 @@ var test = require('tape');
 var resolve = require('../');
 
 test('async foo', function (t) {
-    t.plan(10);
+    t.plan(11);
     var dir = path.join(__dirname, 'resolver');
 
     resolve('./foo', { basedir: dir }, function (err, res, pkg) {
@@ -181,7 +181,7 @@ test('normalize', function (t) {
 });
 
 test('cup', function (t) {
-    t.plan(4);
+    t.plan(5);
     var dir = path.join(__dirname, 'resolver');
 
     resolve('./cup', { basedir: dir, extensions: ['.js', '.coffee'] }, function (err, res) {
@@ -200,8 +200,7 @@ test('cup', function (t) {
     });
 
     // Test that filename is reported as the "from" value when passed.
-    resolve('./cup', { basedir: dir, extensions: [ '.js' ], filename: path.join(dir, 'cupboard.js') },
-    function (err, res) {
+    resolve('./cup', { basedir: dir, extensions: ['.js'], filename: path.join(dir, 'cupboard.js') }, function (err, res) {
         t.equal(err.message, "Cannot find module './cup' from '" + path.join(dir, 'cupboard.js') + "'");
     });
 });

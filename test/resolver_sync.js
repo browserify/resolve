@@ -1,7 +1,6 @@
 var path = require('path');
 var test = require('tape');
 var resolve = require('../');
-var path = require('path');
 
 test('foo', function (t) {
     var dir = path.join(__dirname, 'resolver');
