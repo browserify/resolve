@@ -180,17 +180,6 @@ test('incorrect main', function (t) {
     t.end();
 });
 
-test('#25: node modules with the same name as node stdlib modules', function (t) {
-    var resolverDir = path.join(__dirname, 'resolver/punycode');
-
-    t.equal(
-        resolve.sync('punycode', { basedir: resolverDir }),
-        path.join(resolverDir, 'node_modules/punycode/index.js')
-    );
-
-    t.end();
-});
-
 var stubStatSync = function stubStatSync(fn) {
     var fs = require('fs');
     var statSync = fs.statSync;
@@ -275,5 +264,33 @@ test('sync dot slash main', function (t) {
     var start = new Date();
     t.equal(resolve.sync('./resolver/dot_slash_main'), path.join(__dirname, 'resolver/dot_slash_main/index.js'));
     t.ok(new Date() - start < 50, 'resolve.sync timedout');
+    t.end();
+});
+
+test('not a directory', function (t) {
+    var path = './foo';
+    try {
+        resolve.sync(path, { basedir: __filename });
+        t.fail();
+    } catch (err) {
+        t.ok(err, 'a non-directory errors');
+        t.equal(err && err.message, 'Cannot find module \'' + path + "' from '" + __filename + "'");
+    }
+    t.end();
+});
+
+test('browser field in package.json', function (t) {
+    var dir = path.join(__dirname, 'resolver');
+    var res = resolve.sync('./browser_field', {
+        basedir: dir,
+        packageFilter: function packageFilter(pkg) {
+            if (pkg.browser) {
+                pkg.main = pkg.browser;
+                delete pkg.browser;
+            }
+            return pkg;
+        }
+    });
+    t.equal(res, path.join(dir, 'browser_field', 'b.js'));
     t.end();
 });

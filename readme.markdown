@@ -5,7 +5,7 @@ algorithm](https://nodejs.org/api/modules.html#modules_all_together)
 such that you can `require.resolve()` on behalf of a file asynchronously and
 synchronously
 
-[![build status](https://secure.travis-ci.org/substack/node-resolve.png)](http://travis-ci.org/substack/node-resolve)
+[![build status](https://secure.travis-ci.org/browserify/node-resolve.png)](http://travis-ci.org/browserify/node-resolve)
 
 # example
 
@@ -59,19 +59,23 @@ options are:
 
 * opts.isFile - function to asynchronously test whether a file exists
 
-* opts.packageFilter - transform the parsed package.json contents before looking
-at the "main" field
+* `opts.packageFilter(pkg, pkgfile, dir)` - transform the parsed package.json contents before looking at the "main" field
+  * pkg - package data
+  * pkgfile - path to package.json
+  * dir - directory that contains package.json
 
-* opts.pathFilter(pkg, path, relativePath) - transform a path within a package
+* `opts.pathFilter(pkg, path, relativePath)` - transform a path within a package
   * pkg - package data
   * path - the path being resolved
   * relativePath - the path relative from the package.json location
   * returns - a relative path that will be joined from the package.json location
 
-* opts.paths - require.paths array to use if nothing is found on the normal
-node_modules recursive walk (probably don't use this)
+* opts.paths - require.paths array to use if nothing is found on the normal `node_modules` recursive walk (probably don't use this)
 
 * opts.moduleDirectory - directory (or directories) in which to recursively look for modules. default: `"node_modules"`
+
+* opts.preserveSymlinks - if true, doesn't resolve `basedir` to real path before resolving.
+This is the way Node resolves dependencies when executed with the [--preserve-symlinks](https://nodejs.org/api/all.html#cli_preserve_symlinks) flag.
 
 default `opts` values:
 
@@ -81,14 +85,17 @@ default `opts` values:
     basedir: __dirname,
     extensions: [ '.js' ],
     readFile: fs.readFile,
-    isFile: function (file, cb) {
+    isFile: function isFile(file, cb) {
         fs.stat(file, function (err, stat) {
-            if (err && err.code === 'ENOENT') cb(null, false)
-            else if (err) cb(err)
-            else cb(null, stat.isFile())
+            if (!err) {
+                return cb(null, stat.isFile() || stat.isFIFO());
+            }
+            if (err.code === 'ENOENT' || err.code === 'ENOTDIR') return cb(null, false);
+            return cb(err);
         });
     },
-    moduleDirectory: 'node_modules'
+    moduleDirectory: 'node_modules',
+    preserveSymlinks: false
 }
 ```
 
@@ -107,13 +114,23 @@ options are:
 
 * opts.isFile - function to synchronously test whether a file exists
 
-* `opts.packageFilter(pkg, pkgfile)` - transform the parsed package.json
-* contents before looking at the "main" field
+* `opts.packageFilter(pkg, pkgfile, dir)` - transform the parsed package.json contents before looking at the "main" field
+  * pkg - package data
+  * pkgfile - path to package.json
+  * dir - directory that contains package.json
 
-* opts.paths - require.paths array to use if nothing is found on the normal
-node_modules recursive walk (probably don't use this)
+* `opts.pathFilter(pkg, path, relativePath)` - transform a path within a package
+  * pkg - package data
+  * path - the path being resolved
+  * relativePath - the path relative from the package.json location
+  * returns - a relative path that will be joined from the package.json location
+
+* opts.paths - require.paths array to use if nothing is found on the normal `node_modules` recursive walk (probably don't use this)
 
 * opts.moduleDirectory - directory (or directories) in which to recursively look for modules. default: `"node_modules"`
+
+* opts.preserveSymlinks - if true, doesn't resolve `basedir` to real path before resolving.
+This is the way Node resolves dependencies when executed with the [--preserve-symlinks](https://nodejs.org/api/all.html#cli_preserve_symlinks) flag.
 
 default `opts` values:
 
@@ -123,11 +140,17 @@ default `opts` values:
     basedir: __dirname,
     extensions: [ '.js' ],
     readFileSync: fs.readFileSync,
-    isFile: function (file) {
-        try { return fs.statSync(file).isFile() }
-        catch (e) { return false }
+    isFile: function isFile(file) {
+        try {
+            var stat = fs.statSync(file);
+        } catch (e) {
+            if (e && (e.code === 'ENOENT' || e.code === 'ENOTDIR')) return false;
+            throw e;
+        }
+        return stat.isFile() || stat.isFIFO();
     },
-    moduleDirectory: 'node_modules'
+    moduleDirectory: 'node_modules',
+    preserveSymlinks: false
 }
 ````
 
