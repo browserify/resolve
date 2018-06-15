@@ -77,7 +77,8 @@ options are:
 * opts.preserveSymlinks - if true, doesn't resolve `basedir` to real path before resolving.
 This is the way Node resolves dependencies when executed with the [--preserve-symlinks](https://nodejs.org/api/all.html#cli_preserve_symlinks) flag.
 
-default `opts` values:
+* opts.priority - priority to resolve file. Default value is main field. Use `module` to replace when you need.
+  default `opts` values:
 
 ```js
 {
