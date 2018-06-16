@@ -273,7 +273,7 @@ test('not a directory', function (t) {
         t.fail();
     } catch (err) {
         t.ok(err, 'a non-directory errors');
-        t.equal(err && err.message, 'Cannot find module \'' + path + "' from '" + __filename + "'");
+        t.equal(err && err.message, 'Provided basedir "' + __filename + '" is not a directory');
     }
     t.end();
 });

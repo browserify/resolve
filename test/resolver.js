@@ -356,7 +356,7 @@ test('not a directory', function (t) {
         t.equal(res, undefined);
         t.equal(pkg, undefined);
 
-        t.equal(err && err.message, 'Cannot find module \'' + path + "' from '" + __filename + "'");
+        t.equal(err && err.message, 'Provided basedir "' + __filename + '" is not a directory');
     });
 });
 
