@@ -36,6 +36,21 @@ test('async foo', function (t) {
     });
 });
 
+test('non-default extensions', function (t) {
+    t.plan(2);
+    var dir = path.join(__dirname, 'resolver');
+
+    resolve('./foo-json', { basedir: dir }, function (err, res, pkg) {
+        if (err) t.fail(err);
+        t.equal(res, path.join(dir, 'foo-json.json'));
+    });
+
+    resolve('./foo-node', { basedir: dir }, function (err, res, pkg) {
+        if (err) t.fail(err);
+        t.equal(res, path.join(dir, 'foo-node.node'));
+    });
+});
+
 test('bar', function (t) {
     t.plan(6);
     var dir = path.join(__dirname, 'resolver');
