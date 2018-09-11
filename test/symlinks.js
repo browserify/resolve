@@ -10,15 +10,17 @@ try {
 try {
     fs.symlinkSync('./_/symlink_target', symlinkDir, 'dir');
 } catch (err) {
-    // if fails then it is probably on Windows and lets try to create a junction
-    fs.symlinkSync(path.join(__dirname, 'resolver', 'symlinked', '_', 'symlink_target') + '\\', symlinkDir, 'junction');
+    if (err.code !== 'EEXIST') {
+        // if fails then it is probably on Windows and lets try to create a junction
+        fs.symlinkSync(path.join(__dirname, 'resolver', 'symlinked', '_', 'symlink_target') + '\\', symlinkDir, 'junction');
+    }
 }
 
 test('symlink', function (t) {
-    t.plan(1);
+    t.plan(2);
 
-    resolve('foo', { basedir: symlinkDir, preserveSymlinks: false }, function (err, res, pkg) {
-        if (err) t.fail(err);
+    resolve('foo', { basedir: symlinkDir }, function (err, res, pkg) {
+        t.error(err);
         t.equal(res, path.join(__dirname, 'resolver', 'symlinked', '_', 'node_modules', 'foo.js'));
     });
 });
@@ -26,7 +28,7 @@ test('symlink', function (t) {
 test('sync symlink when preserveSymlinks = true', function (t) {
     t.plan(4);
 
-    resolve('foo', { basedir: symlinkDir }, function (err, res, pkg) {
+    resolve('foo', { basedir: symlinkDir, preserveSymlinks: true }, function (err, res, pkg) {
         t.ok(err, 'there is an error');
         t.notOk(res, 'no result');
 
@@ -41,14 +43,16 @@ test('sync symlink when preserveSymlinks = true', function (t) {
 
 test('sync symlink', function (t) {
     var start = new Date();
-    t.equal(resolve.sync('foo', { basedir: symlinkDir, preserveSymlinks: false }), path.join(__dirname, 'resolver', 'symlinked', '_', 'node_modules', 'foo.js'));
+    t.doesNotThrow(function () {
+        t.equal(resolve.sync('foo', { basedir: symlinkDir, preserveSymlinks: false }), path.join(__dirname, 'resolver', 'symlinked', '_', 'node_modules', 'foo.js'));
+    });
     t.ok(new Date() - start < 50, 'resolve.sync timedout');
     t.end();
 });
 
 test('sync symlink when preserveSymlinks = true', function (t) {
     t.throws(function () {
-        resolve.sync('foo', { basedir: symlinkDir });
+        resolve.sync('foo', { basedir: symlinkDir, preserveSymlinks: true });
     }, /Cannot find module 'foo'/);
     t.end();
 });
