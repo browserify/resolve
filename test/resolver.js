@@ -3,7 +3,7 @@ var test = require('tape');
 var resolve = require('../');
 
 test('async foo', function (t) {
-    t.plan(10);
+    t.plan(12);
     var dir = path.join(__dirname, 'resolver');
 
     resolve('./foo', { basedir: dir }, function (err, res, pkg) {
@@ -30,9 +30,19 @@ test('async foo', function (t) {
         t.equal(pkg.main, 'resolver');
     });
 
+    resolve('./foo', { basedir: dir, filename: path.join(dir, 'baz.js') }, function (err, res) {
+        if (err) t.fail(err);
+        t.equal(res, path.join(dir, 'foo.js'));
+    });
+
     resolve('foo', { basedir: dir }, function (err) {
         t.equal(err.message, "Cannot find module 'foo' from '" + path.resolve(dir) + "'");
         t.equal(err.code, 'MODULE_NOT_FOUND');
+    });
+
+    // Test that filename is reported as the "from" value when passed.
+    resolve('foo', { basedir: dir, filename: path.join(dir, 'baz.js') }, function (err) {
+        t.equal(err.message, "Cannot find module 'foo' from '" + path.join(dir, 'baz.js') + "'");
     });
 });
 
@@ -176,7 +186,7 @@ test('normalize', function (t) {
 });
 
 test('cup', function (t) {
-    t.plan(4);
+    t.plan(5);
     var dir = path.join(__dirname, 'resolver');
 
     resolve('./cup', { basedir: dir, extensions: ['.js', '.coffee'] }, function (err, res) {
@@ -192,6 +202,11 @@ test('cup', function (t) {
     resolve('./cup', { basedir: dir, extensions: ['.js'] }, function (err, res) {
         t.equal(err.message, "Cannot find module './cup' from '" + path.resolve(dir) + "'");
         t.equal(err.code, 'MODULE_NOT_FOUND');
+    });
+
+    // Test that filename is reported as the "from" value when passed.
+    resolve('./cup', { basedir: dir, extensions: ['.js'], filename: path.join(dir, 'cupboard.js') }, function (err, res) {
+        t.equal(err.message, "Cannot find module './cup' from '" + path.join(dir, 'cupboard.js') + "'");
     });
 });
 
@@ -265,17 +280,6 @@ test('without basedir', function (t) {
         } else {
             t.equal(res, path.join(dir, 'node_modules/mymodule.js'));
         }
-    });
-});
-
-test('#25: node modules with the same name as node stdlib modules', function (t) {
-    t.plan(1);
-
-    var resolverDir = path.join(__dirname, 'resolver/punycode');
-
-    resolve('punycode', { basedir: resolverDir }, function (err, res, pkg) {
-        if (err) t.fail(err);
-        t.equal(res, path.join(resolverDir, 'node_modules/punycode/index.js'));
     });
 });
 
@@ -357,7 +361,7 @@ test('not a directory', function (t) {
         t.equal(res, undefined);
         t.equal(pkg, undefined);
 
-        t.equal(err && err.message, 'Cannot find module \'' + path + "' from '" + __filename + "'");
+        t.equal(err && err.message, 'Provided basedir "' + __filename + '" is not a directory');
     });
 });
 

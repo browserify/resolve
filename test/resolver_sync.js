@@ -15,9 +15,25 @@ test('foo', function (t) {
         path.join(dir, 'foo.js')
     );
 
+    t.equal(
+        resolve.sync('./foo.js', { basedir: dir, filename: path.join(dir, 'bar.js') }),
+        path.join(dir, 'foo.js')
+    );
+
     t.throws(function () {
         resolve.sync('foo', { basedir: dir });
     });
+
+    // Test that filename is reported as the "from" value when passed.
+    t.throws(
+        function () {
+            resolve.sync('foo', { basedir: dir, filename: path.join(dir, 'bar.js') });
+        },
+        {
+            name: 'Error',
+            message: "Cannot find module 'foo' from '" + path.join(dir, 'bar.js') + "'"
+        }
+    );
 
     t.end();
 });
@@ -168,17 +184,6 @@ test('incorrect main', function (t) {
     t.end();
 });
 
-test('#25: node modules with the same name as node stdlib modules', function (t) {
-    var resolverDir = path.join(__dirname, 'resolver/punycode');
-
-    t.equal(
-        resolve.sync('punycode', { basedir: resolverDir }),
-        path.join(resolverDir, 'node_modules/punycode/index.js')
-    );
-
-    t.end();
-});
-
 var stubStatSync = function stubStatSync(fn) {
     var fs = require('fs');
     var statSync = fs.statSync;
@@ -273,7 +278,7 @@ test('not a directory', function (t) {
         t.fail();
     } catch (err) {
         t.ok(err, 'a non-directory errors');
-        t.equal(err && err.message, 'Cannot find module \'' + path + "' from '" + __filename + "'");
+        t.equal(err && err.message, 'Provided basedir "' + __filename + '" is not a directory');
     }
     t.end();
 });

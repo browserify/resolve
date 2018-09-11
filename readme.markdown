@@ -11,11 +11,11 @@ synchronously
 
 asynchronously resolve:
 
-``` js
+```js
 var resolve = require('resolve');
 resolve('tap', { basedir: __dirname }, function (err, res) {
-    if (err) console.error(err)
-    else console.log(res)
+    if (err) console.error(err);
+    else console.log(res);
 });
 ```
 
@@ -26,7 +26,7 @@ $ node example/async.js
 
 synchronously resolve:
 
-``` js
+```js
 var resolve = require('resolve');
 var res = resolve.sync('tap', { basedir: __dirname });
 console.log(res);
@@ -39,8 +39,8 @@ $ node example/sync.js
 
 # methods
 
-``` js
-var resolve = require('resolve')
+```js
+var resolve = require('resolve');
 ```
 
 ## resolve(id, opts={}, cb)
@@ -59,7 +59,12 @@ options are:
 
 * opts.isFile - function to asynchronously test whether a file exists
 
-* `opts.packageFilter(pkg, pkgfile)` - transform the parsed package.json contents before looking at the "main" field
+* opts.isDirectory - function to asynchronously test whether a file exists and is a directory
+
+* `opts.packageFilter(pkg, pkgfile, dir)` - transform the parsed package.json contents before looking at the "main" field
+  * pkg - package data
+  * pkgfile - path to package.json
+  * dir - directory that contains package.json
 
 * `opts.pathFilter(pkg, path, relativePath)` - transform a path within a package
   * pkg - package data
@@ -73,12 +78,10 @@ options are:
 
 * opts.preserveSymlinks - if true, doesn't resolve `basedir` to real path before resolving.
 This is the way Node resolves dependencies when executed with the [--preserve-symlinks](https://nodejs.org/api/all.html#cli_preserve_symlinks) flag.
-**Note:** this property is currently `true` by default but it will be changed to
-`false` in the next major version because *Node's resolution algorithm does not preserve symlinks by default*.
 
 default `opts` values:
 
-``` javascript
+```js
 {
     paths: [],
     basedir: __dirname,
@@ -93,8 +96,17 @@ default `opts` values:
             return cb(err);
         });
     },
+    isDirectory: function isDirectory(dir, cb) {
+        fs.stat(dir, function (err, stat) {
+            if (!err) {
+                return cb(null, stat.isDirectory());
+            }
+            if (err.code === 'ENOENT' || err.code === 'ENOTDIR') return cb(null, false);
+            return cb(err);
+        });
+    },
     moduleDirectory: 'node_modules',
-    preserveSymlinks: true
+    preserveSymlinks: false
 }
 ```
 
@@ -113,7 +125,12 @@ options are:
 
 * opts.isFile - function to synchronously test whether a file exists
 
-* `opts.packageFilter(pkg, pkgfile)` - transform the parsed package.json contents before looking at the "main" field
+* opts.isDirectory - function to synchronously test whether a file exists and is a directory
+
+* `opts.packageFilter(pkg, pkgfile, dir)` - transform the parsed package.json contents before looking at the "main" field
+  * pkg - package data
+  * pkgfile - path to package.json
+  * dir - directory that contains package.json
 
 * `opts.pathFilter(pkg, path, relativePath)` - transform a path within a package
   * pkg - package data
@@ -127,12 +144,10 @@ options are:
 
 * opts.preserveSymlinks - if true, doesn't resolve `basedir` to real path before resolving.
 This is the way Node resolves dependencies when executed with the [--preserve-symlinks](https://nodejs.org/api/all.html#cli_preserve_symlinks) flag.
-**Note:** this property is currently `true` by default but it will be changed to
-`false` in the next major version because *Node's resolution algorithm does not preserve symlinks by default*.
 
 default `opts` values:
 
-``` javascript
+```js
 {
     paths: [],
     basedir: __dirname,
@@ -147,10 +162,19 @@ default `opts` values:
         }
         return stat.isFile() || stat.isFIFO();
     },
+    isDirectory: function isDirectory(dir) {
+        try {
+            var stat = fs.statSync(dir);
+        } catch (e) {
+            if (e && (e.code === 'ENOENT' || e.code === 'ENOTDIR')) return false;
+            throw e;
+        }
+        return stat.isDirectory();
+    },
     moduleDirectory: 'node_modules',
-    preserveSymlinks: true
+    preserveSymlinks: false
 }
-````
+```
 
 ## resolve.isCore(pkg)
 
@@ -160,7 +184,7 @@ Return whether a package is in core.
 
 With [npm](https://npmjs.org) do:
 
-```
+```sh
 npm install resolve
 ```
 
