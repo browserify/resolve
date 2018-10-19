@@ -74,6 +74,10 @@ options are:
 
 * opts.paths - require.paths array to use if nothing is found on the normal `node_modules` recursive walk (probably don't use this)
 
+* opts.useProcessResolution - instructs `resolve` to use the same resolution algorithm than the one used by the current process
+
+* opts.useNodeModules - instructs `resolve` to automatically locate the `node_modules` directories. default: true
+
 * opts.moduleDirectory - directory (or directories) in which to recursively look for modules. default: `"node_modules"`
 
 * opts.preserveSymlinks - if true, doesn't resolve `basedir` to real path before resolving.
