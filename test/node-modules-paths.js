@@ -38,7 +38,7 @@ var verifyDirs = function verifyDirs(t, start, dirs, moduleDirectories, paths) {
 test('node-modules-paths', function (t) {
     t.test('no options', function (t) {
         var start = path.join(__dirname, 'resolver');
-        var dirs = nodeModulesPaths('pkg', start);
+        var dirs = nodeModulesPaths(start);
 
         verifyDirs(t, start, dirs);
 
@@ -47,7 +47,7 @@ test('node-modules-paths', function (t) {
 
     t.test('empty options', function (t) {
         var start = path.join(__dirname, 'resolver');
-        var dirs = nodeModulesPaths('pkg', start, {});
+        var dirs = nodeModulesPaths(start, {});
 
         verifyDirs(t, start, dirs);
 
@@ -56,7 +56,7 @@ test('node-modules-paths', function (t) {
 
     t.test('with useNodeModules=false option', function (t) {
         var start = path.join(__dirname, 'resolver');
-        var dirs = nodeModulesPaths('pkg', start, { useNodeModules: false });
+        var dirs = nodeModulesPaths(start, { useNodeModules: false });
 
         t.deepEqual(dirs, [], 'no node_modules was computed');
 
@@ -66,7 +66,7 @@ test('node-modules-paths', function (t) {
     t.test('with paths=array option', function (t) {
         var start = path.join(__dirname, 'resolver');
         var paths = ['a', 'b'];
-        var dirs = nodeModulesPaths('pkg', start, { paths: paths });
+        var dirs = nodeModulesPaths(start, { paths: paths });
 
         verifyDirs(t, start, dirs, null, paths);
 
@@ -74,16 +74,14 @@ test('node-modules-paths', function (t) {
     });
 
     t.test('with paths=function option', function (t) {
-        var paths = function paths(absoluteStart) {
-            return [path.join(absoluteStart, 'not node modules')];
+        var paths = function paths(absoluteStart, opts) {
+            return [path.join(absoluteStart, 'not node modules', opts.request)];
         };
 
         var start = path.join(__dirname, 'resolver');
-        var dirs = nodeModulesPaths('pkg', start, { paths: paths });
+        var dirs = nodeModulesPaths(start, { paths: paths, request: 'pkg' });
 
-        console.log(dirs);
-
-        verifyDirs(t, start, dirs, null, [path.join(start, 'not node modules')]);
+        verifyDirs(t, start, dirs, null, [path.join(start, 'not node modules', 'pkg')]);
 
         t.end();
     });
@@ -91,7 +89,7 @@ test('node-modules-paths', function (t) {
     t.test('with moduleDirectory option', function (t) {
         var start = path.join(__dirname, 'resolver');
         var moduleDirectory = 'not node modules';
-        var dirs = nodeModulesPaths('pkg', start, { moduleDirectory: moduleDirectory });
+        var dirs = nodeModulesPaths(start, { moduleDirectory: moduleDirectory });
 
         verifyDirs(t, start, dirs, moduleDirectory);
 
@@ -102,7 +100,7 @@ test('node-modules-paths', function (t) {
         var start = path.join(__dirname, 'resolver');
         var paths = ['a', 'b'];
         var moduleDirectory = 'not node modules';
-        var dirs = nodeModulesPaths('pkg', start, { paths: paths, moduleDirectory: moduleDirectory });
+        var dirs = nodeModulesPaths(start, { paths: paths, moduleDirectory: moduleDirectory });
 
         verifyDirs(t, start, dirs, moduleDirectory, paths);
 
@@ -113,7 +111,7 @@ test('node-modules-paths', function (t) {
         var start = path.join(__dirname, 'resolver');
         var paths = ['a', 'b'];
         var moduleDirectories = ['not node modules', 'other modules'];
-        var dirs = nodeModulesPaths('pkg', start, { paths: paths, moduleDirectory: moduleDirectories });
+        var dirs = nodeModulesPaths(start, { paths: paths, moduleDirectory: moduleDirectories });
 
         verifyDirs(t, start, dirs, moduleDirectories, paths);
 
