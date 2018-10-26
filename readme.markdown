@@ -73,10 +73,14 @@ options are:
   * returns - a relative path that will be joined from the package.json location
 
 * opts.paths - require.paths array to use if nothing is found on the normal `node_modules` recursive walk (probably don't use this)
+For advanced users, `paths` can also be a `opts.paths(start, opts)` function
+  * start - lookup path
+  * opts - the resolution options
+  * opts.request - the import specifier being resolved
 
 * opts.useProcessResolution - instructs `resolve` to use the same resolution algorithm than the one used by the current process
 
-* opts.useNodeModules - instructs `resolve` to automatically locate the `node_modules` directories. default: true
+* opts.skipNodeModules - instructs `resolve` to ignore any `node_modules` directory when doing the resolution
 
 * opts.moduleDirectory - directory (or directories) in which to recursively look for modules. default: `"node_modules"`
 

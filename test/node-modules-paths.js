@@ -54,9 +54,9 @@ test('node-modules-paths', function (t) {
         t.end();
     });
 
-    t.test('with useNodeModules=false option', function (t) {
+    t.test('with skipNodeModules=true option', function (t) {
         var start = path.join(__dirname, 'resolver');
-        var dirs = nodeModulesPaths(start, { useNodeModules: false });
+        var dirs = nodeModulesPaths(start, { skipNodeModules: true });
 
         t.deepEqual(dirs, [], 'no node_modules was computed');
 
