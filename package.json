@@ -13,6 +13,9 @@
     "node",
     "module"
   ],
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "prepublish": "safe-publish-latest",
     "lint": "eslint .",
