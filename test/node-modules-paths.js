@@ -65,8 +65,8 @@ test('node-modules-paths', function (t) {
     });
 
     t.test('with paths=function option', function (t) {
-        var paths = function paths(request, absoluteStart, opts) {
-            return [path.join(absoluteStart, 'not node modules', request)];
+        var paths = function paths(request, absoluteStart, getNodeModulesDirs, opts) {
+            return getNodeModulesDirs().concat(path.join(absoluteStart, 'not node modules', request));
         };
 
         var start = path.join(__dirname, 'resolver');
@@ -74,6 +74,16 @@ test('node-modules-paths', function (t) {
 
         verifyDirs(t, start, dirs, null, [path.join(start, 'not node modules', 'pkg')]);
 
+        t.end();
+    });
+
+    t.test('with paths=function skipping node modules resolution', function (t) {
+        var paths = function paths(request, absoluteStart, getNodeModulesDirs, opts) {
+            return [];
+        };
+        var start = path.join(__dirname, 'resolver');
+        var dirs = nodeModulesPaths(start, { paths: paths });
+        t.deepEqual(dirs, [], 'no node_modules was computed');
         t.end();
     });
 

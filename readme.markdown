@@ -74,6 +74,7 @@ options are:
   For advanced users, `paths` can also be a `opts.paths(request, start, opts)` function
     * request - the import specifier being resolved
     * start - lookup path
+    * getNodeModulesDirs - a thunk (no-argument function) that returns the paths using standard `node_modules` resolution
     * opts - the resolution options
 
 * opts.moduleDirectory - directory (or directories) in which to recursively look for modules. default: `"node_modules"`
