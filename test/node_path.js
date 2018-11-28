@@ -35,8 +35,10 @@ test('$NODE_PATH', function (t) {
         t.equal(res, path.join(__dirname, '/node_path/x/ccc/index.js'));
     });
 
-    // ensure that relative paths still resolve against the
-    // regular `node_modules` correctly
+    /*
+     * ensure that relative paths still resolve against the
+     * regular `node_modules` correctly
+     */
     resolve('tap', {
         paths: [
             'node_path'
