@@ -35,6 +35,6 @@
     "url": "http://substack.net"
   },
   "dependencies": {
-    "path-parse": "^1.0.5"
+    "path-parse": "^1.0.6"
   }
 }
