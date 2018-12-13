@@ -390,6 +390,19 @@ test('non-string "main" field in package.json', function (t) {
     });
 });
 
+test('non-string "main" field in package.json', function (t) {
+    t.plan(5);
+
+    var dir = path.join(__dirname, 'resolver');
+    resolve('./invalid_main', { basedir: dir }, function (err, res, pkg) {
+        t.ok(err, 'errors on non-string main');
+        t.equal(err.message, 'package “invalid main” `main` must be a string');
+        t.equal(err.code, 'INVALID_PACKAGE_MAIN');
+        t.equal(res, undefined, 'res is undefined');
+        t.equal(pkg, undefined, 'pkg is undefined');
+    });
+});
+
 test('browser field in package.json', function (t) {
     t.plan(3);
 
