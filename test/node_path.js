@@ -4,7 +4,7 @@ var test = require('tape');
 var resolve = require('../');
 
 test('$NODE_PATH', function (t) {
-    t.plan(4);
+    t.plan(8);
 
     var isDir = function (dir, cb) {
         if (dir === '/node_path' || dir === 'node_path/x') {
@@ -27,6 +27,7 @@ test('$NODE_PATH', function (t) {
         basedir: __dirname,
         isDirectory: isDir
     }, function (err, res) {
+        t.error(err);
         t.equal(res, path.join(__dirname, '/node_path/x/aaa/index.js'), 'aaa resolves');
     });
 
@@ -38,6 +39,7 @@ test('$NODE_PATH', function (t) {
         basedir: __dirname,
         isDirectory: isDir
     }, function (err, res) {
+        t.error(err);
         t.equal(res, path.join(__dirname, '/node_path/y/bbb/index.js'), 'bbb resolves');
     });
 
@@ -49,6 +51,7 @@ test('$NODE_PATH', function (t) {
         basedir: __dirname,
         isDirectory: isDir
     }, function (err, res) {
+        t.error(err);
         t.equal(res, path.join(__dirname, '/node_path/x/ccc/index.js'), 'ccc resolves');
     });
 
@@ -61,6 +64,7 @@ test('$NODE_PATH', function (t) {
         isDirectory: isDir
     }, function (err, res) {
         var root = require('tap/package.json').main;
+        t.error(err);
         t.equal(res, path.resolve(__dirname, '..', 'node_modules/tap', root), 'tap resolves');
     });
 });
