@@ -353,7 +353,7 @@ test('async dot slash main', function (t) {
 });
 
 test('not a directory', function (t) {
-    t.plan(5);
+    t.plan(6);
     var path = './foo';
     resolve(path, { basedir: __filename }, function (err, res, pkg) {
         t.ok(err, 'a non-directory errors');
@@ -361,7 +361,8 @@ test('not a directory', function (t) {
         t.equal(res, undefined);
         t.equal(pkg, undefined);
 
-        t.equal(err && err.message, 'Provided basedir "' + __filename + '" is not a directory');
+        t.equal(err && err.message, 'Provided basedir "' + __filename + '" is not a directory, or a symlink to a directory');
+        t.equal(err && err.code, 'INVALID_BASEDIR');
     });
 });
 

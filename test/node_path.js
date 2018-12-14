@@ -60,7 +60,7 @@ test('$NODE_PATH', function (t) {
         paths: [
             'node_path'
         ],
-        basedir: 'node_path/x',
+        basedir: path.join(__dirname, 'node_path/x'),
         isDirectory: isDir
     }, function (err, res) {
         var root = require('tap/package.json').main;

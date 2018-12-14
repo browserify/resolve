@@ -18,7 +18,9 @@
     "lint": "eslint .",
     "tests-only": "tape test/*.js",
     "pretest": "npm run lint",
-    "test": "npm run --silent tests-only"
+    "test": "npm run --silent tests-only",
+    "posttest": "npm run test:multirepo",
+    "test:multirepo": "cd ./test/resolver/multirepo && npm install && npm test"
   },
   "devDependencies": {
     "@ljharb/eslint-config": "^13.0.0",

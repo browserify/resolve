@@ -278,7 +278,8 @@ test('not a directory', function (t) {
         t.fail();
     } catch (err) {
         t.ok(err, 'a non-directory errors');
-        t.equal(err && err.message, 'Provided basedir "' + __filename + '" is not a directory');
+        t.equal(err && err.message, 'Provided basedir "' + __filename + '" is not a directory, or a symlink to a directory');
+        t.equal(err && err.code, 'INVALID_BASEDIR');
     }
     t.end();
 });
