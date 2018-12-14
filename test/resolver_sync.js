@@ -290,6 +290,7 @@ test('not a directory', function (t) {
     } catch (err) {
         t.ok(err, 'a non-directory errors');
         t.equal(err && err.message, 'Cannot find module \'' + path + "' from '" + __filename + "'");
+        t.equal(err && err.code, 'MODULE_NOT_FOUND');
     }
     t.end();
 });
