@@ -13,6 +13,10 @@
     "node",
     "module"
   ],
+  "files": [
+    "lib",
+    "index.js"
+  ],
   "scripts": {
     "prepublish": "safe-publish-latest",
     "lint": "eslint .",
