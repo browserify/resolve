@@ -30,6 +30,10 @@
     "tap": "0.4.13",
     "tape": "^4.9.1"
   },
+  "files": [
+    "index.js",
+    "lib"
+  ],
   "license": "MIT",
   "author": {
     "name": "James Halliday",
