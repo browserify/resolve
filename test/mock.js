@@ -108,6 +108,7 @@ test('mock package', function (t) {
 
     var dirs = {};
     dirs[path.resolve('/foo')] = true;
+    dirs[path.resolve('/foo/node_modules')] = true;
 
     function opts(basedir) {
         return {
@@ -142,6 +143,7 @@ test('mock package from package', function (t) {
 
     var dirs = {};
     dirs[path.resolve('/foo')] = true;
+    dirs[path.resolve('/foo/node_modules')] = true;
 
     function opts(basedir) {
         return {
