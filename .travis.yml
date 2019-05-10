@@ -2,8 +2,8 @@ language: node_js
 os:
  - linux
 node_js:
-  - "12.0"
-  - "11.14"
+  - "12.2"
+  - "11.15"
   - "10.15"
   - "9.11"
   - "8.15"
@@ -38,6 +38,12 @@ matrix:
       env: PRETEST=true
     - node_js: "lts/*"
       env: POSTTEST=true
+    - node_js: "12.1"
+      env: TEST=true ALLOW_FAILURE=true
+    - node_js: "12.0"
+      env: TEST=true ALLOW_FAILURE=true
+    - node_js: "11.14"
+      env: TEST=true ALLOW_FAILURE=true
     - node_js: "11.13"
       env: TEST=true ALLOW_FAILURE=true
     - node_js: "11.12"
