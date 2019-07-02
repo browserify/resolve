@@ -4,6 +4,7 @@ var test = require('tape');
 var resolve = require('../');
 
 var symlinkDir = path.join(__dirname, 'resolver', 'symlinked', 'symlink');
+var packageDir = path.join(__dirname, 'resolver', 'symlinked', '_', 'node_modules', 'package');
 try {
     fs.unlinkSync(symlinkDir);
 } catch (err) {}
@@ -12,6 +13,12 @@ try {
 } catch (err) {
     // if fails then it is probably on Windows and lets try to create a junction
     fs.symlinkSync(path.join(__dirname, 'resolver', 'symlinked', '_', 'symlink_target') + '\\', symlinkDir, 'junction');
+}
+try {
+    fs.symlinkSync('../../package', packageDir, 'dir');
+} catch (err) {
+    // if fails then it is probably on Windows and lets try to create a junction
+    fs.symlinkSync(path.join(__dirname, '..', '..', 'package') + '\\', packageDir, 'junction');
 }
 
 test('symlink', function (t) {
@@ -53,4 +60,22 @@ test('sync symlink when preserveSymlinks = true', function (t) {
         resolve.sync('foo', { basedir: symlinkDir });
     }, /Cannot find module 'foo'/);
     t.end();
+});
+
+test('sync symlink from node_modules to other dir when preserveSymlinks = false', function (t) {
+    var basedir = path.join(__dirname, 'resolver', 'symlinked', '_');
+    var fn = resolve.sync('package', { basedir: basedir, preserveSymlinks: false });
+
+    t.equal(fn, path.resolve(__dirname, 'resolver/symlinked/package/bar.js'));
+    t.end();
+});
+
+test('async symlink from node_modules to other dir when preserveSymlinks = false', function (t) {
+    t.plan(2);
+    var basedir = path.join(__dirname, 'resolver', 'symlinked', '_');
+    resolve('package', { basedir: basedir, preserveSymlinks: false }, function (err, result) {
+        t.notOk(err, 'no error');
+        t.equal(result, path.resolve(__dirname, 'resolver/symlinked/package/bar.js'));
+        t.end();
+    });
 });
