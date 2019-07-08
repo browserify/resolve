@@ -8,6 +8,7 @@
     "console": true,
     "constants": true,
     "crypto": true,
+    "_debug_agent": ">= 1 && < 8",
     "_debugger": "< 8",
     "dgram": true,
     "dns": true,
