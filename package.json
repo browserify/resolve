@@ -16,6 +16,7 @@
   "scripts": {
     "prepublish": "safe-publish-latest",
     "lint": "eslint .",
+    "pretests-only": "cd ./test/resolver/nested_symlinks && node mylib/sync && node mylib/async",
     "tests-only": "tape test/*.js",
     "pretest": "npm run lint",
     "test": "npm run --silent tests-only",
