@@ -13,7 +13,6 @@ try {
 } catch (err) {}
 try {
     fs.symlinkSync('./_/symlink_target', symlinkDir, 'dir');
-    fs.symlinkSync('../../package', packageDir, 'dir');
 } catch (err) {
     if (err.code !== 'EEXIST') {
         // if fails then it is probably on Windows and lets try to create a junction
