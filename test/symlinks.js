@@ -9,6 +9,9 @@ try {
     fs.unlinkSync(symlinkDir);
 } catch (err) {}
 try {
+    fs.unlinkSync(packageDir);
+} catch (err) {}
+try {
     fs.symlinkSync('./_/symlink_target', symlinkDir, 'dir');
 } catch (err) {
     // if fails then it is probably on Windows and lets try to create a junction
