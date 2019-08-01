@@ -9,6 +9,9 @@ try {
     fs.unlinkSync(symlinkDir);
 } catch (err) {}
 try {
+    fs.unlinkSync(packageDir);
+} catch (err) {}
+try {
     fs.symlinkSync('./_/symlink_target', symlinkDir, 'dir');
     fs.symlinkSync('../../package', packageDir, 'dir');
 } catch (err) {
@@ -16,6 +19,12 @@ try {
         // if fails then it is probably on Windows and lets try to create a junction
         fs.symlinkSync(path.join(__dirname, 'resolver', 'symlinked', '_', 'symlink_target') + '\\', symlinkDir, 'junction');
     }
+}
+try {
+    fs.symlinkSync('../../package', packageDir, 'dir');
+} catch (err) {
+    // if fails then it is probably on Windows and lets try to create a junction
+    fs.symlinkSync(path.join(__dirname, '..', '..', 'package') + '\\', packageDir, 'junction');
 }
 
 test('symlink', function (t) {
