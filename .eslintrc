@@ -35,5 +35,12 @@
                 "no-throw-literal": 0,
             },
         },
+        {
+            "files": "test/**",
+            "rules": {
+                "max-lines": 0,
+                "max-lines-per-function": 0,
+            },
+        },
     ],
 }
