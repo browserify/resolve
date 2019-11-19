@@ -9,7 +9,7 @@ test('filter', function (t) {
     resolve('./baz', {
         basedir: dir,
         packageFilter: function (pkg, pkgfile, dir) {
-            pkg.main = 'doom';
+            pkg.main = 'doom'; // eslint-disable-line no-param-reassign
             packageFilterArgs = [pkg, pkgfile, dir];
             return pkg;
         }

@@ -8,7 +8,7 @@ test('filter', function (t) {
     var res = resolve.sync('./baz', {
         basedir: dir,
         packageFilter: function (pkg, pkgfile, dir) {
-            pkg.main = 'doom';
+            pkg.main = 'doom'; // eslint-disable-line no-param-reassign
             packageFilterArgs = [pkg, pkgfile, dir];
             return pkg;
         }
