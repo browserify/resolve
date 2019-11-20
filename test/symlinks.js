@@ -5,12 +5,21 @@ var resolve = require('../');
 
 var symlinkDir = path.join(__dirname, 'resolver', 'symlinked', 'symlink');
 var packageDir = path.join(__dirname, 'resolver', 'symlinked', '_', 'node_modules', 'package');
+var modADir = path.join(__dirname, 'symlinks', 'source', 'node_modules', 'mod-a');
+var symlinkModADir = path.join(__dirname, 'symlinks', 'dest', 'node_modules', 'mod-a');
 try {
     fs.unlinkSync(symlinkDir);
 } catch (err) {}
 try {
     fs.unlinkSync(packageDir);
 } catch (err) {}
+try {
+    fs.unlinkSync(modADir);
+} catch (err) {}
+try {
+    fs.unlinkSync(symlinkModADir);
+} catch (err) {}
+
 try {
     fs.symlinkSync('./_/symlink_target', symlinkDir, 'dir');
 } catch (err) {
@@ -24,6 +33,12 @@ try {
 } catch (err) {
     // if fails then it is probably on Windows and lets try to create a junction
     fs.symlinkSync(path.join(__dirname, '..', '..', 'package') + '\\', packageDir, 'junction');
+}
+try {
+    fs.symlinkSync('../../source/node_modules/mod-a', symlinkModADir, 'dir');
+} catch (err) {
+    // if fails then it is probably on Windows and lets try to create a junction
+    fs.symlinkSync(path.join(__dirname, '..', '..', 'source', 'node_modules', 'mod-a') + '\\', symlinkModADir, 'junction');
 }
 
 test('symlink', function (t) {
@@ -81,6 +96,106 @@ test('async symlink from node_modules to other dir when preserveSymlinks = false
     resolve('package', { basedir: basedir, preserveSymlinks: false }, function (err, result) {
         t.notOk(err, 'no error');
         t.equal(result, path.resolve(__dirname, 'resolver/symlinked/package/bar.js'));
-        t.end();
     });
+});
+
+test('packageFilter', function (t) {
+    t.test('preserveSymlinks: false', function (st) {
+        st.plan(5);
+
+        var basedir = path.join(__dirname, 'symlinks', 'dest');
+        var packageFilterPath;
+        var actualPath = resolve.sync('mod-a', {
+            basedir: basedir,
+            preserveSymlinks: false,
+            packageFilter: function (pkg, pkgfile) {
+                packageFilterPath = pkgfile;
+            }
+        });
+        st.equal(
+            actualPath,
+            path.join(__dirname, 'symlinks/source/node_modules/mod-a/index.js'),
+            'sync: actual path is correct'
+        );
+        st.equal(
+            packageFilterPath,
+            path.join(__dirname, 'symlinks/source/node_modules/mod-a/package.json'),
+            'sync: packageFilter pkgfile arg is correct'
+        );
+
+        resolve(
+            'mod-a',
+            {
+                basedir: basedir,
+                preserveSymlinks: false,
+                packageFilter: function (pkg, pkgfile) {
+                    packageFilterPath = pkgfile;
+                }
+            },
+            function (err, actualPath) {
+                st.error(err, 'no error');
+                st.equal(
+                    actualPath,
+                    path.join(__dirname, 'symlinks/source/node_modules/mod-a/index.js'),
+                    'async: actual path is correct'
+                );
+                st.equal(
+                    packageFilterPath,
+                    path.join(__dirname, 'symlinks/dest/node_modules/mod-a/package.json'),
+                    'async: packageFilter pkgfile arg is correct'
+                );
+            }
+        );
+    });
+
+    t.test('preserveSymlinks: true', function (st) {
+        st.plan(5);
+
+        var basedir = path.join(__dirname, 'symlinks', 'dest');
+        var packageFilterPath;
+        var actualPath = resolve.sync('mod-a', {
+            basedir: basedir,
+            preserveSymlinks: true,
+            packageFilter: function (pkg, pkgfile) {
+                packageFilterPath = pkgfile;
+            }
+        });
+        st.equal(
+            actualPath,
+            path.join(__dirname, 'symlinks/dest/node_modules/mod-a/index.js'),
+            'sync: actual path is correct'
+        );
+        st.equal(
+            packageFilterPath,
+            path.join(__dirname, 'symlinks/dest/node_modules/mod-a/package.json'),
+            'sync: packageFilter pkgfile arg is correct'
+        );
+
+        var packageFilterPath;
+        resolve(
+            'mod-a',
+            {
+                basedir: basedir,
+                preserveSymlinks: true,
+                packageFilter: function (pkg, pkgfile) {
+                    packageFilterPath = pkgfile;
+                }
+            },
+            function (err, actualPath) {
+                st.error(err, 'no error');
+                st.equal(
+                    actualPath,
+                    path.join(__dirname, 'symlinks/dest/node_modules/mod-a/index.js'),
+                    'async: actual path is correct'
+                );
+                st.equal(
+                    packageFilterPath,
+                    path.join(__dirname, 'symlinks/dest/node_modules/mod-a/package.json'),
+                    'async: packageFilter pkgfile arg is correct'
+                );
+            }
+        );
+    });
+
+    t.end();
 });
