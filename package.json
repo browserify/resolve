@@ -1,7 +1,7 @@
 {
 	"name": "resolve",
 	"description": "resolve like require.resolve() on behalf of files asynchronously and synchronously",
-	"version": "1.12.0",
+	"version": "1.12.2",
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/browserify/resolve.git"
@@ -25,6 +25,7 @@
 	},
 	"devDependencies": {
 		"@ljharb/eslint-config": "^15.0.2",
+		"array.prototype.map": "^1.0.1",
 		"eslint": "^6.6.0",
 		"object-keys": "^1.1.1",
 		"safe-publish-latest": "^1.1.4",

@@ -26,8 +26,8 @@ test('filter', function (t) {
         'second packageFilter argument is "pkgfile"'
     );
 
-    var packageFileDir = packageFilterArgs[2];
-    t.equal(packageFileDir, path.join(dir, 'baz'), 'third packageFilter argument is "dir"');
+    var packageDir = packageFilterArgs[2];
+    t.equal(packageDir, path.join(dir, 'baz'), 'third packageFilter argument is "dir"');
 
     t.end();
 });
