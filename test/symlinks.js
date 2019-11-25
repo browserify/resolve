@@ -101,6 +101,10 @@ test('async symlink from node_modules to other dir when preserveSymlinks = false
 });
 
 test('packageFilter', function (t) {
+    function relative(x) {
+        return path.relative(__dirname, x);
+    }
+
     function testPackageFilter(preserveSymlinks) {
         return function (st) {
             st.plan(5);
@@ -120,13 +124,13 @@ test('packageFilter', function (t) {
                 }
             });
             st.equal(
-                actualPath.replace(__dirname + '/', ''),
-                preserveSymlinks ? destMain : sourceMain,
+                relative(actualPath),
+                path.normalize(preserveSymlinks ? destMain : sourceMain),
                 'sync: actual path is correct'
             );
             st.deepEqual(
-                map(packageFilterPath, function (x) { return x.replace(__dirname + '/', ''); }),
-                preserveSymlinks ? [destPkg, destPkg] : [sourcePkg, sourcePkg],
+                map(packageFilterPath, relative),
+                map(preserveSymlinks ? [destPkg, destPkg] : [sourcePkg, sourcePkg], path.normalize),
                 'sync: packageFilter pkgfile arg is correct'
             );
 
@@ -143,13 +147,13 @@ test('packageFilter', function (t) {
                 function (err, actualPath) {
                     st.error(err, 'no error');
                     st.equal(
-                        actualPath.replace(__dirname + '/', ''),
-                        preserveSymlinks ? destMain : sourceMain,
+                        relative(actualPath),
+                        path.normalize(preserveSymlinks ? destMain : sourceMain),
                         'async: actual path is correct'
                     );
                     st.deepEqual(
-                        map(asyncPackageFilterPath, function (x) { return x.replace(__dirname + '/', ''); }),
-                        preserveSymlinks ? [destPkg, destPkg, destPkg] : [sourcePkg, sourcePkg, sourcePkg],
+                        map(packageFilterPath, relative),
+                        map(preserveSymlinks ? [destPkg, destPkg] : [sourcePkg, sourcePkg], path.normalize),
                         'async: packageFilter pkgfile arg is correct'
                     );
                 }
