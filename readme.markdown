@@ -61,9 +61,10 @@ options are:
 
 * opts.isDirectory - function to asynchronously test whether a directory exists
 
-* `opts.packageFilter(pkg, pkgfile)` - transform the parsed package.json contents before looking at the "main" field
+* `opts.packageFilter(pkg, pkgfile, dir)` - transform the parsed package.json contents before looking at the "main" field
   * pkg - package data
   * pkgfile - path to package.json
+  * dir - directory for package.json
 
 * `opts.pathFilter(pkg, path, relativePath)` - transform a path within a package
   * pkg - package data
