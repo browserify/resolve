@@ -119,7 +119,7 @@ test('packageFilter', function (t) {
             var actualPath = resolve.sync('mod-a', {
                 basedir: destDir,
                 preserveSymlinks: preserveSymlinks,
-                packageFilter: function (pkg, pkgfile) {
+                packageFilter: function (pkg, pkgfile, dir) {
                     packageFilterPath.push(pkgfile);
                 }
             });
@@ -152,8 +152,11 @@ test('packageFilter', function (t) {
                         'async: actual path is correct'
                     );
                     st.deepEqual(
-                        map(packageFilterPath, relative),
-                        map(preserveSymlinks ? [destPkg, destPkg] : [sourcePkg, sourcePkg], path.normalize),
+                        map(asyncPackageFilterPath, relative),
+                        map(
+                            preserveSymlinks ? [destPkg, destPkg, destPkg] : [sourcePkg, sourcePkg, sourcePkg],
+                            path.normalize
+                        ),
                         'async: packageFilter pkgfile arg is correct'
                     );
                 }
