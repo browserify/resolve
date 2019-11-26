@@ -105,7 +105,7 @@ test('packageFilter', function (t) {
 
     function testPackageFilter(preserveSymlinks) {
         return function (st) {
-            st.plan(5);
+            st.plan('is 1.x' ? 3 : 5); // eslint-disable-line no-constant-condition
 
             var destMain = 'symlinks/dest/node_modules/mod-a/index.js';
             var destPkg = 'symlinks/dest/node_modules/mod-a/package.json';
@@ -113,11 +113,13 @@ test('packageFilter', function (t) {
             var sourcePkg = 'symlinks/source/node_modules/mod-a/package.json';
             var destDir = path.join(__dirname, 'symlinks', 'dest');
 
+            /* eslint multiline-comment-style: 0 */
+            /* v2.x will restore these tests
             var packageFilterPath = [];
             var actualPath = resolve.sync('mod-a', {
                 basedir: destDir,
                 preserveSymlinks: preserveSymlinks,
-                packageFilter: function (pkg, pkgfile) {
+                packageFilter: function (pkg, pkgfile, dir) {
                     packageFilterPath.push(pkgfile);
                 }
             });
@@ -131,6 +133,7 @@ test('packageFilter', function (t) {
                 map(preserveSymlinks ? [destPkg, destPkg] : [sourcePkg, sourcePkg], path.normalize),
                 'sync: packageFilter pkgfile arg is correct'
             );
+            */
 
             var asyncPackageFilterPath = [];
             resolve(
@@ -150,8 +153,11 @@ test('packageFilter', function (t) {
                         'async: actual path is correct'
                     );
                     st.deepEqual(
-                        map(packageFilterPath, relative),
-                        map(preserveSymlinks ? [destPkg, destPkg] : [sourcePkg, sourcePkg], path.normalize),
+                        map(asyncPackageFilterPath, relative),
+                        map(
+                            preserveSymlinks ? [destPkg, destPkg, destPkg] : [sourcePkg, sourcePkg, sourcePkg],
+                            path.normalize
+                        ),
                         'async: packageFilter pkgfile arg is correct'
                     );
                 }
