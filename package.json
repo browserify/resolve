@@ -25,12 +25,12 @@
 	},
 	"devDependencies": {
 		"@ljharb/eslint-config": "^15.0.2",
-		"array.prototype.map": "^1.0.1",
-		"eslint": "^6.7.1",
+		"array.prototype.map": "^1.0.2",
+		"eslint": "^6.7.2",
 		"object-keys": "^1.1.1",
 		"safe-publish-latest": "^1.1.4",
 		"tap": "0.4.13",
-		"tape": "^4.11.0"
+		"tape": "^4.12.0"
 	},
 	"license": "MIT",
 	"author": {
