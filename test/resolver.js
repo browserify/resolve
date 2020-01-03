@@ -256,6 +256,22 @@ test('other path', function (t) {
     });
 });
 
+test('path iterator', function (t) {
+    t.plan(2);
+
+    var resolverDir = path.join(__dirname, 'resolver');
+
+    var exactIterator = function (x, start, getPackageCandidates, opts) {
+        return [path.join(resolverDir, x)];
+    };
+
+    resolve('baz', { packageIterator: exactIterator }, function (err, res, pkg) {
+        if (err) t.fail(err);
+        t.equal(res, path.join(resolverDir, 'baz/quux.js'));
+        t.equal(pkg && pkg.name, 'baz');
+    });
+});
+
 test('incorrect main', function (t) {
     t.plan(1);
 
