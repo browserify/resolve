@@ -172,6 +172,21 @@ test('other path', function (t) {
     t.end();
 });
 
+test('path iterator', function (t) {
+    var resolverDir = path.join(__dirname, 'resolver');
+
+    var exactIterator = function (x, start, getPackageCandidates, opts) {
+        return [path.join(resolverDir, x)];
+    };
+
+    t.equal(
+        resolve.sync('baz', { packageIterator: exactIterator }),
+        path.join(resolverDir, 'baz/quux.js')
+    );
+
+    t.end();
+});
+
 test('incorrect main', function (t) {
     var resolverDir = path.join(__dirname, 'resolver');
     var dir = path.join(resolverDir, 'incorrect_main');
