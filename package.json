@@ -7,6 +7,44 @@
 		"url": "git://github.com/browserify/resolve.git"
 	},
 	"main": "index.js",
+	"exports": {
+		".": [
+			{
+				"default": "./index.js"
+			},
+			"./index.js"
+		],
+		"./lib/core": [
+			{
+				"default": "./lib/core.js"
+			},
+			"./lib/core.js"
+		],
+		"./lib/core.json": [
+			{
+				"default": "./lib/core.json"
+			},
+			"./lib/core.json"
+		],
+		"./lib/is-core": [
+			{
+				"default": "./lib/is-core.js"
+			},
+			"./lib/is-core.js"
+		],
+		"./lib/sync": [
+			{
+				"default": "./lib/sync.js"
+			},
+			"./lib/sync.js"
+		],
+		"./lib/async": [
+			{
+				"default": "./lib/async.js"
+			},
+			"./lib/async.js"
+		]
+	},
 	"keywords": [
 		"resolve",
 		"require",
