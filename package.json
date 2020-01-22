@@ -10,35 +10,37 @@
 	"exports": {
 		".": [
 			{
+				"import": "./index.mjs",
+				"require": "./index.js",
 				"default": "./index.js"
 			},
 			"./index.js"
 		],
-		"./lib/core": [
+		"./core": [
 			{
 				"default": "./lib/core.js"
 			},
 			"./lib/core.js"
 		],
-		"./lib/core.json": [
+		"./core.json": [
 			{
 				"default": "./lib/core.json"
 			},
 			"./lib/core.json"
 		],
-		"./lib/is-core": [
+		"./isCore": [
 			{
 				"default": "./lib/is-core.js"
 			},
 			"./lib/is-core.js"
 		],
-		"./lib/sync": [
+		"./sync": [
 			{
 				"default": "./lib/sync.js"
 			},
 			"./lib/sync.js"
 		],
-		"./lib/async": [
+		"./async": [
 			{
 				"default": "./lib/async.js"
 			},
