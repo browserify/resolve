@@ -24,7 +24,7 @@
 		"test:multirepo": "cd ./test/resolver/multirepo && npm install && npm test"
 	},
 	"devDependencies": {
-		"@ljharb/eslint-config": "^15.1.0",
+		"@ljharb/eslint-config": "^16.0.0",
 		"array.prototype.map": "^1.0.2",
 		"eslint": "^6.8.0",
 		"object-keys": "^1.1.1",
