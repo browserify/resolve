@@ -61,6 +61,8 @@ options are:
 
 * opts.isDirectory - function to asynchronously test whether a file exists and is a directory
 
+* opts.realpath - function to asynchronously resolve a potential symlink to its real path
+
 * `opts.packageFilter(pkg, pkgfile, dir)` - transform the parsed package.json contents before looking at the "main" field
   * pkg - package data
   * pkgfile - path to package.json
@@ -117,6 +119,13 @@ default `opts` values:
             return cb(err);
         });
     },
+    realpath: function realpath(file, cb) {
+       var realpath = typeof fs.realpath.native === 'function' ? fs.realpath.native : fs.realpath;
+       realpath(file, function (realPathErr, realPath) {
+           if (realPathErr && realPathErr.code !== 'ENOENT') cb(realPathErr);
+           else cb(null, realPathErr ? file : realPath);
+       });
+   },
     moduleDirectory: 'node_modules',
     preserveSymlinks: false
 }
@@ -138,6 +147,8 @@ options are:
 * opts.isFile - function to synchronously test whether a file exists
 
 * opts.isDirectory - function to synchronously test whether a file exists and is a directory
+
+* opts.realpathSync - function to synchronously resolve a potential symlink to its real path
 
 * `opts.packageFilter(pkg, pkgfile, dir)` - transform the parsed package.json contents before looking at the "main" field
   * pkg - package data
@@ -194,6 +205,17 @@ default `opts` values:
             throw e;
         }
         return stat.isDirectory();
+    },
+    realpathSync: function realpathSync(file) {
+        try {
+            var realpath = typeof fs.realpathSync.native === 'function' ? fs.realpathSync.native : fs.realpathSync;
+            return realpath(file);
+        } catch (realPathErr) {
+            if (realPathErr.code !== 'ENOENT') {
+                throw realPathErr;
+            }
+        }
+        return file;
     },
     moduleDirectory: 'node_modules',
     preserveSymlinks: false
