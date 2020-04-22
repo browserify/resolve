@@ -63,6 +63,8 @@ options are:
 
 * opts.realpath - function to asynchronously resolve a potential symlink to its real path
 
+* opts.realpath - function to asynchronously resolve a potential symlink to its real path
+
 * `opts.packageFilter(pkg, pkgfile, dir)` - transform the parsed package.json contents before looking at the "main" field
   * pkg - package data
   * pkgfile - path to package.json
