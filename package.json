@@ -20,12 +20,13 @@
 		"tests-only": "tape test/*.js",
 		"pretest": "npm run lint",
 		"test": "npm run --silent tests-only",
-		"posttest": "npm run test:multirepo",
+		"posttest": "npm run test:multirepo && aud --production",
 		"test:multirepo": "cd ./test/resolver/multirepo && npm install && npm test"
 	},
 	"devDependencies": {
 		"@ljharb/eslint-config": "^17.2.0",
 		"array.prototype.map": "^1.0.2",
+		"aud": "^1.1.2",
 		"eslint": "^7.10.0",
 		"object-keys": "^1.1.1",
 		"safe-publish-latest": "^1.1.4",
