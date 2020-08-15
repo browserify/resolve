@@ -62,6 +62,10 @@
 		"posttest": "npm run test:multirepo && aud --production",
 		"test:multirepo": "cd ./test/resolver/multirepo && npm install && npm test"
 	},
+	"files": [
+		"index.*",
+		"lib/"
+	],
 	"devDependencies": {
 		"@ljharb/eslint-config": "^17.1.0",
 		"array.prototype.map": "^1.0.2",
