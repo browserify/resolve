@@ -46,6 +46,7 @@
 	},
 	"dependencies": {
 		"is-core-module": "^2.1.0",
-		"path-parse": "^1.0.6"
+		"path-parse": "^1.0.6",
+		"string.prototype.startswith": "^1.0.0"
 	}
 }

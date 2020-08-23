@@ -84,7 +84,7 @@ options are:
 
 * opts.paths - require.paths array to use if nothing is found on the normal `node_modules` recursive walk (probably don't use this)
 
-  For advanced users, `paths` can also be a `opts.paths(request, start, opts)` function
+  For advanced users, `paths` can also be a `opts.paths(request, start, getNodeModulesDirs, opts)` function
     * request - the import specifier being resolved
     * start - lookup path
     * getNodeModulesDirs - a thunk (no-argument function) that returns the paths using standard `node_modules` resolution
@@ -102,6 +102,8 @@ options are:
 This is the way Node resolves dependencies when executed with the [--preserve-symlinks](https://nodejs.org/api/all.html#cli_preserve_symlinks) flag.
 **Note:** this property is currently `true` by default but it will be changed to
 `false` in the next major version because *Node's resolution algorithm does not preserve symlinks by default*.
+
+* opts.ignoreExportsField - if false, take package exports into account
 
 default `opts` values:
 
@@ -138,7 +140,8 @@ default `opts` values:
         });
     },
     moduleDirectory: 'node_modules',
-    preserveSymlinks: true
+    preserveSymlinks: true,
+    ignoreExportsField: true
 }
 ```
 
@@ -175,7 +178,7 @@ options are:
 
 * opts.paths - require.paths array to use if nothing is found on the normal `node_modules` recursive walk (probably don't use this)
 
-  For advanced users, `paths` can also be a `opts.paths(request, start, opts)` function
+  For advanced users, `paths` can also be a `opts.paths(request, start, getNodeModulesDirs, opts)` function
     * request - the import specifier being resolved
     * start - lookup path
     * getNodeModulesDirs - a thunk (no-argument function) that returns the paths using standard `node_modules` resolution
@@ -193,6 +196,8 @@ options are:
 This is the way Node resolves dependencies when executed with the [--preserve-symlinks](https://nodejs.org/api/all.html#cli_preserve_symlinks) flag.
 **Note:** this property is currently `true` by default but it will be changed to
 `false` in the next major version because *Node's resolution algorithm does not preserve symlinks by default*.
+
+* opts.ignoreExportsField - if false, take package exports into account
 
 default `opts` values:
 
@@ -233,7 +238,8 @@ default `opts` values:
         return file;
     },
     moduleDirectory: 'node_modules',
-    preserveSymlinks: true
+    preserveSymlinks: true,
+    ignoreExportsField: true
 }
 ```
 

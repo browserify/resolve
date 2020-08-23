@@ -1,0 +1,6 @@
+{
+  "name": "other-module-dir",
+  "exports": {
+    ".": "./exported.js"
+  }
+}
