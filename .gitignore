@@ -9,3 +9,6 @@ yarn.lock
 
 # symlinked file used in tests
 test/resolver/symlinked/_/node_modules/package
+
+# submodule
+test/list-exports
