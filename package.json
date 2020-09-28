@@ -15,24 +15,6 @@
 			},
 			"./index.js"
 		],
-		"./core": [
-			{
-				"default": "./lib/core.js"
-			},
-			"./lib/core.js"
-		],
-		"./core.json": [
-			{
-				"default": "./lib/core.json"
-			},
-			"./lib/core.json"
-		],
-		"./isCore": [
-			{
-				"default": "./lib/is-core.js"
-			},
-			"./lib/is-core.js"
-		],
 		"./sync": [
 			{
 				"default": "./lib/sync.js"
@@ -53,7 +35,7 @@
 		"module"
 	],
 	"scripts": {
-		"prepublish": "safe-publish-latest && cp node_modules/is-core-module/core.json ./lib/",
+		"prepublish": "safe-publish-latest",
 		"lint": "eslint --ext=js,mjs .",
 		"pretests-only": "cd ./test/resolver/nested_symlinks && node mylib/sync && node mylib/async",
 		"tests-only": "tape test/*.js",

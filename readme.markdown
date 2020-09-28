@@ -224,10 +224,6 @@ default `opts` values:
 }
 ```
 
-## resolve.isCore(pkg)
-
-Return whether a package is in core.
-
 # install
 
 With [npm](https://npmjs.org) do:
