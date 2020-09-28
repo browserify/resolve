@@ -24,13 +24,13 @@
 		"test:multirepo": "cd ./test/resolver/multirepo && npm install && npm test"
 	},
 	"devDependencies": {
-		"@ljharb/eslint-config": "^16.0.0",
+		"@ljharb/eslint-config": "^17.2.0",
 		"array.prototype.map": "^1.0.2",
-		"eslint": "^6.8.0",
+		"eslint": "^7.10.0",
 		"object-keys": "^1.1.1",
 		"safe-publish-latest": "^1.1.4",
 		"tap": "0.4.13",
-		"tape": "^5.0.0-next.5"
+		"tape": "^5.0.1"
 	},
 	"license": "MIT",
 	"author": {
