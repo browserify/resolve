@@ -14,8 +14,8 @@
 		"module"
 	],
 	"scripts": {
-		"prepublish": "safe-publish-latest",
-		"lint": "eslint .",
+		"prepublish": "safe-publish-latest && cp node_modules/is-core-module/core.json ./lib/",
+		"lint": "eslint --ext=js,mjs .",
 		"pretests-only": "cd ./test/resolver/nested_symlinks && node mylib/sync && node mylib/async",
 		"tests-only": "tape test/*.js",
 		"pretest": "npm run lint",
@@ -42,6 +42,7 @@
 		"url": "https://github.com/sponsors/ljharb"
 	},
 	"dependencies": {
+		"is-core-module": "^2.0.0",
 		"path-parse": "^1.0.6"
 	}
 }
