@@ -15,24 +15,6 @@
 			},
 			"./index.js"
 		],
-		"./core": [
-			{
-				"default": "./lib/core.js"
-			},
-			"./lib/core.js"
-		],
-		"./core.json": [
-			{
-				"default": "./lib/core.json"
-			},
-			"./lib/core.json"
-		],
-		"./isCore": [
-			{
-				"default": "./lib/is-core.js"
-			},
-			"./lib/is-core.js"
-		],
 		"./sync": [
 			{
 				"default": "./lib/sync.js"
@@ -63,10 +45,10 @@
 		"test:multirepo": "cd ./test/resolver/multirepo && npm install && npm test"
 	},
 	"devDependencies": {
-		"@ljharb/eslint-config": "^17.1.0",
+		"@ljharb/eslint-config": "^17.2.0",
 		"array.prototype.map": "^1.0.2",
 		"aud": "^1.1.2",
-		"eslint": "^7.6.0",
+		"eslint": "^7.10.0",
 		"object-keys": "^1.1.1",
 		"safe-publish-latest": "^1.1.4",
 		"tap": "0.4.13",
@@ -82,6 +64,7 @@
 		"url": "https://github.com/sponsors/ljharb"
 	},
 	"dependencies": {
+		"is-core-module": "^2.0.0",
 		"path-parse": "^1.0.6"
 	}
 }
