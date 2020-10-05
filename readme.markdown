@@ -122,12 +122,12 @@ default `opts` values:
         });
     },
     realpath: function realpath(file, cb) {
-       var realpath = typeof fs.realpath.native === 'function' ? fs.realpath.native : fs.realpath;
-       realpath(file, function (realPathErr, realPath) {
-           if (realPathErr && realPathErr.code !== 'ENOENT') cb(realPathErr);
-           else cb(null, realPathErr ? file : realPath);
-       });
-   },
+        var realpath = typeof fs.realpath.native === 'function' ? fs.realpath.native : fs.realpath;
+        realpath(file, function (realPathErr, realPath) {
+            if (realPathErr && realPathErr.code !== 'ENOENT') cb(realPathErr);
+            else cb(null, realPathErr ? file : realPath);
+        });
+    },
     moduleDirectory: 'node_modules',
     preserveSymlinks: true
 }
