@@ -103,7 +103,9 @@ This is the way Node resolves dependencies when executed with the [--preserve-sy
 **Note:** this property is currently `true` by default but it will be changed to
 `false` in the next major version because *Node's resolution algorithm does not preserve symlinks by default*.
 
-* opts.ignoreExportsField - if false, take package exports into account
+* opts.exportsField - the behavior of the exports field:
+    * `'respect'`: respect the exports field
+    * `'ignore'`: ignore the exports field
 
 default `opts` values:
 
@@ -141,7 +143,7 @@ default `opts` values:
     },
     moduleDirectory: 'node_modules',
     preserveSymlinks: true,
-    ignoreExportsField: true
+    exportsField: 'ignore',
 }
 ```
 
@@ -197,7 +199,9 @@ This is the way Node resolves dependencies when executed with the [--preserve-sy
 **Note:** this property is currently `true` by default but it will be changed to
 `false` in the next major version because *Node's resolution algorithm does not preserve symlinks by default*.
 
-* opts.ignoreExportsField - if false, take package exports into account
+* opts.exportsField - the behavior of the exports field:
+    * `'respect'`: respect the exports field
+    * `'ignore'`: ignore the exports field
 
 default `opts` values:
 
@@ -239,7 +243,7 @@ default `opts` values:
     },
     moduleDirectory: 'node_modules',
     preserveSymlinks: true,
-    ignoreExportsField: true
+    exportsField: 'ignore',
 }
 ```
 

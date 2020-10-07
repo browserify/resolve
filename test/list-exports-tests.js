@@ -23,8 +23,8 @@ fs.readdirSync(fixturesPath).forEach(function (fixtureName) {
         }
     }
 
-    var optsWithExports = { packageIterator: packageIterator, ignoreExportsField: false, extensions: ['.js', '.json'] };
-    var optsWithoutExports = { packageIterator: packageIterator, ignoreExportsField: true, extensions: ['.js', '.json'] };
+    var optsWithExports = { packageIterator: packageIterator, exportsField: 'respect', extensions: ['.js', '.json'] };
+    var optsWithoutExports = { packageIterator: packageIterator, exportsField: 'ignore', extensions: ['.js', '.json'] };
 
     if (fixtureName === 'ls-exports' || fixtureName === 'list-exports') {
         optsWithExports.preserveSymlinks = true;
