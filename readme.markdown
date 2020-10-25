@@ -43,6 +43,12 @@ $ node example/sync.js
 var resolve = require('resolve');
 ```
 
+For both the synchronous and asynchronous methods, errors may have any of the following `err.code` values:
+
+- `MODULE_NOT_FOUND`: the given path string (`id`) could not be resolved to a module
+- `INVALID_BASEDIR`: the specified `opts.basedir` doesn't exist, or is not a directory
+- `INVALID_PACKAGE_MAIN`: a `package.json` was encountered with an invalid `main` property (eg. not a string)
+
 ## resolve(id, opts={}, cb)
 
 Asynchronously resolve the module path string `id` into `cb(err, res [, pkg])`, where `pkg` (if defined) is the data from `package.json`.
