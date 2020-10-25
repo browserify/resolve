@@ -38,6 +38,22 @@ test('foo', function (t) {
     t.end();
 });
 
+test('non-default extensions', function (t) {
+    var dir = path.join(__dirname, 'resolver');
+
+    t.equal(
+        resolve.sync('./foo-json', { basedir: dir }),
+        path.join(dir, 'foo-json.json')
+    );
+
+    t.equal(
+        resolve.sync('./foo-node', { basedir: dir }),
+        path.join(dir, 'foo-node.node')
+    );
+
+    t.end();
+});
+
 test('bar', function (t) {
     var dir = path.join(__dirname, 'resolver');
 

@@ -107,7 +107,7 @@ default `opts` values:
 {
     paths: [],
     basedir: __dirname,
-    extensions: ['.js'],
+    extensions: [ '.js', '.json', '.node' ],
     readFile: fs.readFile,
     isFile: function isFile(file, cb) {
         fs.stat(file, function (err, stat) {
@@ -194,7 +194,7 @@ default `opts` values:
 {
     paths: [],
     basedir: __dirname,
-    extensions: ['.js'],
+    extensions: [ '.js', '.json', '.node' ],
     readFileSync: fs.readFileSync,
     isFile: function isFile(file) {
         try {
