@@ -105,6 +105,7 @@ This is the way Node resolves dependencies when executed with the [--preserve-sy
 
 * opts.exportsField - the behavior of the exports field:
     * `'respect'`: respect the exports field
+    * `'respect, without exports'`: respect the exports field without supporting conditional exports
     * `'ignore'`: ignore the exports field
 
 default `opts` values:
@@ -201,6 +202,7 @@ This is the way Node resolves dependencies when executed with the [--preserve-sy
 
 * opts.exportsField - the behavior of the exports field:
     * `'respect'`: respect the exports field
+    * `'respect, without exports'`: respect the exports field without supporting conditional exports
     * `'ignore'`: ignore the exports field
 
 default `opts` values:
