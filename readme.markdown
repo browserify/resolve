@@ -61,6 +61,8 @@ options are:
 
 * opts.extensions - array of file extensions to search in order
 
+* opts.includeCoreModules - set to `false` to exclude node core modules (e.g. `fs`) from the search
+
 * opts.readFile - how to read files asynchronously
 
 * opts.isFile - function to asynchronously test whether a file exists
@@ -108,6 +110,7 @@ default `opts` values:
     paths: [],
     basedir: __dirname,
     extensions: ['.js'],
+    includeCoreModules: true,
     readFile: fs.readFile,
     isFile: function isFile(file, cb) {
         fs.stat(file, function (err, stat) {
@@ -149,6 +152,8 @@ options are:
 * opts.basedir - directory to begin resolving from
 
 * opts.extensions - array of file extensions to search in order
+
+* opts.includeCoreModules - set to `false` to exclude node core modules (e.g. `fs`) from the search
 
 * opts.readFile - how to read files synchronously
 
@@ -195,6 +200,7 @@ default `opts` values:
     paths: [],
     basedir: __dirname,
     extensions: ['.js'],
+    includeCoreModules: true,
     readFileSync: fs.readFileSync,
     isFile: function isFile(file) {
         try {
