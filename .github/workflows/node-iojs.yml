@@ -29,6 +29,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           command: 'tests-only'
+          skip-ls-check: true
   minors:
     needs: [matrix, latest]
     name: 'non-latest minors'
@@ -46,6 +47,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           command: 'tests-only'
+          skip-ls-check: true
 
   node:
     name: 'io.js'

@@ -29,6 +29,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
           command: 'tests-only'
           cache-node-modules-key: node_modules-${{ github.workflow }}-${{ github.action }}-${{ github.run_id }}
+          skip-ls-check: true
   unstable:
     needs: [matrix, stable]
     name: 'unstable minors'
@@ -46,6 +47,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
           command: 'tests-only'
           cache-node-modules-key: node_modules-${{ github.workflow }}-${{ github.action }}-${{ github.run_id }}
+          skip-ls-check: true
 
   node:
     name: 'node 0.x'
