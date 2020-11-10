@@ -4,6 +4,8 @@ build: off
 
 environment:
   matrix:
+    - nodejs_version: "15"
+    - nodejs_version: "14"
     - nodejs_version: "13"
     - nodejs_version: "12"
     - nodejs_version: "11"
@@ -25,7 +27,7 @@ matrix:
   # fast_finish: true
   allow_failures:
     - nodejs_version: "0.8"
-      platform: x86
+      # platform: x86 # x64 has started failing on the registry side, around early November 2020
     - nodejs_version: "0.6"
 
 platform:
@@ -48,13 +50,15 @@ install:
   - IF %nodejs_version% EQU 4 npm -g install npm@5.3
   - IF %nodejs_version% EQU 5 npm -g install npm@5.3
   - IF %nodejs_version% EQU 6 npm -g install npm@6.9
-  - IF %nodejs_version% EQU 7 npm -g install npm
-  - IF %nodejs_version% EQU 8 npm -g install npm
+  - IF %nodejs_version% EQU 7 npm -g install npm@6
+  - IF %nodejs_version% EQU 8 npm -g install npm@6
   - IF %nodejs_version% EQU 9 npm -g install npm@6.9
-  - IF %nodejs_version% EQU 10 npm -g install npm
-  - IF %nodejs_version% EQU 11 npm -g install npm
-  - IF %nodejs_version% EQU 12 npm -g install npm
-  - IF %nodejs_version% EQU 13 npm -g install npm
+  - IF %nodejs_version% EQU 10 npm -g install npm@7
+  - IF %nodejs_version% EQU 11 npm -g install npm@7
+  - IF %nodejs_version% EQU 12 npm -g install npm@7
+  - IF %nodejs_version% EQU 13 npm -g install npm@7
+  - IF %nodejs_version% EQU 14 npm -g install npm@7
+  - IF %nodejs_version% EQU 15 npm -g install npm@7
   - set PATH=%APPDATA%\npm;%PATH%
   #- IF %nodejs_version% NEQ 0.6 AND %nodejs_version% NEQ 0.8 npm -g install npm
   # install modules
