@@ -12,6 +12,7 @@
     "_debug_agent": ">= 1 && < 8",
     "_debugger": "< 8",
     "dgram": true,
+    "diagnostics_channel": ">= 15.1",
     "dns": true,
     "dns/promises": ">= 15",
     "domain": ">= 0.7.12",
