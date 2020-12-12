@@ -17,7 +17,7 @@ block_comment_end = */
 [*.yml]
 indent_size = 1
 
-[package.json]
+[{package.json,.gitmodules}]
 indent_style = tab
 
 [CHANGELOG.md]
@@ -27,7 +27,7 @@ indent_size = 2
 [{*.json,Makefile}]
 max_line_length = off
 
-[test/{dotdot,resolver,module_dir,multirepo,node_path,pathfilter,precedence}/**/*]
+[test/{dotdot,exports,list-exports,resolver,module_dir,multirepo,node_path,pathfilter,precedence}/**/*]
 indent_style = off
 indent_size = off
 max_line_length = off

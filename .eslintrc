@@ -27,6 +27,7 @@
         "object-curly-newline": 0,
         "operator-linebreak": [2, "before"],
         "sort-keys": 0,
+        "eqeqeq": [2, "always", {"null": "ignore"}]
     },
     "overrides": [
         {
