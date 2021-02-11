@@ -14,7 +14,7 @@
 		"module"
 	],
 	"scripts": {
-		"prepublish": "safe-publish-latest && cp node_modules/is-core-module/core.json ./lib/",
+		"prepublish": "safe-publish-latest && cp node_modules/is-core-module/core.json ./lib/ ||:",
 		"prelint": "eclint check '**/*'",
 		"lint": "eslint --ext=js,mjs .",
 		"pretests-only": "cd ./test/resolver/nested_symlinks && node mylib/sync && node mylib/async",
