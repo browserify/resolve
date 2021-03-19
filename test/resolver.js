@@ -450,7 +450,7 @@ test('non-string "main" field in package.json', function (t) {
     var dir = path.join(__dirname, 'resolver');
     resolve('./invalid_main', { basedir: dir }, function (err, res, pkg) {
         t.ok(err, 'errors on non-string main');
-        t.equal(err.message, 'package “invalid main” `main` must be a string');
+        t.equal(err.message, 'package “invalid_main” `main` must be a string');
         t.equal(err.code, 'INVALID_PACKAGE_MAIN');
         t.equal(res, undefined, 'res is undefined');
         t.equal(pkg, undefined, 'pkg is undefined');
@@ -463,7 +463,7 @@ test('non-string "main" field in package.json', function (t) {
     var dir = path.join(__dirname, 'resolver');
     resolve('./invalid_main', { basedir: dir }, function (err, res, pkg) {
         t.ok(err, 'errors on non-string main');
-        t.equal(err.message, 'package “invalid main” `main` must be a string');
+        t.equal(err.message, 'package “invalid_main” `main` must be a string');
         t.equal(err.code, 'INVALID_PACKAGE_MAIN');
         t.equal(res, undefined, 'res is undefined');
         t.equal(pkg, undefined, 'pkg is undefined');
