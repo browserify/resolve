@@ -321,7 +321,7 @@ test('non-string "main" field in package.json', function (t) {
         t.fail('should not get here');
     } catch (err) {
         t.ok(err, 'errors on non-string main');
-        t.equal(err.message, 'package “invalid main” `main` must be a string');
+        t.equal(err.message, 'package “invalid_main” `main` must be a string');
         t.equal(err.code, 'INVALID_PACKAGE_MAIN');
     }
     t.end();
@@ -335,7 +335,7 @@ test('non-string "main" field in package.json', function (t) {
         t.fail('should not get here');
     } catch (err) {
         t.ok(err, 'errors on non-string main');
-        t.equal(err.message, 'package “invalid main” `main` must be a string');
+        t.equal(err.message, 'package “invalid_main” `main` must be a string');
         t.equal(err.code, 'INVALID_PACKAGE_MAIN');
     }
     t.end();
