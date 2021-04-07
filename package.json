@@ -50,7 +50,7 @@
 		"array.prototype.map": "^1.0.3",
 		"aud": "^1.1.4",
 		"eclint": "^2.8.1",
-		"eslint": "^7.22.0",
+		"eslint": "^7.23.0",
 		"object-keys": "^1.1.1",
 		"safe-publish-latest": "^1.1.4",
 		"tap": "0.4.13",
