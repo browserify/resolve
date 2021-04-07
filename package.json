@@ -35,7 +35,8 @@
 		"module"
 	],
 	"scripts": {
-		"prepublish": "safe-publish-latest",
+		"prepublish": "npm run prepublishOnly",
+		"prepublishOnly": "safe-publish-latest",
 		"prelint": "eclint check '**/*'",
 		"lint": "eslint --ext=js,mjs .",
 		"pretests-only": "cd ./test/resolver/nested_symlinks && node mylib/sync && node mylib/async",
