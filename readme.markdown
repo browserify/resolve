@@ -1,11 +1,14 @@
-# resolve
+# resolve <sup>[![Version Badge][2]][1]</sup>
 
-implements the [node `require.resolve()`
-algorithm](https://nodejs.org/api/modules.html#modules_all_together)
-such that you can `require.resolve()` on behalf of a file asynchronously and
-synchronously
+implements the [node `require.resolve()` algorithm](https://nodejs.org/api/modules.html#modules_all_together) such that you can `require.resolve()` on behalf of a file asynchronously and synchronously
 
-[![build status](https://secure.travis-ci.org/browserify/resolve.png)](http://travis-ci.org/browserify/resolve)
+[![github actions][actions-image]][actions-url]
+[![coverage][codecov-image]][codecov-url]
+[![dependency status][5]][6]
+[![dev dependency status][7]][8]
+[![License][license-image]][license-url]
+[![Downloads][downloads-image]][downloads-url]
+[![npm badge][11]][1]
 
 # example
 
@@ -274,3 +277,19 @@ npm install resolve
 # license
 
 MIT
+
+[1]: https://npmjs.org/package/resolve
+[2]: https://versionbadg.es/browserify/resolve.svg
+[5]: https://david-dm.org/browserify/resolve.svg
+[6]: https://david-dm.org/browserify/resolve
+[7]: https://david-dm.org/browserify/resolve/dev-status.svg
+[8]: https://david-dm.org/browserify/resolve#info=devDependencies
+[11]: https://nodei.co/npm/resolve.png?downloads=true&stars=true
+[license-image]: https://img.shields.io/npm/l/resolve.svg
+[license-url]: LICENSE
+[downloads-image]: https://img.shields.io/npm/dm/resolve.svg
+[downloads-url]: https://npm-stat.com/charts.html?package=resolve
+[codecov-image]: https://codecov.io/gh/browserify/resolve/branch/main/graphs/badge.svg
+[codecov-url]: https://app.codecov.io/gh/browserify/resolve/
+[actions-image]: https://img.shields.io/endpoint?url=https://github-actions-badge-u3jn4tfpocch.runkit.sh/browserify/resolve
+[actions-url]: https://github.com/browserify/resolve/actions
