@@ -8,6 +8,7 @@ implements the [node `require.resolve()` algorithm](https://nodejs.org/api/modul
 [![dev dependency status][7]][8]
 [![License][license-image]][license-url]
 [![Downloads][downloads-image]][downloads-url]
+
 [![npm badge][11]][1]
 
 # example
