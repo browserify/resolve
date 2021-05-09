@@ -46,7 +46,7 @@
 		"url": "https://github.com/sponsors/ljharb"
 	},
 	"dependencies": {
-		"is-core-module": "^2.2.0",
+		"is-core-module": "^2.4.0",
 		"path-parse": "^1.0.6"
 	}
 }
