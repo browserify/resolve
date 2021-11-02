@@ -71,7 +71,7 @@ options are:
 
 * opts.isFile - function to asynchronously test whether a file exists
 
-* opts.isDirectory - function to asynchronously test whether a directory exists
+* opts.isDirectory - function to asynchronously test whether a file exists and is a directory
 
 * opts.realpath - function to asynchronously resolve a potential symlink to its real path
 
@@ -83,7 +83,7 @@ options are:
 * `opts.packageFilter(pkg, pkgfile, dir)` - transform the parsed package.json contents before looking at the "main" field
   * pkg - package data
   * pkgfile - path to package.json
-  * dir - directory for package.json
+  * dir - directory that contains package.json
 
 * `opts.pathFilter(pkg, path, relativePath)` - transform a path within a package
   * pkg - package data
@@ -181,7 +181,7 @@ options are:
 
 * opts.isFile - function to synchronously test whether a file exists
 
-* opts.isDirectory - function to synchronously test whether a directory exists
+* opts.isDirectory - function to synchronously test whether a file exists and is a directory
 
 * opts.realpathSync - function to synchronously resolve a potential symlink to its real path
 
@@ -191,7 +191,7 @@ options are:
 
 * `opts.packageFilter(pkg, dir)` - transform the parsed package.json contents before looking at the "main" field
   * pkg - package data
-  * dir - directory for package.json (Note: the second argument will change to "pkgfile" in v2)
+  * dir - directory that contains package.json (Note: the second argument will change to "pkgfile" in v2)
 
 * `opts.pathFilter(pkg, path, relativePath)` - transform a path within a package
   * pkg - package data
