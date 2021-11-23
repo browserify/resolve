@@ -37,7 +37,7 @@
 	"scripts": {
 		"prepublish": "npm run prepublishOnly",
 		"prepublishOnly": "safe-publish-latest",
-		"prelint": "eclint check '**/*'",
+		"prelint": "eclint check $(git ls-files | grep -vE 'node_modules|\\.git')",
 		"lint": "eslint --ext=js,mjs .",
 		"pretests-only": "cd ./test/resolver/nested_symlinks && node mylib/sync && node mylib/async",
 		"tests-only": "tape test/*.js",
