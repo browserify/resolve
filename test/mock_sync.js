@@ -123,9 +123,8 @@ test('symlinked', function (t) {
                     var dir = path.dirname(resolved);
                     var base = path.basename(resolved);
                     return path.join(dir, 'symlinked', base);
-                } else {
-                    return path.join(resolved, 'symlinked');
                 }
+                return path.join(resolved, 'symlinked');
             }
         };
     }
@@ -184,9 +183,8 @@ test('readPackageSync', function (t) {
     var readPackageSync = function (readFileSync, file) {
         if (file.indexOf(path.join('bar', 'package.json')) >= 0) {
             return { main: './something-else.js' };
-        } else {
-            return JSON.parse(files[path.resolve(file)]);
         }
+        return JSON.parse(files[path.resolve(file)]);
     };
 
     t.test('with readPackage', function (st) {
