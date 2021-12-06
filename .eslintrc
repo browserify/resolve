@@ -1,6 +1,8 @@
 {
     "extends": "@ljharb",
+
     "root": true,
+
     "rules": {
         "array-bracket-newline": 0,
         "array-element-newline": 0,
@@ -25,7 +27,6 @@
         "no-unused-vars": [2, { "vars": "all", "args": "none" }],
         "no-use-before-define": 0,
         "object-curly-newline": 0,
-        "operator-linebreak": [2, "before"],
         "sort-keys": 0,
     },
     "overrides": [
@@ -33,6 +34,18 @@
             "files": "test/resolver/nested_symlinks/mylib/*.js",
             "rules": {
                 "no-throw-literal": 0,
+            },
+        },
+        {
+            "files": "test/**",
+            "parserOptions": {
+                "ecmaVersion": 5,
+                "allowReserved": false,
+            },
+            "rules": {
+                "dot-notation": [2, { "allowPattern": "throws" }],
+                "max-lines": 0,
+                "max-lines-per-function": 0,
             },
         },
     ],
