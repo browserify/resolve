@@ -31,7 +31,7 @@ test('foo', function (t) {
         },
         {
             name: 'Error',
-            message: "Cannot find module 'foo' from '" + path.join(dir, 'bar.js') + "'"
+            message: "Cannot find module 'foo' from '" + path.join(dir, 'bar.js') + "'. Please verify that module installed, the package.json has 'main' field or module has index.js file"
         }
     );
 
@@ -275,7 +275,7 @@ test('sync: #121 - treating an existing file as a dir when no basedir', function
             st.equal(e.code, 'MODULE_NOT_FOUND', 'error code matches require.resolve');
             st.equal(
                 e.message,
-                'Cannot find module \'./' + testFile + '/blah\' from \'' + __dirname + '\'',
+                'Cannot find module \'./' + testFile + '/blah\' from \'' + __dirname + '\'. Please verify that module installed, the package.json has \'main\' field or module has index.js file',
                 'can not find nonexistent module'
             );
         }
