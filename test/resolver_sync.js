@@ -356,3 +356,30 @@ test('browser field in package.json', function (t) {
     t.equal(res, path.join(dir, 'browser_field', 'b.js'));
     t.end();
 });
+
+test('absolute paths', function (t) {
+    var extensionless = __filename.slice(0, -path.extname(__filename).length);
+
+    t.equal(
+        resolve.sync(__filename),
+        __filename,
+        'absolute path to this file resolves'
+    );
+    t.equal(
+        resolve.sync(extensionless),
+        __filename,
+        'extensionless absolute path to this file resolves'
+    );
+    t.equal(
+        resolve.sync(__filename, { basedir: process.cwd() }),
+        __filename,
+        'absolute path to this file with a basedir resolves'
+    );
+    t.equal(
+        resolve.sync(extensionless, { basedir: process.cwd() }),
+        __filename,
+        'extensionless absolute path to this file with a basedir resolves'
+    );
+
+    t.end();
+});
