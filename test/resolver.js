@@ -483,3 +483,58 @@ test('absolute paths', function (t) {
         );
     });
 });
+
+test('malformed package.json', function (t) {
+    /* eslint operator-linebreak: ["error", "before"], function-paren-newline: "off" */
+    t.plan(
+        (3 * 3) // 3 sets of 3 assertions in the final callback
+        + 2 // 1 readPackage call with malformed package.json
+    );
+
+    var basedir = path.join(__dirname, 'resolver/malformed_package_json');
+    var expected = path.join(basedir, 'index.js');
+
+    resolve('./index.js', { basedir: basedir }, function (err, res, pkg) {
+        t.error(err, 'no error');
+        t.equal(res, expected, 'malformed package.json is silently ignored');
+        t.equal(pkg, undefined, 'malformed package.json gives an undefined `pkg` argument');
+    });
+
+    resolve(
+        './index.js',
+        {
+            basedir: basedir,
+            packageFilter: function (pkg, pkgfile, dir) {
+                t.fail('should not reach here');
+            }
+        },
+        function (err, res, pkg) {
+            t.error(err, 'with packageFilter: no error');
+            t.equal(res, expected, 'with packageFilter: malformed package.json is silently ignored');
+            t.equal(pkg, undefined, 'with packageFilter: malformed package.json gives an undefined `pkg` argument');
+        }
+    );
+
+    resolve(
+        './index.js',
+        {
+            basedir: basedir,
+            readPackage: function (readFile, pkgfile, cb) {
+                t.equal(pkgfile, path.join(basedir, 'package.json'), 'readPackageSync: `pkgfile` is package.json path');
+                readFile(pkgfile, function (err, result) {
+                    try {
+                        cb(null, JSON.parse(result));
+                    } catch (e) {
+                        t.ok(e instanceof SyntaxError, 'readPackage: malformed package.json parses as a syntax error');
+                        cb(null);
+                    }
+                });
+            }
+        },
+        function (err, res, pkg) {
+            t.error(err, 'with readPackage: no error');
+            t.equal(res, expected, 'with readPackage: malformed package.json is silently ignored');
+            t.equal(pkg, undefined, 'with readPackage: malformed package.json gives an undefined `pkg` argument');
+        }
+    );
+});
