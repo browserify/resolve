@@ -494,3 +494,38 @@ test('browser field in package.json', function (t) {
         }
     );
 });
+
+test('absolute paths', function (t) {
+    t.plan(4);
+
+    var extensionless = __filename.slice(0, -path.extname(__filename).length);
+
+    resolve(__filename, function (err, res) {
+        t.equal(
+            res,
+            __filename,
+            'absolute path to this file resolves'
+        );
+    });
+    resolve(extensionless, function (err, res) {
+        t.equal(
+            res,
+            __filename,
+            'extensionless absolute path to this file resolves'
+        );
+    });
+    resolve(__filename, { basedir: process.cwd() }, function (err, res) {
+        t.equal(
+            res,
+            __filename,
+            'absolute path to this file with a basedir resolves'
+        );
+    });
+    resolve(extensionless, { basedir: process.cwd() }, function (err, res) {
+        t.equal(
+            res,
+            __filename,
+            'extensionless absolute path to this file with a basedir resolves'
+        );
+    });
+});
