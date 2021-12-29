@@ -51,4 +51,8 @@
             },
         },
     ],
+
+    "ignorePatterns": [
+        "./test/resolver/malformed_package_json/package.json",
+    ],
 }

@@ -384,3 +384,54 @@ test('absolute paths', function (t) {
 
     t.end();
 });
+
+test('malformed package.json', function (t) {
+    t.plan(5);
+
+    var basedir = path.join(__dirname, 'resolver/malformed_package_json');
+    var expected = path.join(basedir, 'index.js');
+
+    t.equal(
+        resolve.sync('./index.js', { basedir: basedir }),
+        expected,
+        'malformed package.json is silently ignored'
+    );
+
+    var res1 = resolve.sync(
+        './index.js',
+        {
+            basedir: basedir,
+            packageFilter: function (pkg, pkgfile, dir) {
+                t.fail('should not reach here');
+            }
+        }
+    );
+
+    t.equal(
+        res1,
+        expected,
+        'with packageFilter: malformed package.json is silently ignored'
+    );
+
+    var res2 = resolve.sync(
+        './index.js',
+        {
+            basedir: basedir,
+            readPackageSync: function (readFileSync, pkgfile) {
+                t.equal(pkgfile, path.join(basedir, 'package.json'), 'readPackageSync: `pkgfile` is package.json path');
+                var result = String(readFileSync(pkgfile));
+                try {
+                    return JSON.parse(result);
+                } catch (e) {
+                    t.ok(e instanceof SyntaxError, 'readPackageSync: malformed package.json parses as a syntax error');
+                }
+            }
+        }
+    );
+
+    t.equal(
+        res2,
+        expected,
+        'with readPackageSync: malformed package.json is silently ignored'
+    );
+});
