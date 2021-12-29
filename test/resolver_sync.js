@@ -424,6 +424,7 @@ test('malformed package.json', function (t) {
                     return JSON.parse(result);
                 } catch (e) {
                     t.ok(e instanceof SyntaxError, 'readPackageSync: malformed package.json parses as a syntax error');
+                    throw e;
                 }
             }
         }

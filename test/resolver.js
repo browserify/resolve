@@ -572,7 +572,7 @@ test('malformed package.json', function (t) {
                         cb(null, JSON.parse(result));
                     } catch (e) {
                         t.ok(e instanceof SyntaxError, 'readPackage: malformed package.json parses as a syntax error');
-                        cb(null);
+                        cb(e);
                     }
                 });
             }

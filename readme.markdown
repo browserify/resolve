@@ -78,7 +78,7 @@ options are:
 * `opts.readPackage(readFile, pkgfile, cb)` - function to asynchronously read and parse a package.json file
   * readFile - the passed `opts.readFile` or `fs.readFile` if not specified
   * pkgfile - path to package.json
-  * cb - callback
+  * cb - callback. a SyntaxError error argument will be ignored, all other error arguments will be treated as an error.
 
 * `opts.packageFilter(pkg, pkgfile, dir)` - transform the parsed package.json contents before looking at the "main" field
   * pkg - package data
@@ -152,7 +152,7 @@ default `opts` values:
                     var pkg = JSON.parse(body);
                     cb(null, pkg);
                 } catch (jsonErr) {
-                    cb(null);
+                    cb(jsonErr);
                 }
             }
         });
@@ -183,7 +183,7 @@ options are:
 
 * opts.realpathSync - function to synchronously resolve a potential symlink to its real path
 
-* `opts.readPackageSync(readFileSync, pkgfile)` - function to synchronously read and parse a package.json file
+* `opts.readPackageSync(readFileSync, pkgfile)` - function to synchronously read and parse a package.json file. a thrown SyntaxError will be ignored, all other exceptions will propagate.
   * readFileSync - the passed `opts.readFileSync` or `fs.readFileSync` if not specified
   * pkgfile - path to package.json
 
@@ -256,11 +256,7 @@ default `opts` values:
         return file;
     },
     readPackageSync: function defaultReadPackageSync(readFileSync, pkgfile) {
-        var body = readFileSync(pkgfile);
-        try {
-            var pkg = JSON.parse(body);
-            return pkg;
-        } catch (jsonErr) {}
+        return JSON.parse(readFileSync(pkgfile));
     },
     moduleDirectory: 'node_modules',
     preserveSymlinks: false
