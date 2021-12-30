@@ -16,7 +16,7 @@
 	"scripts": {
 		"prepublishOnly": "safe-publish-latest && cp node_modules/is-core-module/core.json ./lib/ ||:",
 		"prepublish": "not-in-publish || npm run prepublishOnly",
-		"prelint": "eclint check $(git ls-files | grep -vE 'node_modules|\\.git')",
+		"prelint": "eclint check $(git ls-files | xargs find 2> /dev/null | grep -vE 'node_modules|\\.git')",
 		"lint": "eslint --ext=js,mjs --no-eslintrc -c .eslintrc .",
 		"pretests-only": "cd ./test/resolver/nested_symlinks && node mylib/sync && node mylib/async",
 		"tests-only": "tape test/*.js",
