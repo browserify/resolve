@@ -1,6 +1,12 @@
 var path = require('path');
 var test = require('tape');
 var resolve = require('../');
+var async = require('../async');
+
+test('`./async` entry point', function (t) {
+    t.equal(resolve, async, '`./async` entry point is the same as `main`');
+    t.end();
+});
 
 test('async foo', function (t) {
     t.plan(12);
