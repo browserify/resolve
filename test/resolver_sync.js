@@ -3,6 +3,12 @@ var fs = require('fs');
 var test = require('tape');
 
 var resolve = require('../');
+var sync = require('../sync');
+
+test('`./sync` entry point', function (t) {
+    t.equal(resolve.sync, sync, '`./sync` entry point is the same as `.sync` on `main`');
+    t.end();
+});
 
 test('foo', function (t) {
     var dir = path.join(__dirname, 'resolver');

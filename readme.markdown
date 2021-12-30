@@ -16,7 +16,7 @@ implements the [node `require.resolve()` algorithm](https://nodejs.org/api/modul
 asynchronously resolve:
 
 ```js
-var resolve = require('resolve');
+var resolve = require('resolve/async'); // or, require('resolve')
 resolve('tap', { basedir: __dirname }, function (err, res) {
     if (err) console.error(err);
     else console.log(res);
@@ -31,8 +31,8 @@ $ node example/async.js
 synchronously resolve:
 
 ```js
-var resolve = require('resolve');
-var res = resolve.sync('tap', { basedir: __dirname });
+var resolve = require('resolve/sync'); // or, `require('resolve').sync
+var res = resolve('tap', { basedir: __dirname });
 console.log(res);
 ```
 
@@ -45,6 +45,8 @@ $ node example/sync.js
 
 ```js
 var resolve = require('resolve');
+var async = require('resolve/async');
+var sync = require('resolve/sync');
 ```
 
 For both the synchronous and asynchronous methods, errors may have any of the following `err.code` values:
