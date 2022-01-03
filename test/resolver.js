@@ -294,7 +294,7 @@ test('without basedir', function (t) {
     t.plan(1);
 
     var dir = path.join(__dirname, 'resolver/without_basedir');
-    var tester = require(path.join(dir, 'main.js'));
+    var tester = require(path.join(dir, 'main.js')); // eslint-disable-line global-require
 
     tester(t, function (err, res, pkg) {
         if (err) {

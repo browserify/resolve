@@ -1,5 +1,7 @@
 var path = require('path');
+var fs = require('fs');
 var test = require('tape');
+
 var resolve = require('../');
 var sync = require('../sync');
 
@@ -206,7 +208,6 @@ test('incorrect main', function (t) {
 });
 
 var stubStatSync = function stubStatSync(fn) {
-    var fs = require('fs');
     var statSync = fs.statSync;
     try {
         fs.statSync = function () {
