@@ -10,4 +10,7 @@ yarn.lock
 # symlinked file used in tests
 test/resolver/symlinked/_/node_modules/package
 
+# ignore malformed package json
+test/resolver/malformed_package_json
+
 .github/workflows
