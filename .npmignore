@@ -7,7 +7,7 @@ npm-shrinkwrap.json
 package-lock.json
 yarn.lock
 
-# symlinked file used in tests
-test/resolver/symlinked/_/node_modules/package
+# ignore test files
+test/
 
 .github/workflows
