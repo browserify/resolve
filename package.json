@@ -18,18 +18,9 @@
 			},
 			"./index.js"
 		],
-		"./sync": [
-			{
-				"default": "./lib/sync.js"
-			},
-			"./lib/sync.js"
-		],
-		"./async": [
-			{
-				"default": "./lib/async.js"
-			},
-			"./lib/async.js"
-		]
+		"./sync": "./lib/sync.js",
+		"./async": "./lib/async.js",
+		"./package.json": "./package.json"
 	},
 	"keywords": [
 		"resolve",
