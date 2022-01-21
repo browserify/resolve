@@ -29,16 +29,16 @@
 		"test:multirepo": "cd ./test/resolver/multirepo && npm install && npm test"
 	},
 	"devDependencies": {
-		"@ljharb/eslint-config": "^20.1.0",
+		"@ljharb/eslint-config": "^20.2.0",
 		"array.prototype.map": "^1.0.4",
-		"aud": "^1.1.5",
+		"aud": "^2.0.0",
 		"eclint": "^2.8.1",
-		"eslint": "^8.6.0",
+		"eslint": "^8.7.0",
 		"in-publish": "^2.0.1",
 		"object-keys": "^1.1.1",
 		"safe-publish-latest": "^2.0.0",
 		"tap": "0.4.13",
-		"tape": "^5.4.0"
+		"tape": "^5.4.1"
 	},
 	"license": "MIT",
 	"author": {
