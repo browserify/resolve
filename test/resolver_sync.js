@@ -309,6 +309,63 @@ test('incorrect main', function (t) {
     t.end();
 });
 
+test('missing index', function (t) {
+    t.plan(requireResolveSupportsPaths ? 2 : 1);
+
+    var resolverDir = path.join(__dirname, 'resolver');
+    try {
+        resolve.sync('./missing_index', { basedir: resolverDir });
+        t.fail('did not fail');
+    } catch (err) {
+        t.equal(err && err.code, 'INCORRECT_PACKAGE_MAIN', 'error has correct error code');
+    }
+    if (requireResolveSupportsPaths) {
+        try {
+            require.resolve('./missing_index', { basedir: resolverDir });
+            t.fail('require.resolve did not fail');
+        } catch (err) {
+            t.equal(err && err.code, 'MODULE_NOT_FOUND', 'error has correct error code');
+        }
+    }
+});
+
+test('missing main', function (t) {
+    var resolverDir = path.join(__dirname, 'resolver');
+    var dir = path.join(resolverDir, 'missing_main');
+
+    t.equal(
+        resolve.sync('./missing_main', { basedir: resolverDir }),
+        path.join(dir, 'index.js')
+    );
+    if (requireResolveSupportsPaths) {
+        t.equal(
+            resolve.sync('./missing_main', { basedir: resolverDir }),
+            require.resolve('./missing_main', { paths: [resolverDir] }),
+            '"main" missing: resolve.sync === require.resolve'
+        );
+    }
+
+    t.end();
+});
+
+test('null main', function (t) {
+    var resolverDir = path.join(__dirname, 'resolver');
+    var dir = path.join(resolverDir, 'null_main');
+
+    t.equal(
+        resolve.sync('./null_main', { basedir: resolverDir }),
+        path.join(dir, 'index.js')
+    );
+    if (requireResolveSupportsPaths) {
+        t.equal(
+            resolve.sync('./null_main', { basedir: resolverDir }),
+            require.resolve('./null_main', { paths: [resolverDir] }),
+            '`"main": null`: resolve.sync === require.resolve'
+        );
+    }
+
+    t.end();
+});
 var stubStatSync = function stubStatSync(fn) {
     var statSync = fs.statSync;
     try {
