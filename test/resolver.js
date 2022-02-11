@@ -336,6 +336,25 @@ test('null main', function (t) {
     });
 });
 
+test('main: false', function (t) {
+    t.plan(2);
+
+    var basedir = path.join(__dirname, 'resolver');
+    var dir = path.join(basedir, 'false_main');
+    resolve('./false_main', { basedir: basedir }, function (err, res, pkg) {
+        if (err) t.fail(err);
+        t.equal(
+            res,
+            path.join(dir, 'index.js'),
+            '`"main": false`: resolves to `index.js`'
+        );
+        t.deepEqual(pkg, {
+            name: 'false_main',
+            main: false
+        });
+    });
+});
+
 test('without basedir', function (t) {
     t.plan(1);
 

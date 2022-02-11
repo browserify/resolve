@@ -366,6 +366,26 @@ test('null main', function (t) {
 
     t.end();
 });
+
+test('main: false', function (t) {
+    var basedir = path.join(__dirname, 'resolver');
+    var dir = path.join(basedir, 'false_main');
+    t.equal(
+        resolve.sync('./false_main', { basedir: basedir }),
+        path.join(dir, 'index.js'),
+        '`"main": false`: resolves to `index.js`'
+    );
+    if (requireResolveSupportsPaths) {
+        t.equal(
+            resolve.sync('./false_main', { basedir: basedir }),
+            require.resolve('./false_main', { paths: [basedir] }),
+            '`"main": false`: resolve.sync === require.resolve'
+        );
+    }
+
+    t.end();
+});
+
 var stubStatSync = function stubStatSync(fn) {
     var statSync = fs.statSync;
     try {
