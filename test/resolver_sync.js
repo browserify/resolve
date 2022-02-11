@@ -6,7 +6,7 @@ var resolve = require('../');
 var sync = require('../sync');
 
 var requireResolveSupportsPaths = require.resolve.length > 1
-    && (/^12\.[012]\./).test(process.version); // broken in v12.0-12.2, see https://github.com/nodejs/node/issues/27794
+    && !(/^12\.[012]\./).test(process.version); // broken in v12.0-12.2, see https://github.com/nodejs/node/issues/27794
 
 test('`./sync` entry point', function (t) {
     t.equal(resolve.sync, sync, '`./sync` entry point is the same as `.sync` on `main`');
