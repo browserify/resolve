@@ -12,3 +12,6 @@ test/resolver/symlinked/_/node_modules/package
 
 .github/workflows
 appveyor.yml
+
+# tests
+test/**
