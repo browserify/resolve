@@ -73,4 +73,9 @@ test_script:
  - node --version
  - npm --version
  # run tests
+ - cd
+ - npm run tests-only
+ - 'subst X: ..'
+ - 'cd /d X:\resolve'
+ - cd
  - npm run tests-only
