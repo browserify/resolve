@@ -1,7 +1,7 @@
 {
 	"name": "resolve",
 	"description": "resolve like require.resolve() on behalf of files asynchronously and synchronously",
-	"version": "2.0.0-next.3",
+	"version": "2.0.0-next.4",
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/browserify/resolve.git"
