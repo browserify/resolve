@@ -1,0 +1,6 @@
+appveyor.yml
+.editorconfig
+.eslintrc
+example/
+.github/
+test/
