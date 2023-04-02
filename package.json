@@ -76,7 +76,11 @@
 	"publishConfig": {
 		"ignore": [
 			".github/workflows",
-			"appveyor.yml"
+			"appveyor.yml",
+			"test",
+			".editorconfig",
+			".eslintrc",
+			"example"
 		]
 	}
 }
