@@ -1,0 +1,19 @@
+name: resolve executable
+
+on: [push, pull_request]
+
+jobs:
+  _:
+    name: cli
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ljharb/actions/node/install@main
+      - run: "[ $(./bin/resolve fs) = 'fs' ]"
+        name: run inside the package with a direct path
+      - run: "npm link && [ $(resolve fs) = 'fs' ] && npm uninstall -g resolve"
+        name: run linked as a global in the PATH
+      - run: "[ $(npx resolve fs) = 'fs' ]"
+        name: run via npx
