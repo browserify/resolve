@@ -666,10 +666,11 @@ test('absolute paths', function (t) {
     t.end();
 });
 
-test('malformed package.json', function (t) {
+var malformedDir = path.join(__dirname, 'resolver/malformed_package_json');
+test('malformed package.json', { skip: !fs.existsSync(malformedDir) }, function (t) {
     t.plan(5 + (requireResolveSupportsPaths ? 1 : 0));
 
-    var basedir = path.join(__dirname, 'resolver/malformed_package_json');
+    var basedir = malformedDir;
     var expected = path.join(basedir, 'index.js');
 
     t.equal(
