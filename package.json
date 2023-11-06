@@ -56,7 +56,7 @@
 		"rimraf": "^2.7.1",
 		"safe-publish-latest": "^2.0.0",
 		"tap": "^0.4.13",
-		"tape": "^5.7.0",
+		"tape": "^5.7.2",
 		"tmp": "^0.0.31"
 	},
 	"license": "MIT",
