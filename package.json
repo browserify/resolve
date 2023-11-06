@@ -79,5 +79,8 @@
 			"appveyor.yml",
 			"test/resolver/malformed_package_json"
 		]
+	},
+	"engines": {
+		"node": ">= 0.4"
 	}
 }
