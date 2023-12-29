@@ -3,6 +3,11 @@
 
     "extends": "@ljharb",
 
+    "ignorePatterns": [
+        "test/resolver/malformed_package_json/package.json",
+        "test/list-exports/**",
+    ],
+
     "rules": {
         "indent": [2, 4],
         "strict": 0,
@@ -57,9 +62,5 @@
                 "no-unused-vars": [2, { "vars": "all", "args": "none" }],
             },
         },
-    ],
-
-    "ignorePatterns": [
-        "./test/resolver/malformed_package_json/package.json",
     ],
 }
