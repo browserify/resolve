@@ -82,5 +82,11 @@
 	},
 	"engines": {
 		"node": ">= 0.4"
-	}
+	},
+	"files": [
+		"*.js",
+		"*.mjs",
+		"lib/",
+		"SECURITY.md"
+	]
 }
