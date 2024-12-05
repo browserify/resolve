@@ -76,6 +76,7 @@
 	"publishConfig": {
 		"ignore": [
 			".github/workflows",
+			".github/.well-known",
 			"appveyor.yml",
 			"test/resolver/malformed_package_json"
 		]
