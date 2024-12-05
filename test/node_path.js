@@ -65,6 +65,6 @@ test('$NODE_PATH', function (t) {
     }, function (err, res) {
         var root = require('tap/package.json').main; // eslint-disable-line global-require
         t.error(err);
-        t.equal(res, path.resolve(__dirname, '..', 'node_modules/tap', root), 'tap resolves');
+        t.equal(res.replace('/node_modules/.vlt/··tap@0.4.13/', '/'), path.resolve(__dirname, '..', 'node_modules/tap', root), 'tap resolves');
     });
 });
