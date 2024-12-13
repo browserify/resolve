@@ -41,6 +41,20 @@
 		"posttest": "npm run test:multirepo && npx npm@'>= 10.2' audit --production",
 		"test:multirepo": "cd ./test/resolver/multirepo && npm install && npm test"
 	},
+	"license": "MIT",
+	"author": {
+		"name": "James Halliday",
+		"email": "mail@substack.net",
+		"url": "http://substack.net"
+	},
+	"funding": {
+		"url": "https://github.com/sponsors/ljharb"
+	},
+	"dependencies": {
+		"is-core-module": "^2.16.0",
+		"path-parse": "^1.0.7",
+		"supports-preserve-symlinks-flag": "^1.0.0"
+	},
 	"devDependencies": {
 		"@ljharb/eslint-config": "^21.1.1",
 		"array.prototype.map": "^1.0.7",
@@ -57,20 +71,6 @@
 		"tap": "^0.4.13",
 		"tape": "^5.9.0",
 		"tmp": "^0.0.31"
-	},
-	"license": "MIT",
-	"author": {
-		"name": "James Halliday",
-		"email": "mail@substack.net",
-		"url": "http://substack.net"
-	},
-	"funding": {
-		"url": "https://github.com/sponsors/ljharb"
-	},
-	"dependencies": {
-		"is-core-module": "^2.16.0",
-		"path-parse": "^1.0.7",
-		"supports-preserve-symlinks-flag": "^1.0.0"
 	},
 	"publishConfig": {
 		"ignore": [
