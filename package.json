@@ -77,7 +77,8 @@
 			".github/workflows",
 			".github/.well-known",
 			"appveyor.yml",
-			"test/resolver/malformed_package_json"
+			"test/resolver/malformed_package_json",
+			"test/list-exports"
 		]
 	},
 	"engines": {
