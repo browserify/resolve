@@ -38,7 +38,7 @@
 		"tests-only": "tape test/*.js",
 		"pretest": "npm run lint",
 		"test": "npm run --silent tests-only",
-		"posttest": "npm run test:multirepo && npx npm@'>= 10.2' audit --production",
+		"posttest": "npm run test:multirepo && npx npm@\">= 10.2\" audit --production",
 		"test:multirepo": "cd ./test/resolver/multirepo && npm install && npm test"
 	},
 	"license": "MIT",
