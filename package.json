@@ -4,7 +4,7 @@
 	"version": "1.22.10",
 	"repository": {
 		"type": "git",
-		"url": "git://github.com/browserify/resolve.git"
+		"url": "ssh://github.com/browserify/resolve.git"
 	},
 	"bin": {
 		"resolve": "./bin/resolve"
