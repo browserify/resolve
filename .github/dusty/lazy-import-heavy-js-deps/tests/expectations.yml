@@ -1,0 +1,35 @@
+"violation.ts":
+  qualify: true
+  detect: true
+  resolve: true
+  contains:
+    - "export class Runner"
+    - "export function upload("
+    - "export function noHeavy("
+  regex:
+    - 'export function upload\([^)]*\):[^\n]*\{\n\s+const AWS = require\(''aws-sdk''\);'
+    - 'export class Runner[^{]*\{\n\s+run\(\):[^\n]*\{\n\s+const AWS = require\(''aws-sdk''\);'
+
+"no_violation_module_level.ts":
+  qualify: true
+  detect: false
+  resolve: false
+  contains:
+    - "const CLIENT = new S3()"
+    - "export class Processor"
+    - "export function process()"
+    - "export function noHeavy()"
+  not_contains:
+    - "const AWS = require('aws-sdk')"
+
+"already_lazy.ts":
+  qualify: true
+  detect: false
+  resolve: false
+  contains:
+    - "export function measure()"
+    - "export class Checker"
+    - "export function noHeavy()"
+  regex:
+    - 'export function measure\(\):[^\n]*\{\n\s+// Already lazy via function-local require\n\s+const AWS = require\(''aws-sdk''\);'
+    - 'export class Checker[^{]*\{\n\s+run\(\)[^\n]*\{\n\s+const AWS = require\(''aws-sdk''\);'
