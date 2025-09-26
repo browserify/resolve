@@ -1,0 +1,23 @@
+# File: .github/workflows/dusty.yml
+name: Dusty
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  push:
+    branches: [main]
+  schedule:
+    - cron: '0 12 * * 1'  # optional
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  dusty:
+    uses: githubnext/dusty/.github/workflows/dusty.yml@main
+    with:
+      # optional; default is .github/dusty
+      rules-path: .github/dusty
+      # for monorepos, point to a subdirectory containing rules
+      # rules-path: packages/app/.github/dusty
