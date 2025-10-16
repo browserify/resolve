@@ -56,7 +56,7 @@
 		"supports-preserve-symlinks-flag": "^1.0.0"
 	},
 	"devDependencies": {
-		"@ljharb/eslint-config": "^21.1.1",
+		"@ljharb/eslint-config": "^21.2.0",
 		"array.prototype.map": "^1.0.8",
 		"copy-dir": "^1.3.0",
 		"eclint": "^2.8.1",
