@@ -2,6 +2,8 @@ name: 'Tests: node.js < 10'
 
 on: [pull_request, push]
 
+permissions: read-all
+
 jobs:
   tests:
     uses: ljharb/actions/.github/workflows/node.yml@main
