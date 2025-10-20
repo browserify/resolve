@@ -2,6 +2,8 @@ name: resolve executable
 
 on: [push, pull_request]
 
+permissions: read-all
+
 jobs:
   _:
     name: cli
