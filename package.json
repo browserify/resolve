@@ -77,6 +77,7 @@
 			".github/workflows",
 			".github/.well-known",
 			"appveyor.yml",
+			"CONTRIBUTING.md",
 			"test/resolver/malformed_package_json",
 			"test/list-exports"
 		]
