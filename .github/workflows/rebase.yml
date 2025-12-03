@@ -2,12 +2,16 @@ name: Automatic Rebase
 
 on: [pull_request_target]
 
-permissions:
-  contents: write  # for ljharb/rebase to push code to rebase
-  pull-requests: read  # for ljharb/rebase to get info about PR
+permissions: read-all
 
 jobs:
   _:
-    uses: ljharb/actions/.github/workflows/rebase.yml@main
-    secrets:
-      token: ${{ secrets.GITHUB_TOKEN }}
+    name: "Automatic Rebase"
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ljharb/rebase@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
