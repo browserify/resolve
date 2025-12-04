@@ -4,10 +4,9 @@ implements the [node `require.resolve()` algorithm](https://nodejs.org/api/modul
 
 [![github actions][actions-image]][actions-url]
 [![coverage][codecov-image]][codecov-url]
-[![dependency status][5]][6]
-[![dev dependency status][7]][8]
 [![License][license-image]][license-url]
 [![Downloads][downloads-image]][downloads-url]
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/10759/badge)](https://bestpractices.coreinfrastructure.org/projects/10759)
 
 [![npm badge][11]][1]
 
