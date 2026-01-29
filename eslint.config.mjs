@@ -19,6 +19,7 @@ export default [
 			'func-style': 'off',
 			'global-require': 'warn',
 			'id-length': ['error', { min: 1, max: 40 }],
+			'max-depth': 'off',
 			'max-lines-per-function': 'warn',
 			'max-lines': ['error', 360],
 			'max-nested-callbacks': 'off',
