@@ -25,7 +25,7 @@ indent_style = tab
 indent_style = space
 indent_size = 2
 
-[{*.json,Makefile,CONTRIBUTING.md}]
+[{*.json,Makefile,CONTRIBUTING.md,readme.markdown}]
 max_line_length = unset
 
 [test/{dotdot,resolver,module_dir,multirepo,node_path,pathfilter,precedence}/**/*]
