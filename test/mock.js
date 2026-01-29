@@ -281,14 +281,14 @@ test('readPackage', function (t) {
         });
     });
 
-    var readPackage = function (readFile, file, cb) {
+    function readPackage(readFile, file, cb) {
         var barPackage = path.join('bar', 'package.json');
         if (file.slice(-barPackage.length) === barPackage) {
             cb(null, { main: './something-else.js' });
         } else {
             cb(null, JSON.parse(files[path.resolve(file)]));
         }
-    };
+    }
 
     t.test('with readPackage', function (st) {
         st.plan(3);

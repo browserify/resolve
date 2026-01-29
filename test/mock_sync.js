@@ -180,12 +180,12 @@ test('readPackageSync', function (t) {
         );
     });
 
-    var readPackageSync = function (readFileSync, file) {
+    function readPackageSync(readFileSync, file) {
         if (file.indexOf(path.join('bar', 'package.json')) >= 0) {
             return { main: './something-else.js' };
         }
         return JSON.parse(files[path.resolve(file)]);
-    };
+    }
 
     t.test('with readPackage', function (st) {
         st.plan(1);
