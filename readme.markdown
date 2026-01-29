@@ -53,6 +53,9 @@ For both the synchronous and asynchronous methods, errors may have any of the fo
 - `MODULE_NOT_FOUND`: the given path string (`id`) could not be resolved to a module
 - `INVALID_BASEDIR`: the specified `opts.basedir` doesn't exist, or is not a directory
 - `INVALID_PACKAGE_MAIN`: a `package.json` was encountered with an invalid `main` property (eg. not a string)
+- `ERR_PACKAGE_PATH_NOT_EXPORTED`: the requested subpath is not defined in the package's `exports` field
+- `ERR_INVALID_PACKAGE_CONFIG`: the package's `exports` field contains an invalid target
+- `INVALID_EXPORTS_CATEGORY`: an invalid `exportsCategory` was specified
 
 ## resolve(id, opts={}, cb)
 
@@ -110,6 +113,22 @@ options are:
 
 * opts.preserveSymlinks - if true, doesn't resolve `basedir` to real path before resolving.
 This is the way Node resolves dependencies when executed with the [--preserve-symlinks](https://nodejs.org/api/all.html#cli_preserve_symlinks) flag.
+
+* opts.exportsCategory - a [node-exports-info](https://npmjs.com/package/node-exports-info) category string (e.g. `'conditions'`, `'patterns'`, `'pre-exports'`) that determines which `exports` field semantics to use.
+When set, resolution will use the package's `exports` field according to that category's supported conditions and features.
+This also enables **self-reference** support, allowing a package to import itself by name (e.g., `require('my-package')` from within `my-package`).
+
+* opts.engines - determines `exports` field resolution based on Node.js version semantics:
+  * When a **string** (e.g. `'>= 14'`): treated as a semver range, mapped to the most restrictive [node-exports-info](https://npmjs.com/package/node-exports-info) category covering that range.
+  * When `true`: reads `engines.node` from the nearest `package.json` to `basedir` and uses the most restrictive category for that range.
+  * When `false` or omitted: no engine-based exports resolution.
+  * Throws if set to an empty string or non-boolean/non-string value.
+
+**Note:** `exportsCategory` and `engines` are mutually exclusive - only one can be specified.
+
+* opts.conditions - an array of condition strings (e.g. `['require', 'node']`) to use when resolving the `exports` field.
+If specified, this overrides the conditions that would otherwise be derived from the category.
+This option only has effect when `exportsCategory` or `engines` is also set.
 
 default `opts` values:
 
@@ -217,6 +236,16 @@ options are:
 
 * opts.preserveSymlinks - if true, doesn't resolve `basedir` to real path before resolving.
 This is the way Node resolves dependencies when executed with the [--preserve-symlinks](https://nodejs.org/api/all.html#cli_preserve_symlinks) flag.
+
+* opts.exportsCategory - a [node-exports-info](https://npmjs.com/package/node-exports-info) category string (e.g. `'conditions'`, `'patterns'`, `'pre-exports'`) that determines which `exports` field semantics to use. When set, resolution will use the package's `exports` field according to that category's supported conditions and features. This also enables **self-reference** support, allowing a package to import itself by name (e.g., `require('my-package')` from within `my-package`).
+
+* opts.enginesRange - a semver range string (e.g. `'>= 14'`) that will be mapped to the most restrictive [node-exports-info](https://npmjs.com/package/node-exports-info) category covering that range.
+
+* opts.engines - if `true`, reads `engines.node` from the nearest `package.json` to `basedir` and uses the most restrictive [node-exports-info](https://npmjs.com/package/node-exports-info) category for that range.
+
+**Note:** `exportsCategory`, `enginesRange`, and `engines` are mutually exclusive - only one can be specified.
+
+* opts.conditions - an array of condition strings (e.g. `['require', 'node']`) to use when resolving the `exports` field. If specified, this overrides the conditions that would otherwise be derived from the category. This option only has effect when one of `exportsCategory`, `enginesRange`, or `engines` is also set.
 
 default `opts` values:
 
