@@ -64,7 +64,7 @@
 		"array.prototype.map": "^1.0.8",
 		"copy-dir": "^1.3.0",
 		"eclint": "^2.8.1",
-		"eslint": "^9.39.1",
+		"eslint": "^9.39.3",
 		"in-publish": "^2.0.1",
 		"jiti": "^0.0.0",
 		"mkdirp": "^0.5.6",
