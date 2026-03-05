@@ -384,6 +384,519 @@ test('all fixtures are tested', function (t) {
     t.end();
 });
 
+test('exports resolution - moduleSystem: import uses import conditions', function (t) {
+    // ex-node-addons is skipped because getCategoryInfo includes node-addons in import
+    // conditions for some categories, but list-exports expected data does not
+    var skipImportFixtures = ['ex-node-addons'];
+    var fixtures = getFixtures().filter(function (n) { return skipImportFixtures.indexOf(n) === -1; });
+
+    fixtures.forEach(function (fixtureName) {
+        var projectPkg = loadProjectPkg(fixtureName);
+        if (!projectPkg) {
+            return;
+        }
+        var projectDir = path.join(fixturesDir, fixtureName, 'project');
+        var pkgName = projectPkg.name;
+
+        categories.forEach(function (category) {
+            var expected = loadExpected(fixtureName, category);
+            if (!expected || !expected.exports || !expected.exports[category]) {
+                return;
+            }
+
+            var importMap = expected.exports[category].import;
+            if (!importMap || typeof importMap !== 'object') {
+                return;
+            }
+
+            Object.keys(importMap).forEach(function (subpath) {
+                var expectedFile = importMap[subpath];
+                var specifier = subpath === '.' ? pkgName : pkgName + subpath.substring(1);
+
+                t.test(fixtureName + ' / ' + category + ' / import / ' + subpath, function (st) {
+                    st.plan(1);
+                    try {
+                        var result = resolve(specifier, {
+                            basedir: __dirname,
+                            exportsCategory: category,
+                            moduleSystem: 'import',
+                            extensions: ['.js', '.json', '.mjs'],
+                            packageIterator: function () {
+                                return [projectDir];
+                            }
+                        });
+                        var relativeResult = './' + path.relative(projectDir, result).split(path.sep).join('/');
+                        st.equal(relativeResult, expectedFile, specifier + ' with moduleSystem:import resolves to ' + expectedFile);
+                    } catch (e) {
+                        st.fail('Unexpected error for ' + specifier + ' with moduleSystem:import: ' + e.message);
+                    }
+                });
+            });
+        });
+    });
+
+    t.end();
+});
+
+test('exports resolution - moduleSystem: require matches default behavior', function (t) {
+    var fixtures = getFixtures();
+
+    fixtures.forEach(function (fixtureName) {
+        var projectPkg = loadProjectPkg(fixtureName);
+        if (!projectPkg) {
+            return;
+        }
+        var projectDir = path.join(fixturesDir, fixtureName, 'project');
+        var pkgName = projectPkg.name;
+
+        categories.forEach(function (category) {
+            var expected = loadExpected(fixtureName, category);
+            if (!expected || !expected.exports || !expected.exports[category]) {
+                return;
+            }
+
+            var requireMap = expected.exports[category].require;
+            if (!requireMap || typeof requireMap !== 'object') {
+                return;
+            }
+
+            Object.keys(requireMap).forEach(function (subpath) {
+                var expectedFile = requireMap[subpath];
+                var specifier = subpath === '.' ? pkgName : pkgName + subpath.substring(1);
+
+                t.test(fixtureName + ' / ' + category + ' / explicit require / ' + subpath, function (st) {
+                    st.plan(1);
+                    try {
+                        var result = resolve(specifier, {
+                            basedir: __dirname,
+                            exportsCategory: category,
+                            moduleSystem: 'require',
+                            extensions: ['.js', '.json'],
+                            packageIterator: function () {
+                                return [projectDir];
+                            }
+                        });
+                        var relativeResult = './' + path.relative(projectDir, result).split(path.sep).join('/');
+                        st.equal(relativeResult, expectedFile, specifier + ' with moduleSystem:require resolves to ' + expectedFile);
+                    } catch (e) {
+                        st.fail('Unexpected error for ' + specifier + ' with moduleSystem:require: ' + e.message);
+                    }
+                });
+            });
+        });
+    });
+
+    t.end();
+});
+
+test('exports resolution - moduleSystem import vs require produce different results', function (t) {
+    var projectDir = path.join(fixturesDir, 'ex-conditions', 'project');
+
+    t.test('./idnr: import resolves to import.mjs, require resolves to default.js', function (st) {
+        st.plan(2);
+        var importResult = resolve('ex-conditions/idnr', {
+            basedir: __dirname,
+            exportsCategory: 'conditions',
+            moduleSystem: 'import',
+            extensions: ['.js', '.mjs'],
+            packageIterator: function () { return [projectDir]; }
+        });
+        st.ok(importResult.indexOf('import.mjs') > -1, 'moduleSystem:import resolves to import.mjs');
+
+        var requireResult = resolve('ex-conditions/idnr', {
+            basedir: __dirname,
+            exportsCategory: 'conditions',
+            moduleSystem: 'require',
+            extensions: ['.js', '.mjs'],
+            packageIterator: function () { return [projectDir]; }
+        });
+        st.ok(requireResult.indexOf('default.js') > -1, 'moduleSystem:require resolves to default.js');
+    });
+
+    t.test('./rdni: import resolves to default.js, require resolves to require.js', function (st) {
+        st.plan(2);
+        var importResult = resolve('ex-conditions/rdni', {
+            basedir: __dirname,
+            exportsCategory: 'conditions',
+            moduleSystem: 'import',
+            extensions: ['.js', '.mjs'],
+            packageIterator: function () { return [projectDir]; }
+        });
+        st.ok(importResult.indexOf('default.js') > -1, 'moduleSystem:import resolves to default.js');
+
+        var requireResult = resolve('ex-conditions/rdni', {
+            basedir: __dirname,
+            exportsCategory: 'conditions',
+            moduleSystem: 'require',
+            extensions: ['.js', '.mjs'],
+            packageIterator: function () { return [projectDir]; }
+        });
+        st.ok(requireResult.indexOf('require.js') > -1, 'moduleSystem:require resolves to require.js');
+    });
+
+    t.test('./indr: import resolves to import.mjs, require resolves to node.js', function (st) {
+        st.plan(2);
+        var importResult = resolve('ex-conditions/indr', {
+            basedir: __dirname,
+            exportsCategory: 'conditions',
+            moduleSystem: 'import',
+            extensions: ['.js', '.mjs'],
+            packageIterator: function () { return [projectDir]; }
+        });
+        st.ok(importResult.indexOf('import.mjs') > -1, 'moduleSystem:import resolves to import.mjs');
+
+        var requireResult = resolve('ex-conditions/indr', {
+            basedir: __dirname,
+            exportsCategory: 'conditions',
+            moduleSystem: 'require',
+            extensions: ['.js', '.mjs'],
+            packageIterator: function () { return [projectDir]; }
+        });
+        st.ok(requireResult.indexOf('node.js') > -1, 'moduleSystem:require resolves to node.js');
+    });
+
+    t.test('./irdn: import resolves to import.mjs, require resolves to require.js', function (st) {
+        st.plan(2);
+        var importResult = resolve('ex-conditions/irdn', {
+            basedir: __dirname,
+            exportsCategory: 'conditions',
+            moduleSystem: 'import',
+            extensions: ['.js', '.mjs'],
+            packageIterator: function () { return [projectDir]; }
+        });
+        st.ok(importResult.indexOf('import.mjs') > -1, 'moduleSystem:import resolves to import.mjs');
+
+        var requireResult = resolve('ex-conditions/irdn', {
+            basedir: __dirname,
+            exportsCategory: 'conditions',
+            moduleSystem: 'require',
+            extensions: ['.js', '.mjs'],
+            packageIterator: function () { return [projectDir]; }
+        });
+        st.ok(requireResult.indexOf('require.js') > -1, 'moduleSystem:require resolves to require.js');
+    });
+
+    t.test('default (no moduleSystem) matches require behavior', function (st) {
+        st.plan(2);
+        var defaultResult = resolve('ex-conditions/rdni', {
+            basedir: __dirname,
+            exportsCategory: 'conditions',
+            extensions: ['.js', '.mjs'],
+            packageIterator: function () { return [projectDir]; }
+        });
+        var requireResult = resolve('ex-conditions/rdni', {
+            basedir: __dirname,
+            exportsCategory: 'conditions',
+            moduleSystem: 'require',
+            extensions: ['.js', '.mjs'],
+            packageIterator: function () { return [projectDir]; }
+        });
+        st.equal(defaultResult, requireResult, 'default and explicit require produce the same result');
+        st.ok(defaultResult.indexOf('require.js') > -1, 'both resolve to require.js');
+    });
+
+    t.end();
+});
+
+test('exports resolution - moduleSystem import with various fixtures', function (t) {
+    t.test('ex-conditions-in-folder: import resolves to mjs, require to cjs', function (st) {
+        var projectDir = path.join(fixturesDir, 'ex-conditions-in-folder', 'project');
+        st.plan(2);
+        var importResult = resolve('ex-conditions-in-folder', {
+            basedir: __dirname,
+            exportsCategory: 'conditions',
+            moduleSystem: 'import',
+            extensions: ['.js', '.mjs'],
+            packageIterator: function () { return [projectDir]; }
+        });
+        st.ok(importResult.indexOf('mjs/index.mjs') > -1, 'import resolves to mjs/index.mjs');
+
+        var requireResult = resolve('ex-conditions-in-folder', {
+            basedir: __dirname,
+            exportsCategory: 'conditions',
+            moduleSystem: 'require',
+            extensions: ['.js', '.mjs'],
+            packageIterator: function () { return [projectDir]; }
+        });
+        st.ok(requireResult.indexOf('cjs/index.js') > -1, 'require resolves to cjs/index.js');
+    });
+
+    t.test('ex-exports-TL-object: import resolves to index.mjs, require to file.js', function (st) {
+        var projectDir = path.join(fixturesDir, 'ex-exports-TL-object', 'project');
+        st.plan(2);
+        var importResult = resolve('ex-exports-TL-object', {
+            basedir: __dirname,
+            exportsCategory: 'conditions',
+            moduleSystem: 'import',
+            extensions: ['.js', '.mjs'],
+            packageIterator: function () { return [projectDir]; }
+        });
+        st.ok(importResult.indexOf('index.mjs') > -1, 'import resolves to index.mjs');
+
+        var requireResult = resolve('ex-exports-TL-object', {
+            basedir: __dirname,
+            exportsCategory: 'conditions',
+            moduleSystem: 'require',
+            extensions: ['.js', '.mjs'],
+            packageIterator: function () { return [projectDir]; }
+        });
+        st.ok(requireResult.indexOf('file.js') > -1, 'require resolves to file.js');
+    });
+
+    t.test('flatted-3: import resolves to esm/index.js, require to cjs/index.js', function (st) {
+        var projectDir = path.join(fixturesDir, 'flatted-3', 'project');
+        st.plan(2);
+        var importResult = resolve('flatted', {
+            basedir: __dirname,
+            exportsCategory: 'conditions',
+            moduleSystem: 'import',
+            extensions: ['.js', '.mjs'],
+            packageIterator: function () { return [projectDir]; }
+        });
+        st.ok(importResult.indexOf('esm/index.js') > -1, 'import resolves to esm/index.js');
+
+        var requireResult = resolve('flatted', {
+            basedir: __dirname,
+            exportsCategory: 'conditions',
+            moduleSystem: 'require',
+            extensions: ['.js', '.mjs'],
+            packageIterator: function () { return [projectDir]; }
+        });
+        st.ok(requireResult.indexOf('cjs/index.js') > -1, 'require resolves to cjs/index.js');
+    });
+
+    t.test('is-promise-2.2.1: import resolves to index.mjs, require to index.js', function (st) {
+        var projectDir = path.join(fixturesDir, 'is-promise-2.2.1', 'project');
+        st.plan(2);
+        var importResult = resolve('is-promise', {
+            basedir: __dirname,
+            exportsCategory: 'conditions',
+            moduleSystem: 'import',
+            extensions: ['.js', '.mjs'],
+            packageIterator: function () { return [projectDir]; }
+        });
+        st.ok(importResult.indexOf('index.mjs') > -1, 'import resolves to index.mjs');
+
+        var requireResult = resolve('is-promise', {
+            basedir: __dirname,
+            exportsCategory: 'conditions',
+            moduleSystem: 'require',
+            extensions: ['.js', '.mjs'],
+            packageIterator: function () { return [projectDir]; }
+        });
+        st.ok(requireResult.indexOf('index.js') > -1 && requireResult.indexOf('index.mjs') === -1, 'require resolves to index.js');
+    });
+
+    t.test('resolve-2: import resolves to index.mjs, require to index.js', function (st) {
+        var projectDir = path.join(fixturesDir, 'resolve-2', 'project');
+        st.plan(2);
+        var importResult = resolve('resolve', {
+            basedir: __dirname,
+            exportsCategory: 'conditions',
+            moduleSystem: 'import',
+            extensions: ['.js', '.mjs'],
+            packageIterator: function () { return [projectDir]; }
+        });
+        st.ok(importResult.indexOf('index.mjs') > -1, 'import resolves to index.mjs');
+
+        var requireResult = resolve('resolve', {
+            basedir: __dirname,
+            exportsCategory: 'conditions',
+            moduleSystem: 'require',
+            extensions: ['.js', '.mjs'],
+            packageIterator: function () { return [projectDir]; }
+        });
+        st.ok(requireResult.indexOf('index.js') > -1 && requireResult.indexOf('index.mjs') === -1, 'require resolves to index.js');
+    });
+
+    t.test('preact: import resolves to .mjs, require to .js', function (st) {
+        var projectDir = path.join(fixturesDir, 'preact', 'project');
+        st.plan(2);
+        var importResult = resolve('preact', {
+            basedir: __dirname,
+            exportsCategory: 'conditions',
+            moduleSystem: 'import',
+            extensions: ['.js', '.mjs'],
+            packageIterator: function () { return [projectDir]; }
+        });
+        st.ok(importResult.indexOf('preact.mjs') > -1, 'import resolves to preact.mjs');
+
+        var requireResult = resolve('preact', {
+            basedir: __dirname,
+            exportsCategory: 'conditions',
+            moduleSystem: 'require',
+            extensions: ['.js', '.mjs'],
+            packageIterator: function () { return [projectDir]; }
+        });
+        st.ok(requireResult.indexOf('preact.js') > -1 && requireResult.indexOf('preact.mjs') === -1, 'require resolves to preact.js');
+    });
+
+    t.end();
+});
+
+test('exports resolution - moduleSystem import with self-reference', function (t) {
+    t.test('self-reference with moduleSystem:import uses import conditions', function (st) {
+        var conditionsDir = path.join(fixturesDir, 'ex-conditions', 'project');
+        st.plan(2);
+        var importResult = resolve('ex-conditions/idnr', {
+            basedir: conditionsDir,
+            exportsCategory: 'conditions',
+            moduleSystem: 'import',
+            extensions: ['.js', '.mjs']
+        });
+        st.ok(importResult.indexOf('import.mjs') > -1, 'self-reference with import resolves to import.mjs');
+
+        var requireResult = resolve('ex-conditions/idnr', {
+            basedir: conditionsDir,
+            exportsCategory: 'conditions',
+            moduleSystem: 'require',
+            extensions: ['.js', '.mjs']
+        });
+        st.ok(requireResult.indexOf('default.js') > -1, 'self-reference with require resolves to default.js');
+    });
+
+    t.test('self-reference with moduleSystem:import on TL-object package', function (st) {
+        var projectDir = path.join(fixturesDir, 'ex-exports-TL-object', 'project');
+        st.plan(2);
+        var importResult = resolve('ex-exports-TL-object', {
+            basedir: projectDir,
+            exportsCategory: 'conditions',
+            moduleSystem: 'import',
+            extensions: ['.js', '.mjs']
+        });
+        st.ok(importResult.indexOf('index.mjs') > -1, 'self-ref import resolves to index.mjs');
+
+        var requireResult = resolve('ex-exports-TL-object', {
+            basedir: projectDir,
+            exportsCategory: 'conditions',
+            moduleSystem: 'require',
+            extensions: ['.js', '.mjs']
+        });
+        st.ok(requireResult.indexOf('file.js') > -1, 'self-ref require resolves to file.js');
+    });
+
+    t.end();
+});
+
+test('exports resolution - moduleSystem with engines option', function (t) {
+    var projectDir = path.join(fixturesDir, 'ex-conditions', 'project');
+
+    t.test('moduleSystem:import works with engines string', function (st) {
+        st.plan(1);
+        var result = resolve('ex-conditions/idnr', {
+            basedir: __dirname,
+            engines: '>= 14',
+            moduleSystem: 'import',
+            extensions: ['.js', '.mjs'],
+            packageIterator: function () { return [projectDir]; }
+        });
+        st.ok(result.indexOf('import.mjs') > -1, 'engines + moduleSystem:import resolves to import.mjs');
+    });
+
+    t.test('moduleSystem:require works with engines string', function (st) {
+        st.plan(1);
+        var result = resolve('ex-conditions/idnr', {
+            basedir: __dirname,
+            engines: '>= 14',
+            moduleSystem: 'require',
+            extensions: ['.js', '.mjs'],
+            packageIterator: function () { return [projectDir]; }
+        });
+        st.ok(result.indexOf('default.js') > -1, 'engines + moduleSystem:require resolves to default.js');
+    });
+
+    t.end();
+});
+
+test('exports resolution - invalid moduleSystem throws', function (t) {
+    t.test('moduleSystem: true throws', function (st) {
+        st.plan(1);
+        try {
+            resolve('tape', { basedir: __dirname, moduleSystem: true });
+            st.fail('should have thrown');
+        } catch (e) {
+            st.ok((/moduleSystem/).test(e.message), 'throws with moduleSystem message: ' + e.message);
+        }
+    });
+
+    t.test('moduleSystem: false throws', function (st) {
+        st.plan(1);
+        try {
+            resolve('tape', { basedir: __dirname, moduleSystem: false });
+            st.fail('should have thrown');
+        } catch (e) {
+            st.ok((/moduleSystem/).test(e.message), 'throws with moduleSystem message: ' + e.message);
+        }
+    });
+
+    t.test('moduleSystem: empty string throws', function (st) {
+        st.plan(1);
+        try {
+            resolve('tape', { basedir: __dirname, moduleSystem: '' });
+            st.fail('should have thrown');
+        } catch (e) {
+            st.ok((/moduleSystem/).test(e.message), 'throws with moduleSystem message: ' + e.message);
+        }
+    });
+
+    t.test('moduleSystem: number throws', function (st) {
+        st.plan(1);
+        try {
+            resolve('tape', { basedir: __dirname, moduleSystem: 42 });
+            st.fail('should have thrown');
+        } catch (e) {
+            st.ok((/moduleSystem/).test(e.message), 'throws with moduleSystem message: ' + e.message);
+        }
+    });
+
+    t.test('moduleSystem: random string throws', function (st) {
+        st.plan(1);
+        try {
+            resolve('tape', { basedir: __dirname, moduleSystem: 'cjs' });
+            st.fail('should have thrown');
+        } catch (e) {
+            st.ok((/moduleSystem/).test(e.message), 'throws with moduleSystem message: ' + e.message);
+        }
+    });
+
+    t.test('moduleSystem: object throws', function (st) {
+        st.plan(1);
+        try {
+            resolve('tape', { basedir: __dirname, moduleSystem: {} });
+            st.fail('should have thrown');
+        } catch (e) {
+            st.ok((/moduleSystem/).test(e.message), 'throws with moduleSystem message: ' + e.message);
+        }
+    });
+
+    t.test('moduleSystem: null throws', function (st) {
+        st.plan(1);
+        try {
+            resolve('tape', { basedir: __dirname, moduleSystem: null });
+            st.fail('should have thrown');
+        } catch (e) {
+            st.ok((/moduleSystem/).test(e.message), 'throws with moduleSystem message: ' + e.message);
+        }
+    });
+
+    t.test('moduleSystem: undefined does not throw', function (st) {
+        st.plan(1);
+        var result = resolve('tape', { basedir: __dirname, moduleSystem: undefined });
+        st.ok(result.indexOf('tape') > -1, 'undefined moduleSystem resolves normally');
+    });
+
+    t.end();
+});
+
+test('exports resolution - moduleSystem does not affect resolution without exports', function (t) {
+    t.plan(1);
+    var result = resolve('tape', {
+        basedir: __dirname,
+        moduleSystem: 'import'
+    });
+    t.ok(result.indexOf('tape') > -1, 'moduleSystem is ignored when no exports options are set');
+});
+
 test('exports resolution - self-reference', function (t) {
     var projectDir = path.join(fixturesDir, 'ex-exports-string', 'project');
 

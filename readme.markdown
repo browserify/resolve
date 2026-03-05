@@ -126,8 +126,10 @@ This also enables **self-reference** support, allowing a package to import itsel
 
 **Note:** `exportsCategory` and `engines` are mutually exclusive - only one can be specified.
 
+* opts.moduleSystem - either `'require'` or `'import'`. Determines which module system conditions are used when resolving the `exports` field. When `'require'` (the default), the conditions include `require`; when `'import'`, the conditions include `import` instead. This option only has effect when `exportsCategory` or `engines` is also set. For example, given a package with `exports: { ".": { "import": "./esm.js", "require": "./cjs.js" } }`, resolving with `moduleSystem: 'import'` returns `esm.js`, while `moduleSystem: 'require'` (or omitting it) returns `cjs.js`.
+
 * opts.conditions - an array of condition strings (e.g. `['require', 'node']`) to use when resolving the `exports` field.
-If specified, this overrides the conditions that would otherwise be derived from the category.
+If specified, this overrides the conditions that would otherwise be derived from the category (including those from `moduleSystem`).
 This option only has effect when `exportsCategory` or `engines` is also set.
 
 default `opts` values:
@@ -245,7 +247,9 @@ This is the way Node resolves dependencies when executed with the [--preserve-sy
 
 **Note:** `exportsCategory`, `enginesRange`, and `engines` are mutually exclusive - only one can be specified.
 
-* opts.conditions - an array of condition strings (e.g. `['require', 'node']`) to use when resolving the `exports` field. If specified, this overrides the conditions that would otherwise be derived from the category. This option only has effect when one of `exportsCategory`, `enginesRange`, or `engines` is also set.
+* opts.moduleSystem - either `'require'` or `'import'`. Determines which module system conditions are used when resolving the `exports` field. When `'require'` (the default), the conditions include `require`; when `'import'`, the conditions include `import` instead. This option only has effect when `exportsCategory` or `engines` is also set. For example, given a package with `exports: { ".": { "import": "./esm.js", "require": "./cjs.js" } }`, resolving with `moduleSystem: 'import'` returns `esm.js`, while `moduleSystem: 'require'` (or omitting it) returns `cjs.js`.
+
+* opts.conditions - an array of condition strings (e.g. `['require', 'node']`) to use when resolving the `exports` field. If specified, this overrides the conditions that would otherwise be derived from the category (including those from `moduleSystem`). This option only has effect when one of `exportsCategory`, `enginesRange`, or `engines` is also set.
 
 default `opts` values:
 
