@@ -62,7 +62,7 @@
 	},
 	"devDependencies": {
 		"@arethetypeswrong/cli": "^0.18.2",
-		"@ljharb/eslint-config": "^22.2.2",
+		"@ljharb/eslint-config": "^22.2.3",
 		"@ljharb/tsconfig": "^0.3.2",
 		"@types/node": "^25.6.0",
 		"array.prototype.map": "^1.0.8",
