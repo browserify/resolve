@@ -59,7 +59,7 @@
 	},
 	"dependencies": {
 		"es-errors": "^1.3.0",
-		"is-core-module": "^2.16.1",
+		"is-core-module": "^2.16.2",
 		"path-parse": "^1.0.7",
 		"supports-preserve-symlinks-flag": "^1.0.0"
 	},
