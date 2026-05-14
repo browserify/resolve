@@ -18,7 +18,7 @@ block_comment_end = */
 indent_style = space
 indent_size = 1
 
-[{package.json,*.mjs}]
+[{package.json,*.mjs,.nycrc}]
 indent_style = tab
 
 [CHANGELOG.md]
