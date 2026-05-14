@@ -85,6 +85,7 @@
 		"ignore": [
 			".github/workflows",
 			".github/.well-known",
+			".gitmodules",
 			"appveyor.yml",
 			"CONTRIBUTING.md",
 			"test/resolver/malformed_package_json",
