@@ -84,6 +84,7 @@
 	},
 	"publishConfig": {
 		"ignore": [
+			".claude",
 			".github/workflows",
 			".github/.well-known",
 			".gitmodules",
