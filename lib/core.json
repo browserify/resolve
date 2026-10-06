@@ -32,6 +32,7 @@
 	"node:domain": [">= 14.18 && < 15", ">= 16"],
 	"events": true,
 	"node:events": [">= 14.18 && < 15", ">= 16"],
+	"node:ffi": ">= 26.9",
 	"freelist": "< 6",
 	"fs": true,
 	"node:fs": [">= 14.18 && < 15", ">= 16"],
