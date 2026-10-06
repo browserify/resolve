@@ -2,7 +2,8 @@ name: 'Tests: node.js < 10'
 
 on: [pull_request, push]
 
-permissions: read-all
+permissions:
+  contents: read
 
 jobs:
   tests:
@@ -17,4 +18,4 @@ jobs:
     needs: [tests]
     runs-on: ubuntu-latest
     steps:
-      - run: 'echo tests completed'
+      - run: true
